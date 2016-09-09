@@ -41,3 +41,6 @@ captures/
 # Keystore files
 *.jks
 
+/.idea/
+/app/build/
+/gradle/

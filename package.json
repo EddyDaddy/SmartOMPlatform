@@ -1,12 +1,26 @@
 {
-  "name": "SmartOMPlatform",
+  "name": "smartom",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "15.3.1",
-    "react-native": "0.32.1"
-  }
+    "native": "^0.2.0",
+    "react": "^15.3.1",
+    "react-native": "^0.32.1"
+  },
+  "main": "index.android.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddyDaddy/SmartOMPlatform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EddyDaddy/SmartOMPlatform/issues"
+  },
+  "homepage": "https://github.com/EddyDaddy/SmartOMPlatform#readme",
+  "description": ""
 }

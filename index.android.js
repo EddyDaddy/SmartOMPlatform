@@ -11,7 +11,7 @@ import {
   Text,
   View
 } from 'react-native';
-import Login from './JS/Login.js';
+import Login from './JS/Register.js';
 
 // class SmartOMPlatform extends Component {
 //   render() {

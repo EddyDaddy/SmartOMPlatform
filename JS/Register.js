@@ -18,9 +18,11 @@ var screenHeight = Dimensions.get('window').height;
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this.status = {
+        this.state = {
             userName: '',
-            passWord: '',
+            erificationCodev: '',
+            passWord1: '',
+            passWord2: '',
         };
     }
 
@@ -44,15 +46,29 @@ class Register extends React.Component {
                         />
                     </View>
                     <View style={styles.viewCenter}>
-                        <TextInput style={styles.textInputLong}>
+                        <View style={styles.borderView}>
+                            <TextInput style={styles.textInput}
+                                       onChangeText={(name) => this.setState({name})}
+                                       value={this.state.name}
+                            />
+                        </View>
+                    </View>
 
-                        </TextInput>
+                    <View style={{width: screenWidth, marginTop: screenWidth/36, alignItems: 'center', flexDirection: 'row',
+                        }}>
+                        <View style={styles.borderViewshort}>
+                            <TextInput style={styles.textInput}
+                                       onChangeText={(verificationCode) => this.setState({verificationCode})}
+                                       value={this.state.verificationCode}
+                            />
+                        </View>
+                        
                     </View>
 
                 </Image>
 
             </View>
-        );
+        )
     }
 
     configureScenceAndroid() {
@@ -67,19 +83,34 @@ class Register extends React.Component {
 }
 
 var styles = StyleSheet.create({
-    root: {
-        flex: 1
-    },
-    viewCenter: {
-        width: screenWidth,
-        alignItems: 'center'
-    },
-    textInputLong: {
-        width: screenWidth/1.5,
-        height: screenWidth/9,
-        backgroundColor: '#6ab5ba',
-        marginTop: screenWidth/18
-    }
-});
+        root: {
+            flex: 1
+        },
+        viewCenter: {
+            width: screenWidth,
+            alignItems: 'center'
+        },
+        borderView: {
+            width: screenWidth / 1.5,
+            height: screenWidth / 9,
+            marginTop: screenWidth / 18,
+            borderRadius: 6,
+            backgroundColor: '#6ab5ba',
+
+        },
+        borderViewshort: {
+            width: screenWidth / 2.3,
+            height: screenWidth / 9,
+            marginTop: screenWidth / 36,
+            borderRadius: 6,
+            backgroundColor: '#6ab5ba',
+
+        },
+        textInput: {
+            flex: 1,
+            backgroundColor: '#00000000'
+        }
+    })
+    ;
 
 export default Register;

@@ -11,12 +11,23 @@ import {
     TouchableHighlight,
     ToastAndroid,
     Navigator,
+    BackAndroid,
     DeviceEventEmitter,
 } from 'react-native';
 import Dimensions from 'Dimensions';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 var TouchableElement = TouchableHighlight;
+BackAndroid.addEventListener('hardwareBackPress', function () {
+    if (_navigator == null) {
+        return false;
+    }
+    if (_navigator.getCurrentRoutes().length === 1) {
+        return false;
+    }
+    _navigator.pop();
+    return true;
+});
 class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -48,8 +59,8 @@ class Register extends React.Component {
                         />
                         <View style={styles.borderView}>
                             <TextInput style={styles.textInput}
-                                       onChangeText={(name) => this.setState({name})}
-                                       value={this.state.name}
+                                       onChangeText={(userName) => this.setState({userName})}
+                                       value={this.state.userName}
                                        defaultValue="请输入您的手机号"
                             />
                         </View>
@@ -63,14 +74,14 @@ class Register extends React.Component {
                                            defaultValue="请填写验证码"
                                 />
                             </View>
-                            <View style={{marginLeft: screenWidth/30, flex: 1, height: screenWidth/9,
+                            <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}
+                                              background={TouchableNativeFeedback.Ripple('#ffd577', true)}
+                                              style={{marginLeft: screenWidth/30, flex: 1, height: screenWidth/9,
                              borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}>
-                                    <Text style={{flex: 1}}>
-                                        验证码
-                                    </Text>
-                                </TouchableElement>
-                            </View>
+                                <Text >
+                                    验证码
+                                </Text>
+                            </TouchableElement>
                         </View>
                         <View style={styles.borderViewCommon}>
                             <TextInput style={styles.textInput}
@@ -86,14 +97,15 @@ class Register extends React.Component {
                                        defaultValue="请再次输入密码"
                             />
                         </View>
+                        <TouchableElement onPress={()=>ToastAndroid.show('点击登录'+this.state.userName, 0.05)}>
 
-                        <View style={{width: screenWidth/1.5, height: screenWidth/9, marginTop: screenWidth/36, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                            <TouchableElement onPress={()=>ToastAndroid.show('点击登录', 0.05)}>
-                                <Text style={{flex: 1}}>
+                            <View
+                                style={{width: screenWidth/1.5, height: screenWidth/9, marginTop: screenWidth/36, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
+                                <Text style={{color: 'red'}}>
                                     登录
                                 </Text>
-                            </TouchableElement>
-                        </View>
+                            </View>
+                        </TouchableElement>
                     </View>
                 </Image>
 
@@ -147,7 +159,7 @@ var styles = StyleSheet.create({
             flex: 1,
             backgroundColor: '#00000000',
             color: 'white',
-            paddingLeft: screenWidth/36
+            paddingLeft: screenWidth / 36
         }
     })
     ;

@@ -50,8 +50,10 @@ class Login extends React.Component {
                         <View style={styles.borderView}>
                             <TextInput style={styles.textInput}
                                        onChangeText={(userName) => this.setState({userName})}
+                                       keyboardType="phone-pad"
+                                       maxLength={11}
                                        value={this.state.userName}
-                                       defaultValue="请输入您的手机号"
+                                       placeholder="请输入您的手机号"
                             />
                         </View>
 
@@ -59,7 +61,8 @@ class Login extends React.Component {
                             <TextInput style={styles.textInput}
                                        onChangeText={(passWord1) => this.setState({passWord1})}
                                        value={this.state.passWord1}
-                                       defaultValue="请输入密码"
+                                       secureTextEntry={true}
+                                       placeholder="请输入密码"
                             />
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
@@ -127,7 +130,8 @@ var styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#00000000',
         color: 'white',
-        paddingLeft: screenWidth / 36
+        fontSize: 18,
+        padding:screenWidth / 36,
     }
 });
 

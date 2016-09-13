@@ -15,7 +15,8 @@ import {
     DeviceEventEmitter,
 } from 'react-native';
 import {styles} from './Styles.js';
-import Util from './Utils.js'
+import Util from './Utils.js';
+import {naviGoBack} from './CommonUtil.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
@@ -38,11 +39,7 @@ class Register extends React.Component {
             TouchableElement = TouchableNativeFeedback;
         }
         BackAndroid.addEventListener('hardwareBackPress', function () {
-            if (navigator && navigator.getCurrentRoutes().length > 1) {
-                navigator.pop();
-                return true;
-            }
-            return false;
+            return naviGoBack(navigator)
         });
     }
 

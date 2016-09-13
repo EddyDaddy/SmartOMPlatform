@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import Login from './JS/Login.js';
 import Register from './JS/Register.js';
-
+import {naviGoBack} from './JS/CommonUtil.js';
 class SmartOMPlatform extends Component {
     constructor(props) {
         super(props);
@@ -30,11 +30,7 @@ class SmartOMPlatform extends Component {
     componentDidMount() {
         var navigator = this._navigator;
         BackAndroid.addEventListener('hardwareBackPress', function() {
-            if (navigator && navigator.getCurrentRoutes().length > 1) {
-                navigator.pop();
-                return true;
-            }
-            return false;
+            return naviGoBack(navigator)
         });
     }
 

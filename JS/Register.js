@@ -14,9 +14,9 @@ import {
     BackAndroid,
     DeviceEventEmitter,
 } from 'react-native';
-import Dimensions from 'Dimensions';
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+import Util from './Utils.js'
+var screenWidth = Util.size.width;
+var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 class Register extends React.Component {

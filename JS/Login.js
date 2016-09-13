@@ -22,7 +22,7 @@ var _navigator;
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        _navigator = this.props.navigator;
+        this._navigator = this.props.navigator;
         this.state = {
             userName: '',
             passWord: '',
@@ -62,20 +62,20 @@ class Login extends React.Component {
                                        defaultValue="请输入密码"
                             />
                         </View>
-                        <TouchableElement
-                            style={{marginTop: screenWidth/36}}
-                            onPress={()=>ToastAndroid.show('点击登录'+this.state.userName, 0.05)}>
-
-                            <View
-                                style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                <Text style={{color: 'red'}}>
-                                    登录
-                                </Text>
-                            </View>
-                        </TouchableElement>
+                        <View style={{marginTop: screenWidth/36}}>
+                            <TouchableElement
+                                onPress={()=>ToastAndroid.show('点击登录', 0.05)}>
+                                <View
+                                    style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
+                                    <Text style={{color: 'red'}}>
+                                        登录
+                                    </Text>
+                                </View>
+                            </TouchableElement>
+                        </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex_end'}}>
                             <TouchableElement
-                                onPress={()=>_navigator.push({title: '注册', id: 'Register'})}>
+                                onPress={()=>this._navigator.push({id: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         没有账号？去注册

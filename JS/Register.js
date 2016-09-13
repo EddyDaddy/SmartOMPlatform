@@ -18,19 +18,11 @@ import Dimensions from 'Dimensions';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 var TouchableElement = TouchableHighlight;
-BackAndroid.addEventListener('hardwareBackPress', function () {
-    if (_navigator == null) {
-        return false;
-    }
-    if (_navigator.getCurrentRoutes().length === 1) {
-        return false;
-    }
-    _navigator.pop();
-    return true;
-});
+var _navigator;
 class Register extends React.Component {
     constructor(props) {
         super(props);
+        this._navigator = this.props.navigator;
         this.state = {
             userName: '',
             verificationCode: '',
@@ -40,9 +32,21 @@ class Register extends React.Component {
     }
 
     componentDidMount() {
+        var navigator = this._navigator;
         if (Platform.OS === 'android') {
             TouchableElement = TouchableNativeFeedback;
         }
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            if (navigator && navigator.getCurrentRoutes().length > 1) {
+                navigator.pop();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
     }
 
     getLoginUI() {
@@ -74,14 +78,19 @@ class Register extends React.Component {
                                            defaultValue="请填写验证码"
                                 />
                             </View>
-                            <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}
-                                              background={TouchableNativeFeedback.Ripple('#ffd577', true)}
-                                              style={{marginLeft: screenWidth/30, flex: 1, height: screenWidth/9,
-                             borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                <Text >
-                                    验证码
-                                </Text>
-                            </TouchableElement>
+                            <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
+                             borderRadius: 6}}>
+                                <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}
+                                                  background={TouchableNativeFeedback.Ripple('#ffd577', true)}
+                                                  style={{flex: 1}}>
+                                    <View
+                                        style={{flex: 1, height: screenWidth/9, alignItems: 'center', justifyContent: 'center'}}>
+                                        <Text >
+                                            验证码
+                                        </Text>
+                                    </View>
+                                </TouchableElement>
+                            </View>
                         </View>
                         <View style={styles.borderViewCommon}>
                             <TextInput style={styles.textInput}
@@ -97,15 +106,17 @@ class Register extends React.Component {
                                        defaultValue="请再次输入密码"
                             />
                         </View>
-                        <TouchableElement onPress={()=>ToastAndroid.show('点击登录'+this.state.userName, 0.05)}>
-
-                            <View
-                                style={{width: screenWidth/1.5, height: screenWidth/9, marginTop: screenWidth/36, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                <Text style={{color: 'red'}}>
-                                    登录
-                                </Text>
-                            </View>
-                        </TouchableElement>
+                        <View style={{marginTop: screenWidth/36}}>
+                            <TouchableElement
+                                onPress={()=>ToastAndroid.show('点击登录', 0.05)}>
+                                <View
+                                    style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
+                                    <Text style={{color: 'red'}}>
+                                        登录
+                                    </Text>
+                                </View>
+                            </TouchableElement>
+                        </View>
                     </View>
                 </Image>
 

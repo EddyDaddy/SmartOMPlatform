@@ -10,7 +10,8 @@ import {
     StyleSheet,
     Text,
     Navigator,
-    View
+    View,
+    BackAndroid
 } from 'react-native';
 import Login from './JS/Login.js';
 import Register from './JS/Register.js';
@@ -26,8 +27,23 @@ class SmartOMPlatform extends Component {
         return Navigator.SceneConfigs.FadeAndroid;
     }
 
+    componentDidMount() {
+        var navigator = this._navigator;
+        BackAndroid.addEventListener('hardwareBackPress', function() {
+            if (navigator && navigator.getCurrentRoutes().length > 1) {
+                navigator.pop();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
+    }
+
     renderSceneAndroid(route, navigator) {
-        _navigator = navigator;
+        this._navigator = navigator;
 
         if (route.id === 'Login') {
             return (

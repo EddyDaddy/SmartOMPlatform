@@ -13,11 +13,11 @@ import {
     Navigator,
     DeviceEventEmitter,
 } from 'react-native';
-import Dimensions from 'Dimensions';
+import Util from './Utils.js'
 import Register from './Register.js';
 import {styles} from './Styles.js';
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+var screenWidth = Util.size.width;
+var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 class Login extends React.Component {

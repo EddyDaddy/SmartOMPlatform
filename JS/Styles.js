@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import {
     StyleSheet,
 } from 'react-native';
-import Dimensions from 'Dimensions';
-var screenWidth = Dimensions.get('window').width;
-var screenHeight = Dimensions.get('window').height;
+import Util from './Utils.js'
+var screenWidth = Util.size.width;
+var screenHeight = Util.size.height;
 export const styles = StyleSheet.create({
         root: {
             flex: 1, alignItems: 'center'

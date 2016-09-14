@@ -84,7 +84,7 @@ class Register extends React.Component {
                             <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
                              borderRadius: 6}}>
                                 <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}
-                                                  background={TouchableNativeFeedback.Ripple('#ffd577', true)}
+                                                  underlayColor={'red'}
                                                   style={{flex: 1}}>
                                     <View
                                         style={{flex: 1, height: screenWidth/9, alignItems: 'center', justifyContent: 'center'}}>

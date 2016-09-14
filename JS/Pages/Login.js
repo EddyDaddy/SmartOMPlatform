@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {
     Platform,
     Text,
@@ -86,6 +86,7 @@ class Login extends React.Component {
                                 storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord);
                                 storge.get('phoneNum').then((phoneNum)=>{ToastAndroid.show('点击登录'+phoneNum, 1)});
+                                this._navigator.push({id: 'Main'});
                                 }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

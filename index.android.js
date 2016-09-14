@@ -13,6 +13,7 @@ import {
 import Login from './JS/Pages/Login.js';
 import Register from './JS/Pages/Register.js';
 import {naviGoBack} from './JS/Utils/CommonUtil.js';
+import Main from './JS/Pages/Main.js';
 class SmartOMPlatform extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ class SmartOMPlatform extends Component {
         };
     }
 
-    configureScenceAndroid() {
+    configureScence() {
         return Navigator.SceneConfigs.FadeAndroid;
     }
 
@@ -35,7 +36,7 @@ class SmartOMPlatform extends Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
-    renderSceneAndroid(route, navigator) {
+    renderScene(route, navigator) {
         this._navigator = navigator;
 
         if (route.id === 'Login') {
@@ -48,11 +49,16 @@ class SmartOMPlatform extends Component {
                 <Register navigator={navigator} route={route}/>
             );
         }
+        if (route.id === 'Main') {
+            return (
+                <Main navigator={navigator} route={route}/>
+            );
+        }
 
     }
     render() {
-        var renderScene = this.renderSceneAndroid;
-        var configureScence = this.configureScenceAndroid;
+        var renderScene = this.renderScene;
+        var configureScence = this.configureScence;
         return (
             <Navigator
                 initialRoute={{ title: '登录', id:'Login'}}

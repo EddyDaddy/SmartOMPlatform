@@ -118,6 +118,7 @@ class Register extends React.Component {
                                 onPress={()=>{storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord1);
                                 storge.get('passWord').then((passWord)=>{ToastAndroid.show('点击登录'+passWord, 1)});
+                                this._navigator.push({id: 'Main'});
                                 }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
@@ -134,7 +135,7 @@ class Register extends React.Component {
         )
     }
 
-    configureScenceAndroid() {
+    configureScence() {
         return Navigator.SceneConfigs.FadeAndroid;
     }
 

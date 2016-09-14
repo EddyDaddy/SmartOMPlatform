@@ -7,15 +7,12 @@
 import React, {Component} from 'react';
 import {
     AppRegistry,
-    StyleSheet,
-    Text,
     Navigator,
-    View,
     BackAndroid
 } from 'react-native';
-import Login from './JS/Login.js';
-import Register from './JS/Register.js';
-import {naviGoBack} from './JS/CommonUtil.js';
+import Login from './JS/Pages/Login.js';
+import Register from './JS/Pages/Register.js';
+import {naviGoBack} from './JS/Utils/CommonUtil.js';
 class SmartOMPlatform extends Component {
     constructor(props) {
         super(props);

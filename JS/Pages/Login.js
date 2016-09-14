@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {
-    AppRegistry,
     Platform,
-    StyleSheet,
     Text,
     TextInput,
     View,
@@ -13,39 +11,53 @@ import {
     Navigator,
     DeviceEventEmitter,
 } from 'react-native';
-import Util from './Utils.js'
+import Util from '../Utils/Utils.js'
 import Register from './Register.js';
-import {styles} from './Styles.js';
+import {styles} from '../Utils/Styles.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
+import storge from '../Utils/Storage.js';
 class Login extends React.Component {
     constructor(props) {
         super(props);
         this._navigator = this.props.navigator;
         this.state = {
-            userName: '',
-            passWord: '',
+            userName: null,
+            passWord: null
         };
+
     }
 
     componentDidMount() {
         if (Platform.OS === 'android') {
             TouchableElement = TouchableNativeFeedback;
         }
+        storge.get('phoneNum').then((phoneNum)=> {
+            if (phoneNum !== null) {
+                this.setState({userName: phoneNum});
+            }
+        });
+        storge.get('passWord').then((passWord)=> {
+            if (passWord !== null) {
+                this.setState({passWord: passWord});
+            }
+        });
+
+
     }
 
     getLoginUI() {
         return (
             <View style={styles.root}>
-                <Image source={require('./img/bg.png')}
+                <Image source={require('./../img/bg.png')}
                        style={{width: screenWidth, height: screenHeight}}>
                     <View style={styles.root}>
-                        <Image source={require('./img/name.png')}
-                               style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}></Image>
+                        <Image source={require('./../img/name.png')}
+                               style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
                         <Image
-                            source={require('./img/logo_img.png')}
+                            source={require('./../img/logo_img.png')}
                             style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
                         />
                         <View style={styles.borderView}>
@@ -55,15 +67,17 @@ class Login extends React.Component {
                                        maxLength={11}
                                        value={this.state.userName}
                                        placeholder="请输入您的手机号"
+                                       placeholderTextColor='white'
                             />
                         </View>
 
                         <View style={styles.borderViewCommon}>
                             <TextInput style={styles.textInput}
                                        onChangeText={(passWord1) => this.setState({passWord1})}
-                                       value={this.state.passWord1}
+                                       value={this.state.passWord}
                                        secureTextEntry={true}
                                        placeholder="请输入密码"
+                                       placeholderTextColor='white'
                             />
                         </View>
                         <View style={{marginTop: screenWidth/36}}>

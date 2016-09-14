@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import {
-    AppRegistry,
     Platform,
-    StyleSheet,
     Text,
     TextInput,
     View,
@@ -14,13 +12,15 @@ import {
     BackAndroid,
     DeviceEventEmitter,
 } from 'react-native';
-import {styles} from './Styles.js';
-import Util from './Utils.js';
-import {naviGoBack} from './CommonUtil.js';
+import {styles} from '../Utils/Styles.js';
+import Util from '../Utils/Utils.js';
+import {naviGoBack} from '../Utils/CommonUtil.js';
+import storge from '../Utils/Storage.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
+var phone;
 class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -41,6 +41,7 @@ class Register extends React.Component {
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
+        phone = this.state.userName;
     }
 
     componentWillUnmount() {
@@ -50,13 +51,13 @@ class Register extends React.Component {
     getLoginUI() {
         return (
             <View style={styles.root}>
-                <Image source={require('./img/bg.png')}
+                <Image source={require('./../img/bg.png')}
                        style={{width: screenWidth, height: screenHeight}}>
                     <View style={styles.root}>
-                        <Image source={require('./img/name.png')}
-                               style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}></Image>
+                        <Image source={require('./../img/name.png')}
+                               style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
                         <Image
-                            source={require('./img/logo_img.png')}
+                            source={require('./../img/logo_img.png')}
                             style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
                         />
                         <View style={styles.borderView}>
@@ -64,7 +65,9 @@ class Register extends React.Component {
                                        onChangeText={(userName) => this.setState({userName})}
                                        keyboardType="phone-pad"
                                        value={this.state.userName}
+                                       maxLength={11}
                                        placeholder="请输入您的手机号"
+                                       placeholderTextColor='white'
                             />
                         </View>
 
@@ -75,6 +78,7 @@ class Register extends React.Component {
                                            onChangeText={(verificationCode) => this.setState({verificationCode})}
                                            value={this.state.verificationCode}
                                            placeholder="请填写验证码"
+                                           placeholderTextColor='white'
                                 />
                             </View>
                             <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
@@ -97,6 +101,7 @@ class Register extends React.Component {
                                        value={this.state.passWord1}
                                        secureTextEntry={true}
                                        placeholder="请设置密码"
+                                       placeholderTextColor='white'
                             />
                         </View>
                         <View style={styles.borderViewCommon}>
@@ -105,11 +110,15 @@ class Register extends React.Component {
                                        value={this.state.passWord2}
                                        secureTextEntry={true}
                                        placeholder="请再次输入密码"
+                                       placeholderTextColor='white'
                             />
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=>ToastAndroid.show('点击登录', 0.05)}>
+                                onPress={()=>{storge.save('phoneNum', this.state.userName);
+                                storge.save('passWord', this.state.passWord1);
+                                storge.get('passWord').then((passWord)=>{ToastAndroid.show('点击登录'+passWord, 1)});
+                                }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                     <Text style={{color: 'red'}}>

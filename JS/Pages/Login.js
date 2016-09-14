@@ -82,7 +82,11 @@ class Login extends React.Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=>ToastAndroid.show('点击登录', 0.05)}>
+                                onPress={()=>{ToastAndroid.show('点击登录', 0.05);
+                                storge.save('phoneNum', this.state.userName);
+                                storge.save('passWord', this.state.passWord);
+                                storge.get('phoneNum').then((phoneNum)=>{ToastAndroid.show('点击登录'+phoneNum, 1)});
+                                }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                     <Text style={{color: 'red'}}>

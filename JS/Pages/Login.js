@@ -95,7 +95,7 @@ class Login extends React.Component {
                                 </View>
                             </TouchableElement>
                         </View>
-                        <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex_end'}}>
+                        <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
                             <TouchableElement
                                 onPress={()=>this._navigator.push({id: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>

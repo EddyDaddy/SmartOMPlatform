@@ -73,7 +73,7 @@ class Login extends React.Component {
 
                         <View style={styles.borderViewCommon}>
                             <TextInput style={styles.textInput}
-                                       onChangeText={(passWord1) => this.setState({passWord1})}
+                                       onChangeText={(passWord) => this.setState({passWord})}
                                        value={this.state.passWord}
                                        secureTextEntry={true}
                                        placeholder="请输入密码"
@@ -82,11 +82,11 @@ class Login extends React.Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=>{ToastAndroid.show('点击登录', 0.05);
+                                onPress={()=>{
+                                this._navigator.replace({id: 'Main'});
                                 storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord);
-                                storge.get('phoneNum').then((phoneNum)=>{ToastAndroid.show('点击登录'+phoneNum, 1)});
-                                this._navigator.push({id: 'Main'});
+                                storge.get('phoneNum').then((phoneNum)=>{ToastAndroid.show('点击登录'+phoneNum, ToastAndroid.SHORT)});
                                 }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
@@ -98,7 +98,7 @@ class Login extends React.Component {
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
                             <TouchableElement
-                                onPress={()=>this._navigator.push({id: 'Register'})}>
+                                onPress={()=>this._navigator.replace({id: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         没有账号？去注册

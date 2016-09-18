@@ -41,7 +41,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', function () {
-            ToastAndroid.show("再点击一次退出", 0.01);
+            ToastAndroid.show("再点击一次退出", ToastAndroid.SHORT);
             if ((new Date()).valueOf() - lastTime > 2000) {
                 lastTime = (new Date()).valueOf();
                 return true;
@@ -52,7 +52,7 @@ class Main extends React.Component {
     }
 
     componentDidUnMount() {
-
+        BackAndroid.removeEventListener('hardwareBackPress');
     }
 
     renderScene(route, navigator){

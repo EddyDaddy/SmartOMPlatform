@@ -1,10 +1,10 @@
 /**
  * Created by demon on 2016/9/14.
+ * 我的页
  */
 import React, {Component} from 'react';
 import {
     BackAndroid,
-    ToastAndroid,
     View,
     Text,
     Navigator,

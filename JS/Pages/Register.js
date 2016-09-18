@@ -7,7 +7,6 @@ import {
     Image,
     TouchableNativeFeedback,
     TouchableHighlight,
-    ToastAndroid,
     Navigator,
     BackAndroid,
     DeviceEventEmitter,
@@ -16,6 +15,7 @@ import {styles} from '../Utils/Styles.js';
 import Util from '../Utils/Utils.js';
 import {naviGoBack} from '../Utils/CommonUtil.js';
 import storge from '../Utils/Storage.js';
+import Toast from 'react-native-root-toast';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
@@ -30,6 +30,8 @@ class Register extends React.Component {
             verificationCode: '',
             passWord1: '',
             passWord2: '',
+            isPressed: false,
+            countTime: 60
         };
     }
 
@@ -42,11 +44,38 @@ class Register extends React.Component {
             return naviGoBack(navigator)
         });
         phone = this.state.userName;
+
     }
 
     componentWillUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress');
+        this.clearInterval();
     }
+
+    setInterval(){
+        this.interval = setInterval(
+            () => {this.setState({countTime: this.state.countTime - 1});
+                if(this.state.countTime === 0){
+                    this.initInterval();
+                }
+                },
+            1000
+        )
+    }
+
+    clearInterval(){
+        // 如果存在this.interval，则使用clearInterval清空。
+        // 如果你使用多个interval，那么用多个变量，或者用个数组来保存引用，然后逐个clear
+        this.interval && clearInterval(this.timer);
+    }
+
+    initInterval(){
+        //初始验证码按钮
+        this.clearInterval();
+        this.setState({countTime: 60});
+        this.setState({isPressed: !this.state.isPressed});
+    }
+
 
     getLoginUI() {
         return (
@@ -83,13 +112,17 @@ class Register extends React.Component {
                             </View>
                             <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
                              borderRadius: 6}}>
-                                <TouchableElement onPress={()=>ToastAndroid.show('点击获取验证码', 0.05)}
-                                                  underlayColor={'red'}
-                                                  style={{flex: 1}}>
+                                <TouchableElement onPress={()=>{Toast.show('点击获取验证码');
+                                                                this.setState({isPressed: true});
+                                                                this.setInterval();
+                                                                }}
+                                                  underlayColor={'#ffd5ad'}
+                                                  disabled={this.state.isPressed}
+                                                  style={{flex: 1, borderRadius: 6}}>
                                     <View
                                         style={{flex: 1, height: screenWidth/9, alignItems: 'center', justifyContent: 'center'}}>
                                         <Text >
-                                            验证码
+                                            {this.state.isPressed?this.state.countTime+'s后获取':'验证码'}
                                         </Text>
                                     </View>
                                 </TouchableElement>
@@ -115,11 +148,13 @@ class Register extends React.Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=>{storge.save('phoneNum', this.state.userName);
+                                onPress={()=>{
+                                this._navigator.replace({id: 'Main'});
+                                storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord1);
-                                storge.get('passWord').then((passWord)=>{ToastAndroid.show('点击登录'+passWord, 1)});
-                                this._navigator.push({id: 'Main'});
-                                }}>
+                                storge.get('passWord').then((passWord)=>{Toast.show('点击登录'+passWord)});
+                                }}
+                                style={{borderRadius: 6}}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                     <Text style={{color: 'red'}}>

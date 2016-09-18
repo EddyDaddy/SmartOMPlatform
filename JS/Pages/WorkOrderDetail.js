@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {
     Platform,
     BackAndroid,
-    ToastAndroid,
     StyleSheet,
     ScrollView,
     TouchableHighlight,
@@ -15,6 +14,7 @@ import {
 import Util from '../Utils/Utils.js'
 //import {styles} from '../Utils/Styles.js';
 import Toolbar from '../Utils/ToolBar.js';
+import Toast from 'react-native-root-toast';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
@@ -85,11 +85,11 @@ const LocalStyles = StyleSheet.create({
         justifyContent:'center',
     },
     btnStyle:{
-        width: 451*Util.pixel, 
-        height: 120*Util.pixel, 
-        borderRadius: 6, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+        width: 451*Util.pixel,
+        height: 120*Util.pixel,
+        borderRadius: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#ffd57d',
         //elevation:20,
     }
@@ -122,12 +122,12 @@ class WorkOrderDetail extends React.Component{
     }
 
     processBySelf(){
-        ToastAndroid.show('开始处理', 0.05);
+        Toast.show('开始处理');
         //this._navigator.push({id: 'Main'});
     }
 
     dispathToOther(){
-        ToastAndroid.show('转派', 0.05);
+        Toast.show('转派');
         //this._navigator.push({id: 'Main'});
     }
 

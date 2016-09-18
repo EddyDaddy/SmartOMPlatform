@@ -7,7 +7,6 @@ import {
     Image,
     TouchableNativeFeedback,
     TouchableHighlight,
-    ToastAndroid,
     Navigator,
     BackAndroid,
     DeviceEventEmitter,
@@ -16,6 +15,7 @@ import {styles} from '../Utils/Styles.js';
 import Util from '../Utils/Utils.js';
 import {naviGoBack} from '../Utils/CommonUtil.js';
 import storge from '../Utils/Storage.js';
+import Toast from 'react-native-root-toast';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
@@ -112,7 +112,7 @@ class Register extends React.Component {
                             </View>
                             <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
                              borderRadius: 6}}>
-                                <TouchableElement onPress={()=>{ToastAndroid.show('点击获取验证码', ToastAndroid.SHORT);
+                                <TouchableElement onPress={()=>{Toast.show('点击获取验证码');
                                                                 this.setState({isPressed: true});
                                                                 this.setInterval();
                                                                 }}
@@ -152,7 +152,7 @@ class Register extends React.Component {
                                 this._navigator.replace({id: 'Main'});
                                 storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord1);
-                                storge.get('passWord').then((passWord)=>{ToastAndroid.show('点击登录'+passWord, ToastAndroid.SHORT)});
+                                storge.get('passWord').then((passWord)=>{Toast.show('点击登录'+passWord)});
                                 }}
                                 style={{borderRadius: 6}}>
                                 <View

@@ -5,7 +5,6 @@
 import React, {Component} from 'react';
 import {
     BackAndroid,
-    ToastAndroid,
     View,
     Text,
     Navigator,

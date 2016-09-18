@@ -4,7 +4,6 @@
 import React, {Component} from 'react';
 import {
     BackAndroid,
-    ToastAndroid,
     View,
     Text,
     Navigator,
@@ -15,6 +14,7 @@ import DevicesPage from './DevicesPage.js';
 import WorkOrder from './WorkOrder.js';
 import User from './User.js';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+import Toast from 'react-native-root-toast';
 var lastTime = 0;
 class Main extends React.Component {
     // 构造
@@ -30,7 +30,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', function () {
-            ToastAndroid.show("再点击一次退出", ToastAndroid.SHORT);
+            Toast.show("再点击一次退出");
             if ((new Date()).valueOf() - lastTime > 2000) {
                 lastTime = (new Date()).valueOf();
                 return true;
@@ -68,4 +68,3 @@ class Main extends React.Component {
 }
 
 export default Main;
-

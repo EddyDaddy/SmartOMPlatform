@@ -13,7 +13,7 @@ import Util from '../Utils/Utils.js'
 import {styles} from '../Utils/Styles.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-export default class MainPage extends React.Component{
+export default class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
@@ -24,11 +24,36 @@ export default class MainPage extends React.Component{
 
     render() {
         var title = this.props.title;
-        return (
-            <View style={{width: screenWidth, height: screenWidth/7.6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#3fd0a7'}}>
-                <Text style={{color: 'white', fontSize: screenWidth/30}}>
-                    {title}
+        var left = this.props.left;
+        var right = this.props.right;
+        if(this.props.left){
+            var leftView = (
+                <Text style={{color: 'white', marginLeft: screenWidth/60}}>
+                    返回
                 </Text>
+            )
+        }
+        if(this.props.right){
+            var rightView = (
+                <Text style={{color: 'white', marginRight: screenWidth/60}}>
+                    保存
+                </Text>
+            )
+        }
+        return (
+            <View style={{flexDirection: 'row', backgroundColor: '#3fd0a7'}}>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    {leftView}
+                </View>
+                <View
+                    style={{width: screenWidth*0.6, height: screenWidth/7.6, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: 'white', fontSize: screenWidth/20}}>
+                        {title}
+                    </Text>
+                </View>
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                    {rightView}
+                </View>
             </View>
         );
     }

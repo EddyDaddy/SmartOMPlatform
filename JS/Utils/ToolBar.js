@@ -8,12 +8,14 @@ import {
     View,
     Text,
     Navigator,
+    TouchableOpacity
 }from 'react-native';
-import Util from '../Utils/Utils.js'
+import Util from '../Utils/Utils.js';
+import {naviGoBack} from '../Utils/CommonUtil.js';
 import {styles} from '../Utils/Styles.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-export default class MainPage extends React.Component {
+export default class ToolBar extends React.Component {
     // 构造
     constructor(props) {
         super(props);
@@ -26,14 +28,16 @@ export default class MainPage extends React.Component {
         var title = this.props.title;
         var left = this.props.left;
         var right = this.props.right;
-        if(this.props.left){
+        if (this.props.left) {
             var leftView = (
-                <Text style={{color: 'white', marginLeft: screenWidth/60}}>
-                    返回
-                </Text>
+                <TouchableOpacity onPress={this.props.navigator.pop()}>
+                    <Text style={{color: 'white', marginLeft: screenWidth/60}}>
+                        返回
+                    </Text>
+                </TouchableOpacity>
             )
         }
-        if(this.props.right){
+        if (this.props.right) {
             var rightView = (
                 <Text style={{color: 'white', marginRight: screenWidth/60}}>
                     保存

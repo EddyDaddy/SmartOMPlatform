@@ -14,28 +14,17 @@ import MainPage from './MainPage.js';
 import DevicesPage from './DevicesPage.js';
 import WorkOrder from './WorkOrder.js';
 import User from './User.js';
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 var lastTime = 0;
-var _getRandomRoute = function (str) {
-    return {
-        randNumber: str,
-    };
-}
-
-var ROUTE_STACK = [
-    _getRandomRoute('MainPage'),
-    _getRandomRoute('DevicesPage'),
-    _getRandomRoute('WorkOrder'),
-    _getRandomRoute('User'),
-];
-
-var routeIndex = 0;
 class Main extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {
-            tabIndex: 0
+            tabNames: ['首页', '设备', '工单', '我的'],
+            tabIconNames: [require('../img/tab_check_coupon_selected.png'), require('../img/tab_order_selected.png'),
+                require('../img/tab_return_coupon_selected.png'), require('../img/tab_shop_selected.png')]
         };
     }
 
@@ -55,73 +44,25 @@ class Main extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
-    renderScene(route, navigator){
-        var pages =[
-            <MainPage {...route.params} />,
-            <DevicesPage {...route.params}  />,
-            <WorkOrder {...route.params}  />,
-            <User {...route.params}  />,
-        ]
-        return (
-            pages[routeIndex]
-        )
-
-    }
-    TabBar() {
-        return (
-            <View style={{flexDirection: 'row'}}>
-                <TabBarItem
-                    image={this.state.tabIndex === 0? require('../img/tab_check_coupon_selected.png'):require("../img/tab_check_coupon_unselected.png") }
-                    onPress={() => {
-                        this.onTabIndex(0);
-                         this.setState({tabIndex:0})
-                    } }>
-                    ></TabBarItem>
-                <TabBarItem
-                    image={this.state.tabIndex === 1? require('../img/tab_order_selected.png'):require("../img/tab_order_unselected.png") }
-                    onPress={() => {
-                        this.onTabIndex(1);
-                         this.setState({tabIndex:1})
-                    } }>
-                    ></TabBarItem>
-                <TabBarItem
-                    image={this.state.tabIndex === 2? require('../img/tab_return_coupon_selected.png'):require("../img/tab_return_coupon_unselected.png") }
-                    onPress={() => {
-                        this.onTabIndex(2);
-                        this.setState({tabIndex:2})
-                    } }>
-                    ></TabBarItem>
-                <TabBarItem
-                    image={this.state.tabIndex === 3? require('../img/tab_shop_selected.png'):require("../img/tab_shop_unselected.png") }
-                    onPress={() => {
-                        this.onTabIndex(3);
-                        this.setState({tabIndex:3})
-                    } }>
-                    ></TabBarItem>
-            </View>
-        )
-    }
-    onTabIndex(_index){
-        routeIndex = _index;
-        // this._navigator.jumpTo(ROUTE_STACK[routeIndex]);
-    }
 
     render() {
         return (
-            <Navigator
-                initialRoute={ROUTE_STACK[routeIndex]}
-                // configureScene={(route) => {
-                //     return Navigator.SceneConfigs.FadeAndroid;
-                // } }
-                renderScene={this.renderScene}
-                navigationBar={
-                    this.TabBar()
-                }
-                initialRouteStack={ROUTE_STACK}
-                ref={(navigator) => {
-                  this._navigator = navigator;
-                }}
-            />
+            <ScrollableTabView
+                renderTabBar={() => <TabBarItem tabNames={this.state.tabNames} tabIconNames={this.state.tabIconNames}/>}
+            tabBarPosition='bottom'>
+                <View style={{flex: 1}} tabLabel='Tab1'>
+                    <MainPage/>
+                </View>
+                <View style={{flex: 1}} tabLabel='Tab2'>
+                    <DevicesPage/>
+                </View>
+                <View style={{flex: 1}} tabLabel='Tab3'>
+                    <WorkOrder/>
+                </View>
+                <View style={{flex: 1}} tabLabel='Tab4'>
+                    <User/>
+                </View>
+            </ScrollableTabView>
         );
     }
 }

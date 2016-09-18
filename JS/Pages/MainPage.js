@@ -15,20 +15,25 @@ import {styles} from '../Utils/Styles.js';
 import Toolbar from '../Utils/ToolBar.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-export default class MainPage extends React.Component{
+export default class MainPage extends React.Component {
     // 构造
-      constructor(props) {
+    constructor(props) {
         super(props);
         // 初始状态
         this.state = {};
-      }
+    }
 
 
     render() {
         return (
-            <Toolbar title={'首页'}>
+            <View >
+                <Toolbar title={'首页'}>
 
-            </Toolbar>
+                </Toolbar>
+                <View style={{flex: 1, backgroundColor: '#ebebeb'}}>
+
+                </View>
+            </View>
         );
     }
 }

@@ -98,7 +98,7 @@ class Login extends React.Component {
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
                             <TouchableElement
-                                onPress={()=>this._navigator.replace({id: 'Register'})}>
+                                onPress={()=>this._navigator.push({id: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         没有账号？去注册

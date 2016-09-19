@@ -101,7 +101,7 @@ class Login extends React.Component {
                                 onPress={()=>this._navigator.push({id: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
-                                        没有账号？去注册
+                                        忘记密码？
                                     </Text>
                                 </View>
                             </TouchableElement>

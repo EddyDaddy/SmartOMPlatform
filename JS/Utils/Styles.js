@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
             flex: 1,
             backgroundColor: '#00000000',
             color: 'white',
-            fontSize: screenWidth/25,
-            paddingLeft: screenWidth / 36
+            fontSize: screenWidth / 25,
+            padding: screenWidth / 36
         }
     })
     ;

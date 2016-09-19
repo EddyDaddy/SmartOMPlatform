@@ -67,12 +67,12 @@ class SmartOMPlatform extends Component {
     render() {
         var renderScene = this.renderScene;
         var configureScence = this.configureScence;
-        storge.get('phoneNum').then((phoneNum)=> {
-            if (phoneNum != null) {
-                this.setState({firstPageId: 'Login'});
-            }
-            this.setState({isOk: true})
-        });
+        // storge.get('phoneNum').then((phoneNum)=> {
+        //     if (phoneNum != null) {
+        //         this.setState({firstPageId: 'Login'});
+        //     }
+        //     this.setState({isOk: true})
+        // });
         return (
             <Navigator
                 initialRoute={{ title: '登录', id: 'Login'}}

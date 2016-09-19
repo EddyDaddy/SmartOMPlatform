@@ -8,16 +8,21 @@ import React, {Component} from 'react';
 import {
     AppRegistry,
     Navigator,
+    ToastAndroid,
     BackAndroid
 } from 'react-native';
 import Login from './JS/Pages/Login.js';
 import Register from './JS/Pages/Register.js';
 import {naviGoBack} from './JS/Utils/CommonUtil.js';
 import Main from './JS/Pages/Main.js';
+import storge from './JS/Utils/Storage.js';
+var first;
 class SmartOMPlatform extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            firstPageId: 'Register',
+            isOk: false
         };
     }
 
@@ -27,9 +32,10 @@ class SmartOMPlatform extends Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        BackAndroid.addEventListener('hardwareBackPress', function() {
+        BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
+
     }
 
     componentWillUnmount() {
@@ -56,15 +62,23 @@ class SmartOMPlatform extends Component {
         }
 
     }
+
+
     render() {
         var renderScene = this.renderScene;
         var configureScence = this.configureScence;
+        storge.get('phoneNum').then((phoneNum)=> {
+            if (phoneNum != null) {
+                this.setState({firstPageId: 'Login'});
+            }
+            this.setState({isOk: true})
+        });
         return (
-            <Navigator
-                initialRoute={{ title: '登录', id:'Login'}}
+            this.state.isOk?<Navigator
+                initialRoute={{ title: '登录', id: this.state.firstPageId}}
                 configureScence={{ configureScence }}
                 renderScene={renderScene}
-            />
+            />:null
         );
     }
 }

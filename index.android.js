@@ -74,11 +74,11 @@ class SmartOMPlatform extends Component {
             this.setState({isOk: true})
         });
         return (
-            this.state.isOk?<Navigator
-                initialRoute={{ title: '登录', id: this.state.firstPageId}}
+            <Navigator
+                initialRoute={{ title: '登录', id: 'Login'}}
                 configureScence={{ configureScence }}
                 renderScene={renderScene}
-            />:null
+            />
         );
     }
 }

@@ -19,6 +19,7 @@ var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../Utils/Storage.js';
+import {hex_md5} from '../Utils/MD5.js';
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -86,7 +87,7 @@ class Login extends React.Component {
                                 this._navigator.replace({id: 'Main'});
                                 storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord);
-                                storge.get('phoneNum').then((phoneNum)=>{Toast.show('点击登录'+phoneNum)});
+                                Toast.show('MD5---'+hex_md5(this.state.passWord.toString()));
                                 }}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

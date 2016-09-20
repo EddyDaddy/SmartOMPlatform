@@ -22,9 +22,8 @@ class Main extends React.Component {
         super(props);
         // 初始状态
         this.state = {
-            tabNames: ['首页', '设备', '工单', '我的'],
-            tabIconNames: [require('./img/tab_main.png'), require('./img/tab_device.png'),
-                require('./img/tab_workorder.png'), require('./img/tab_user.png')]
+            tabIconNames: [require('./img/tab_workorder.png'), require('./img/tab_device.png'),
+                require('./img/tab_user.png')]
         };
     }
 
@@ -57,9 +56,6 @@ class Main extends React.Component {
                     <DevicesPage/>
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab3'>
-                    <WorkOrder/>
-                </View>
-                <View style={{flex: 1}} tabLabel='Tab4'>
                     <User/>
                 </View>
             </ScrollableTabView>

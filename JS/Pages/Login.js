@@ -71,9 +71,6 @@ class Login extends Component {
                 if (response.code === '0') {
                     console.log(response.msg);
                     if (response.data) {
-                        storge.save('userToken', response.data);
-                        storge.save('phoneNum', this.state.userName);
-                        storge.save('passWord', this.state.passWord);
                         InteractionManager.runAfterInteractions(() => {
                             navigator.replace({name: 'Main', component: Main});
                         });

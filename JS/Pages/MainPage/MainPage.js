@@ -11,8 +11,10 @@ import {
     Navigator,
     StyleSheet,
     TouchableHighlight,
+    TouchableNativeFeedback
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
+import WorkOrderDetail from '../WorkOrderPage/WorkOrderDetail.js'
 import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import ViewPager from 'react-native-viewpager';
@@ -31,7 +33,7 @@ export default class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
-        navigator = this.props.navigator;
+        this.navigator = this.props.navigator;
         // 初始状态
         // 用于构建DataSource对象
         var dataSource = new ViewPager.DataSource({
@@ -66,9 +68,7 @@ export default class MainPage extends React.Component {
         // });
     }
 
-    _buttonClickItem(rowData){
-        // const {navigator} = this.props;
-        // navigator.push({name: 'WorkOrderDetail', component: '../WorkOrderPage'});
+    _buttonClickItem(rowData) {
     }
 
     /**
@@ -77,21 +77,22 @@ export default class MainPage extends React.Component {
      */
     _renderRowView(rowData) {
         return (
-            <TouchableHighlight
+            <TouchableNativeFeedback
                 underlayColor='#c8c7cc'
-                onPress={() =>
-                    this._buttonClickItem(rowData)
+                onPress={() => {
+                    this.navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail})
+                }
                 }
             >
                 <View style={myStyles.itemView}>
                     <Text >{'机场派出所'}</Text>
-                    <View style={{width: screenWidth, marginTop: 8,flexDirection: 'row'}}>
+                    <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text style={{color: '#4b4b4b'}}>{'J98khk'}</Text>
                         <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{'紧急'}</Text>
                         <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
                     </View>
                 </View>
-            </TouchableHighlight>
+            </TouchableNativeFeedback>
         );
     }
 
@@ -229,8 +230,8 @@ var myStyles = {
     itemView: {
         width: screenWidth,
         height: screenHeight / 10,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingLeft: 10,
+        paddingRight: 10,
         flexDirection: 'column',
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',

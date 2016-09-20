@@ -7,7 +7,9 @@ import {
     StyleSheet,
     Navigator,
     BackAndroid,
-    View,Text
+    View,
+    StatusBar,
+    Text
 } from 'react-native';
 import login from './Login';
 
@@ -19,18 +21,25 @@ class App extends Component{
     }
     render(){
         return(
-            <Navigator
-                initialRoute={{name:"login",component:login}}
-                renderScene={
-                    (route,navigator) =>{
-                        _navigator = navigator;
-                        let Component = route.component;
-                        console.log(route)
-                        return <Component {...route.params} navigator={navigator} />
+            <View style={{flex:1}}>
+                <StatusBar
+                    translucent={true}
+                    backgroundColor="rgba(0, 0, 0, 0.2)"
+                    barStyle="light-content"
+                />
+                <Navigator
+                    initialRoute={{name:"login",component:login}}
+                    renderScene={
+                        (route,navigator) =>{
+                            _navigator = navigator;
+                            let Component = route.component;
+                            console.log(route)
+                            return <Component {...route.params} navigator={navigator} />
+                        }
                     }
-                }
-                configureScene={() => Navigator.SceneConfigs.PushFromRight}
-            />
+                    configureScene={() => Navigator.SceneConfigs.PushFromRight}
+                />
+            </View>
         );
     }
 }

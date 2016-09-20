@@ -40,7 +40,8 @@ export default class MainPage extends React.Component {
         // 实际的DataSources存放在state中
         this.state = {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS)
-        }
+        };
+        this._buttonClickItem = this._buttonClickItem.bind(this);
     }
 
     _onFetch(page = 1, callback, options) {
@@ -65,6 +66,11 @@ export default class MainPage extends React.Component {
         // });
     }
 
+    _buttonClickItem(rowData){
+        // const {navigator} = this.props;
+        // navigator.push({name: 'WorkOrderDetail', component: '../WorkOrderPage'});
+    }
+
     /**
      * Render a row
      * @param {object} rowData Row data
@@ -72,15 +78,14 @@ export default class MainPage extends React.Component {
     _renderRowView(rowData) {
         return (
             <TouchableHighlight
-                style={myStyles.itemView}
                 underlayColor='#c8c7cc'
-                onPress={() => {
-                    console.log(rowData + ' pressed')
-                }}
+                onPress={() =>
+                    this._buttonClickItem(rowData)
+                }
             >
-                <View>
+                <View style={myStyles.itemView}>
                     <Text >{'机场派出所'}</Text>
-                    <View style={{width: screenWidth, marginTop: 12, flexDirection: 'row'}}>
+                    <View style={{width: screenWidth, marginTop: 8,flexDirection: 'row'}}>
                         <Text style={{color: '#4b4b4b'}}>{'J98khk'}</Text>
                         <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{'紧急'}</Text>
                         <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
@@ -224,7 +229,10 @@ var myStyles = {
     itemView: {
         width: screenWidth,
         height: screenHeight / 10,
-        padding: 10,
+        paddingLeft:10,
+        paddingRight:10,
+        flexDirection: 'column',
+        justifyContent: 'center',
         backgroundColor: '#FFFFFF',
     }
 };

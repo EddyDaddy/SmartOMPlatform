@@ -41,7 +41,7 @@ class TabBarItem extends Component {
                 <View style={styles.tabItem}>
                     <Image
                         source={this.props.tabIconNames[i]}
-                        style={{width: Util.pixel*50, height: Util.pixel*90,
+                        style={{width: Util.size.width/21.6, height: Util.size.width/12,
         resizeMode: Image.resizeMode.stretch, tintColor: color}}
                     />
                 </View>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 
     tabItem: {
         flex: 1,
-        marginTop: Util.pixel * 25,
+        marginTop: Util.size.width/43.2,
     },
 });
 

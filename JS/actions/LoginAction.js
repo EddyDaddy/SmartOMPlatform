@@ -2,10 +2,8 @@
  * Created by demon on 2016/9/20.
  */
 import * as types from '../actions/actionTypes'
-import FetchHttpClient, {form, header} from 'fetch-http-client';
 import {LOGIN_URL} from '../Utils/Request';
 import Toast from 'react-native-root-toast';
-const client = new FetchHttpClient(LOGIN_URL);
 
 let loginAction = (userPhone, passWord, callBack) => {
     return dispatch => {

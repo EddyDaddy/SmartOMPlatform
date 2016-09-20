@@ -11,6 +11,7 @@ import {
     Navigator,
     StyleSheet,
     TouchableHighlight,
+    InteractionManager,
     TouchableNativeFeedback
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
@@ -67,6 +68,10 @@ export default class MainPage extends React.Component {
     }
 
     _buttonClickItem(rowData) {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail});
+        });
     }
 
     /**
@@ -74,14 +79,11 @@ export default class MainPage extends React.Component {
      * @param {object} rowData Row data
      */
     _renderRowView(rowData) {
-        const {navigator} = this.props;
+
         return (
             <TouchableNativeFeedback
                 underlayColor='#c8c7cc'
-                onPress={() => {
-                    navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail})
-                }
-                }
+                onPress={() => this._buttonClickItem(rowData)}
             >
                 <View style={myStyles.itemView}>
                     <Text >{'机场派出所'}</Text>

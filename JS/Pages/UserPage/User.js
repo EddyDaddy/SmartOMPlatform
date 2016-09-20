@@ -11,9 +11,9 @@ import {
     TouchableOpacity,
     Navigator,
 }from 'react-native';
-import Util from '../Utils/Utils.js'
-import {styles} from '../Utils/Styles.js';
-import Toolbar from '../Utils/ToolBar.js';
+import Util from '../../Utils/Utils.js'
+import {styles} from '../../Utils/Styles.js';
+import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;

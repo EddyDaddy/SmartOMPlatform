@@ -11,17 +11,18 @@ import {
     StyleSheet,
     TouchableHighlight,
 }from 'react-native';
-import Util from '../Utils/Utils.js'
-import {styles} from '../Utils/Styles.js';
-import Toolbar from '../Utils/ToolBar.js';
+import Util from '../../Utils/Utils.js'
+import {styles} from '../../Utils/Styles.js';
+import Toolbar from '../../Utils/ToolBar.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 import GiftedListView from 'react-native-gifted-listview';
-
+var navigator;
 export default class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
+        navigator = this.props.navigator;
         // 初始状态
         this.state = {};
     }
@@ -106,9 +107,7 @@ export default class MainPage extends React.Component {
     render() {
         return (
             <View >
-                <Toolbar title={'首页'}>
-
-                </Toolbar>
+                <Toolbar title={'首页'}/>
                 <View style={{flex: 1, backgroundColor: '#ebebeb'}}>
                     <GiftedListView
                         rowView={this._renderRowView}

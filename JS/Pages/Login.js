@@ -49,16 +49,29 @@ class Login extends React.Component {
 
     }
 
+    _onLogin(){
+        Util.post('http://120.24.179.24:8080/smartMonitor/api/login', {'repairUserPhone': this.state.userName.toString(),
+            'repairUserPassword': hex_md5(this.state.passWord.toString())}, (response) => {
+            Toast.show(response.msg);
+            console.log(response.msg);
+            if(response.data){
+                storge.save('userToken', response.data);
+                storge.save('phoneNum', this.state.userName);
+                storge.save('passWord', this.state.passWord);
+                this._navigator.replace({id: 'Main'});
+            }});
+    }
+
     getLoginUI() {
         return (
             <View style={styles.root}>
-                <Image source={require('./../img/bg.png')}
+                <Image source={require('./img/bg.png')}
                        style={{width: screenWidth, height: screenHeight}}>
                     <View style={styles.root}>
-                        <Image source={require('./../img/name.png')}
+                        <Image source={require('./img/name.png')}
                                style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
                         <Image
-                            source={require('./../img/logo_img.png')}
+                            source={require('./img/logo_img.png')}
                             style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
                         />
                         <View style={styles.borderView}>
@@ -83,12 +96,7 @@ class Login extends React.Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=>{
-                                this._navigator.replace({id: 'Main'});
-                                storge.save('phoneNum', this.state.userName);
-                                storge.save('passWord', this.state.passWord);
-                                Toast.show('MD5---'+hex_md5(this.state.passWord.toString()));
-                                }}>
+                                onPress={()=> this._onLogin()}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                     <Text style={{color: 'red'}}>
@@ -116,11 +124,11 @@ class Login extends React.Component {
     }
 
 
-    render() {
-        return (
-            this.getLoginUI()
-        );
-    }
-}
+                                render() {
+                            return (
+                            this.getLoginUI()
+                            );
+                        }
+                            }
 
-export default Login;
+                            export default Login;

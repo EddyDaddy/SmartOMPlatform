@@ -80,13 +80,13 @@ class Register extends React.Component {
     getLoginUI() {
         return (
             <View style={styles.root}>
-                <Image source={require('./../img/bg.png')}
+                <Image source={require('./img/bg.png')}
                        style={{width: screenWidth, height: screenHeight}}>
                     <View style={styles.root}>
-                        <Image source={require('./../img/name.png')}
+                        <Image source={require('./img/name.png')}
                                style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
                         <Image
-                            source={require('./../img/logo_img.png')}
+                            source={require('./img/logo_img.png')}
                             style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
                         />
                         <View style={styles.borderView}>

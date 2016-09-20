@@ -41,12 +41,9 @@ class TabBarItem extends Component {
                 <View style={styles.tabItem}>
                     <Image
                         source={this.props.tabIconNames[i]}
-                        style={{width: screenWidth / 12, height: screenWidth / 12,
+                        style={{width: Util.pixel*50, height: Util.pixel*90,
         resizeMode: Image.resizeMode.stretch, tintColor: color}}
                     />
-                    <Text style={{color: color}}>
-                        {this.props.tabNames[i]}
-                    </Text>
                 </View>
             </TouchableOpacity>
         );
@@ -54,8 +51,11 @@ class TabBarItem extends Component {
 
     render() {
         return (
-            <View style={styles.tabs}>
-                {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+            <View style={{height: screenWidth / 7.5, width: screenWidth}}>
+                <View style={{height: Util.pixel, width: screenWidth, backgroundColor: '#dddddd'}}/>
+                <View style={styles.tabs}>
+                    {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+                </View>
             </View>
         );
     }
@@ -74,14 +74,8 @@ const styles = StyleSheet.create({
     },
 
     tabItem: {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    image: {
-        width: screenWidth / 12,
-        height: screenWidth / 12,
-        marginTop: screenWidth / 30,
-        resizeMode: Image.resizeMode.stretch,
+        flex: 1,
+        marginTop: Util.pixel * 25,
     },
 });
 

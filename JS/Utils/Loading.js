@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         top: (Util.size.heighth-185)/2,
-        left: (Const.size.width-100)/2,
+        left: (Util.size.width-100)/2,
     },
 
     loadingTitle: {

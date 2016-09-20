@@ -12,7 +12,6 @@ let loginAction = (userPhone, passWord, callBack) => {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                // 'Content-Type': 'application/json'
                 "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
             },
             body: toQueryString({

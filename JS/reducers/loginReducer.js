@@ -13,11 +13,11 @@ let loginReducer = (state = initialState, action) => {
         //开始
         case types.FETCH_LOGIN:
             return Object.assign({}, state, {
-                loading: action.loading,
+                loading: true,
             });
         case types.RECEIVE_LOGIN:
             return Object.assign({}, state, {
-               loading: action.loading,
+               loading: false,
                data: action.data
             });
         default:

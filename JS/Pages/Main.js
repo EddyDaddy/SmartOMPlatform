@@ -49,8 +49,8 @@ class Main extends React.Component {
     render() {
         return (
             <ScrollableTabView
-                renderTabBar={() => <TabBarItem tabNames={this.state.tabNames} tabIconNames={this.state.tabIconNames}/>}
-            tabBarPosition='bottom'>
+                renderTabBar={() => <TabBarItem tabIconNames={this.state.tabIconNames}/>}
+                tabBarPosition='bottom'>
                 <View style={{flex: 1}} tabLabel='Tab1'>
                     <MainPage navigator={this._navigator} />
                 </View>

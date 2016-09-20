@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     Platform,
     Text,
@@ -18,12 +18,18 @@ import Toast from 'react-native-root-toast';
 import {connect} from 'react-redux';
 import loginAction from '../actions/LoginAction';
 import Main from './Main';
+import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../Utils/Storage.js';
 import {hex_md5} from '../Utils/MD5.js';
+
+const propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    loginReducer: PropTypes.object.isRequired
+};
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +62,7 @@ class Login extends Component {
 
     //用户登录/注册
     buttonRegisterOrLoginAction(position) {
-        const {loginAction, navigator} = this.props;
+        const {dispatch, navigator} = this.props;
         if (position === 0) {
             //用户登录
             if (this.state.userName === '') {
@@ -67,16 +73,18 @@ class Login extends Component {
                 Toast.show('密码不能为空...');
                 return;
             }
-            loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
+            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
                 if (response.code === '0') {
                     console.log(response.msg);
+                    storge.save('phoneNum', this.state.userName);
+                    storge.save('passWord', this.state.passWord);
                     if (response.data) {
                         InteractionManager.runAfterInteractions(() => {
                             navigator.replace({name: 'Main', component: Main});
                         });
                     }
                 }
-            });
+            }));
 
 
         } else if (position === 1) {
@@ -90,23 +98,8 @@ class Login extends Component {
         }
     }
 
-    _onLogin() {
-        Util.post('http://120.24.179.24:8080/smartMonitor/api/login', {
-            'repairUserPhone': this.state.userName.toString(),
-            'repairUserPassword': hex_md5(this.state.passWord.toString())
-        }, (response) => {
-            Toast.show(response.msg);
-            console.log(response.msg);
-            if (response.data) {
-                storge.save('userToken', response.data);
-                storge.save('phoneNum', this.state.userName);
-                storge.save('passWord', this.state.passWord);
-                this._navigator.replace({id: 'Main'});
-            }
-        });
-    }
-
     getLoginUI() {
+        const {loginReducer} = this.props;
         return (
             <View style={styles.root}>
                 <Image source={require('./img/bg.png')}
@@ -159,6 +152,7 @@ class Login extends Component {
                                 </View>
                             </TouchableElement>
                         </View>
+                        {loginReducer.loading?<Loading/>:null}
                     </View>
                 </Image>
 
@@ -179,8 +173,8 @@ class Login extends Component {
 }
 
 export default connect((state) => {
-    const {login} = state;
+    const {loginReducer} = state;
     return {
-        login
+        loginReducer
     }
-}, {loginAction: loginAction})(Login);
+})(Login);

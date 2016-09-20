@@ -23,7 +23,7 @@ class App extends Component{
         return(
             <View style={{flex:1}}>
                 <StatusBar
-                    translucent={true}
+                    // translucent={true}
                     backgroundColor="rgba(0, 0, 0, 0.2)"
                     barStyle="light-content"
                 />

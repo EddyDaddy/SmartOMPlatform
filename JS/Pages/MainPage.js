@@ -7,6 +7,7 @@ import {
     BackAndroid,
     View,
     Text,
+    Image,
     Navigator,
     StyleSheet,
     TouchableHighlight,
@@ -16,6 +17,7 @@ import {styles} from '../Utils/Styles.js';
 import Toolbar from '../Utils/ToolBar.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
+import Swiper from 'react-native-swiper';
 import GiftedListView from 'react-native-gifted-listview';
 
 export default class MainPage extends React.Component {
@@ -37,6 +39,15 @@ export default class MainPage extends React.Component {
                 callback(rows);
             }
         }, 1000); // simulating network fetching
+        // Util.post("https://www.baidu.com", '', function (responseData){
+        //     var rows = ['row ' + ((page - 1) * 3 + 1), 'row ' + ((page - 1) * 3 + 2), 'row ' + ((page - 1) * 3 + 3)];
+        //     var rows2 = ['row ' + ((page - 1) * 3 + 1)];
+        //     if (responseData !== null) {
+        //         callback(rows)
+        //     } else {
+        //         callback(rows2)
+        //     }
+        // });
     }
 
     /**
@@ -109,8 +120,26 @@ export default class MainPage extends React.Component {
                 <Toolbar title={'首页'}>
 
                 </Toolbar>
-                <View style={{flex: 1, backgroundColor: '#ebebeb'}}>
-                    <GiftedListView
+                <View style={{width: screenWidth, height: screenHeight/3,backgroundColor: '#ebebeb'}}>
+                    <Swiper style={myStyles.wrapper}
+                            showsButtons={false} loop={true}
+                            activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 30,}} />}
+                            dot={<View style={{backgroundColor:'rgba(255,255,255,.3)', width: 13, height: 13,borderRadius: 7, marginLeft: 7, marginRight: 7,marginTop: 3, marginBottom: 30,}} />}
+                    >
+                        <View style={myStyles.slide}>
+                            <Text style={myStyles.text}>Hello Swiper</Text>
+                        </View>
+                        <View style={myStyles.slide}>
+                            <Text style={myStyles.text}>Beautiful</Text>
+                        </View>
+                        <View style={myStyles.slide}>
+                            <Text style={myStyles.text}>And simple</Text>
+                        </View>
+                    </Swiper>
+                </View>
+                <View style={{width: screenWidth, height: screenHeight/3*2,backgroundColor: '#ebebeb'}}>
+                   <GiftedListView
+                        style={myStyles.wrapper}
                         rowView={this._renderRowView}
                         onFetch={this._onFetch}
                         firstLoader={true} // display a loader for the first fetching
@@ -119,7 +148,7 @@ export default class MainPage extends React.Component {
                         withSections={false} // enable sections
                         paginationWaitingView={this._paginationWaitingView}
                         paginationAllLoadedView={this._paginationAllLoadedView}
-                        emptyView = {this._emptyView}
+                        emptyView={this._emptyView}
                     />
                 </View>
             </View>
@@ -164,4 +193,23 @@ var myStyles = {
         height: 10,
         backgroundColor: '#CCCbbb'
     },
+    wrapper: {
+    },
+
+    slide: {
+        width: screenWidth,
+        height: screenHeight/3,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#bcd235'
+    },
+
+    text: {
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+
+    image: {
+        flex: 1,
+    }
 };

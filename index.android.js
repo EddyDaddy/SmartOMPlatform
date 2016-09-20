@@ -9,7 +9,9 @@ import {
     AppRegistry,
     Navigator,
     ToastAndroid,
-    BackAndroid
+    BackAndroid,
+    View,
+    StatusBar
 } from 'react-native';
 import Login from './JS/Pages/Login.js';
 import Register from './JS/Pages/Register.js';
@@ -74,11 +76,18 @@ class SmartOMPlatform extends Component {
         //     this.setState({isOk: true})
         // });
         return (
-            <Navigator
-                initialRoute={{ title: '登录', id: 'Login'}}
-                configureScence={{ configureScence }}
-                renderScene={renderScene}
-            />
+            <View style={{flex:1}}>
+                <StatusBar
+                    backgroundColor="rgba(0,0,0,0.0)"
+                    barStyle="light-content"
+                    translucent={true}
+                />
+                <Navigator
+                    initialRoute={{ title: '登录', id: 'Login'}}
+                    configureScence={{ configureScence }}
+                    renderScene={renderScene}
+                />
+            </View>
         );
     }
 }

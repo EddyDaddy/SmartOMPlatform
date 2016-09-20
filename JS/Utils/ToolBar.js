@@ -14,22 +14,24 @@ import {naviGoBack} from '../Utils/CommonUtil.js';
 import {styles} from '../Utils/Styles.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
+var _navigator;
 export default class ToolBar extends React.Component {
     // 构造
     constructor(props) {
         super(props);
+        this._navigator = this.props.navigator;
         // 初始状态
         this.state = {};
     }
-
 
     render() {
         var title = this.props.title;
         var left = this.props.left;
         var right = this.props.right;
+
         if (this.props.left) {
             var leftView = (
-                <TouchableOpacity onPress={this.props.navigator.pop()}>
+                <TouchableOpacity onPress={this._navigator.pop()}>
                     <Text style={{color: 'white', marginLeft: screenWidth/60}}>
                         返回
                     </Text>

@@ -11,9 +11,9 @@ import {
     Text,
     Navigator,
 }from 'react-native';
-import Util from '../Utils/Utils.js'
+import Util from '../../Utils/Utils.js'
 //import {styles} from '../Utils/Styles.js';
-import Toolbar from '../Utils/ToolBar.js';
+import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
@@ -29,7 +29,7 @@ var itemHeight = 115*Util.pixel;
 
 var TouchableElement = TouchableHighlight;
 
-import {naviGoBack} from '../Utils/CommonUtil.js';
+import {naviGoBack} from '../../Utils/CommonUtil.js';
 
 const LocalStyles = StyleSheet.create({
     container:{

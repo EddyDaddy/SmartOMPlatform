@@ -9,9 +9,9 @@ import {
     Text,
     Navigator,
 }from 'react-native';
-import Util from '../Utils/Utils.js'
-import {styles} from '../Utils/Styles.js';
-import Toolbar from '../Utils/ToolBar.js';
+import Util from '../../Utils/Utils.js'
+import {styles} from '../../Utils/Styles.js';
+import Toolbar from '../../Utils/ToolBar.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 export default class WorkOrder extends React.Component{

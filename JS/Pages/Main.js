@@ -9,10 +9,10 @@ import {
     Navigator,
 }from 'react-native';
 import TabBarItem from '../Utils/TabBarItem.js';
-import MainPage from './MainPage.js';
-import DevicesPage from './DevicesPage.js';
-import WorkOrder from './WorkOrder.js';
-import User from './User.js';
+import MainPage from './MainPage/MainPage.js';
+import DevicesPage from './DevicesPage/DevicesPage.js';
+import WorkOrder from './WorkOrderPage/WorkOrder.js';
+import User from './UserPage/User.js';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Toast from 'react-native-root-toast';
 var lastTime = 0;
@@ -23,8 +23,8 @@ class Main extends React.Component {
         // 初始状态
         this.state = {
             tabNames: ['首页', '设备', '工单', '我的'],
-            tabIconNames: [require('../img/tab_check_coupon_selected.png'), require('../img/tab_order_selected.png'),
-                require('../img/tab_return_coupon_selected.png'), require('../img/tab_shop_selected.png')]
+            tabIconNames: [require('./img/tab_main.png'), require('./img/tab_device.png'),
+                require('./img/tab_workorder.png'), require('./img/tab_user.png')]
         };
     }
 
@@ -51,7 +51,7 @@ class Main extends React.Component {
                 renderTabBar={() => <TabBarItem tabNames={this.state.tabNames} tabIconNames={this.state.tabIconNames}/>}
             tabBarPosition='bottom'>
                 <View style={{flex: 1}} tabLabel='Tab1'>
-                    <MainPage/>
+                    <MainPage />
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab2'>
                     <DevicesPage/>

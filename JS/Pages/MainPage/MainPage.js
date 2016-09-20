@@ -22,7 +22,6 @@ import GiftedListView from 'react-native-gifted-listview';
 var navigator;
 
 const BANNER_IMGS = [
-    require('../img/bg.png'),
     require('../img/logo_img.png'),
     require('../img/tab_device.png'),
     require('../img/tab_user.png')
@@ -129,39 +128,41 @@ export default class MainPage extends React.Component {
             </View>
         );
     }
+
     _renderPage(data, pageID) {
         return (
             <Image
                 source={data}
-                style={myStyles.page}/>
+                style={myStyles.image}/>
         );
     }
+
     render() {
         return (
-            <View >
+            <View style={{marginBottom:screenWidth / 7.5}}>
                 <Toolbar title={'首页'}>
-
                 </Toolbar>
-                <View style={{width: screenWidth, height: screenHeight/3,backgroundColor: '#ebebeb'}}>
-                    <ViewPager
-                        dataSource={this.state.dataSource}
-                        renderPage={this._renderPage}
-                        isLoop={true}
-                        autoPlay={true}/>
-                </View>
-                <View style={{width: screenWidth, height: screenHeight/3*2,backgroundColor: '#ebebeb'}}>
-                   <GiftedListView
-                        style={myStyles.wrapper}
-                        rowView={this._renderRowView}
-                        onFetch={this._onFetch}
-                        firstLoader={true} // display a loader for the first fetching
-                        pagination={true} // enable infinite scrolling using touch to load more
-                        refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                        withSections={false} // enable sections
-                        paginationWaitingView={this._paginationWaitingView}
-                        paginationAllLoadedView={this._paginationAllLoadedView}
-                        emptyView={this._emptyView}
-                    />
+                <View style={{flex: 1}}>
+                    <View style={{width:screenWidth,height: screenHeight / 10 * 3, backgroundColor: '#ebebeb'}}>
+                        <ViewPager
+                            dataSource={this.state.dataSource}
+                            renderPage={this._renderPage}
+                            isLoop={true}
+                            autoPlay={true}/>
+                    </View>
+                    <View style={{width:screenWidth,height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
+                        <GiftedListView
+                            rowView={this._renderRowView}
+                            onFetch={this._onFetch}
+                            firstLoader={true} // display a loader for the first fetching
+                            pagination={true} // enable infinite scrolling using touch to load more
+                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+                            withSections={false} // enable sections
+                            paginationWaitingView={this._paginationWaitingView}
+                            paginationAllLoadedView={this._paginationAllLoadedView}
+                            emptyView={this._emptyView}
+                        />
+                    </View>
                 </View>
             </View>
         );
@@ -188,9 +189,6 @@ var myStyles = {
     actionsLabel: {
         fontSize: 20,
     },
-    actionsLabel: {
-        fontSize: 20,
-    },
     emptyView: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -205,29 +203,12 @@ var myStyles = {
         height: 10,
         backgroundColor: '#CCCbbb'
     },
-    wrapper: {
-    },
-
-    slide: {
+    image: {
         width: screenWidth,
-        height: screenHeight/3,
+        height: screenHeight / 10 * 3,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#bcd235'
+        backgroundColor: '#bcd234',
+        resizeMode: 'contain'
     },
-
-    text: {
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-
-    image: {
-        flex: 1,
-    },
-
-    page: {
-        flex: 1,
-        height: 130,
-        resizeMode: 'stretch'
-    }
 };

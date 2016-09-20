@@ -14,14 +14,13 @@ import {
     TouchableNativeFeedback
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
-import WorkOrderDetail from '../WorkOrderPage/WorkOrderDetail.js'
+import WorkOrderDetail from './WorkOrderDetail.js'
 import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import ViewPager from 'react-native-viewpager';
 import GiftedListView from 'react-native-gifted-listview';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var navigator;
 
 const BANNER_IMGS = [
     require('../img/logo_img.png'),
@@ -33,7 +32,6 @@ export default class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
-        this.navigator = this.props.navigator;
         // 初始状态
         // 用于构建DataSource对象
         var dataSource = new ViewPager.DataSource({
@@ -76,11 +74,12 @@ export default class MainPage extends React.Component {
      * @param {object} rowData Row data
      */
     _renderRowView(rowData) {
+        const {navigator} = this.props;
         return (
             <TouchableNativeFeedback
                 underlayColor='#c8c7cc'
                 onPress={() => {
-                    this.navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail})
+                    navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail})
                 }
                 }
             >
@@ -171,7 +170,7 @@ export default class MainPage extends React.Component {
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
-                            rowView={this._renderRowView}
+                            rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more

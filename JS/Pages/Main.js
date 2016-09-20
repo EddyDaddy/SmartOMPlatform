@@ -16,13 +16,13 @@ import User from './UserPage/User.js';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Toast from 'react-native-root-toast';
 var lastTime = 0;
-var _navigator;
+var _navigator = null;
 class Main extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
-        this._navigator = this.props.navigator;
+        _navigator = this.props.navigator;
         this.state = {
             tabIconNames: [require('./img/tab_workorder.png'), require('./img/tab_device.png'),
                 require('./img/tab_user.png')]
@@ -52,7 +52,7 @@ class Main extends React.Component {
                 renderTabBar={() => <TabBarItem tabIconNames={this.state.tabIconNames}/>}
                 tabBarPosition='bottom'>
                 <View style={{flex: 1}} tabLabel='Tab1'>
-                    <MainPage navigator={this._navigator} />
+                    <MainPage navigator={_navigator} />
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab2'>
                     <DevicesPage/>

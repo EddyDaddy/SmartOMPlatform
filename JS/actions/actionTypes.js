@@ -1,0 +1,58 @@
+/**
+ * Created by demon  on 16/9/20.
+ * action类型
+ */
+
+//登录actions
+export const FETCH_LOGIN = 'FETCH_LOGIN';
+export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const RESET_LOGIN = 'RESET_LOGIN';
+//首页actions
+export const FETCH_MAIN = 'FETCH_MAIN';
+export const RECEIVE_MAIN = 'RECEIVE_MAIN';
+export const RESET_MAIN = 'RESET_MAIN';
+
+//设备页 actions
+
+export const FETCH_DEVICE = 'FETCH_DEVICE';
+export const RECEIVE_DEVICE = 'RECEIVE_DEVICE';
+export const RESET_DEVICE = 'RESET_DEVICE';
+
+//工单页 actions
+
+export const FETCH_WORKORDER = 'FETCH_WORKORDER';
+export const RECEIVE_WORKORDER = 'RECEIVE_WORKORDER';
+export const RESET_WORKORDER = 'RESET_WORKORDER';
+
+//我的页 actions
+
+export const FETCH_USER = 'FETCH_USER';
+export const RECEIVE_USER = 'RECEIVE_USER';
+export const RESET_USER = 'RESET_USER';
+
+//获取设备详情actions
+export const FETCH_DEVICE_DETAILS = 'FETCH_DEVICE_DETAILS';
+export const RECEIVE_DEVICE_DETAILS = 'RECEIVE_DEVICE_DETAILS';
+export const RESET_DEVICE_DETAILS = 'RESET_DEVICE_DETAILS';
+
+//获取工单详情actions
+export const FETCH_WORKORDER_DETAILS = 'FETCH_WORKORDER_DETAILS';
+export const RECEIVE_WORKORDER_DETAILS = 'RECEIVE_WORKORDER_DETAILS';
+export const RESET_WORKORDER_DETAILS = 'RESET_WORKORDER_DETAILS';
+//转派工单actions
+export const FETCH_WORKORDER_SEND = 'FETCH_WORKORDER_SEND';
+export const RECEIVE_WORKORDER_SEND = 'RECEIVE_WORKORDER_SEND';
+export const RESET_WORKORDER_SEND = 'RESET_WORKORDER_SEND';
+//处理工单actions
+export const FETCH_WORKORDER_HANDLE = 'FETCH_WORKORDER_HANDLE';
+export const RECEIVE_WORKORDER_HANDLE = 'RECEIVE_WORKORDER_HANDLE';
+export const RESET_WORKORDER_HANDLE = 'RESET_WORKORDER_HANDLE';
+//上传头像actions
+export const FETCH_PICTURE_UPLOAD = 'FETCH_PICTURE_UPLOAD';
+export const RECEIVE_PICTURE_UPLOAD = 'RECEIVE_PICTURE_UPLOAD';
+export const RESET_PICTURE_UPLOAD = 'RESET_PICTURE_UPLOAD';
+//获取个人信息actions
+export const FETCH_USER_INFO = 'FETCH_USER_INFO';
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
+export const RESET_USER_INFO = 'RESET_USER_INFO';
+

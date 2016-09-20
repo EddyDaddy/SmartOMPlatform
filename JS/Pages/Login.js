@@ -6,6 +6,7 @@ import {
     View,
     Image,
     TouchableNativeFeedback,
+    InteractionManager,
     TouchableHighlight,
     Navigator,
     DeviceEventEmitter,
@@ -14,13 +15,16 @@ import Util from '../Utils/Utils.js'
 import Register from './Register.js';
 import {styles} from '../Utils/Styles.js';
 import Toast from 'react-native-root-toast';
+import {connect} from 'react-redux';
+import loginAction from '../actions/LoginAction';
+import Main from './Main';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../Utils/Storage.js';
 import {hex_md5} from '../Utils/MD5.js';
-class Login extends React.Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this._navigator = this.props.navigator;
@@ -28,6 +32,7 @@ class Login extends React.Component {
             userName: null,
             passWord: null
         };
+        this.buttonRegisterOrLoginAction = this.buttonRegisterOrLoginAction.bind(this);
 
     }
 
@@ -49,17 +54,59 @@ class Login extends React.Component {
 
     }
 
-    _onLogin(){
-        Util.post('http://120.24.179.24:8080/smartMonitor/api/login', {'repairUserPhone': this.state.userName.toString(),
-            'repairUserPassword': hex_md5(this.state.passWord.toString())}, (response) => {
+    //用户登录/注册
+    buttonRegisterOrLoginAction(position) {
+        const {loginAction, navigator} = this.props;
+        if (position === 0) {
+            //用户登录
+            if (this.state.userName === '') {
+                Toast.show('用户名不能为空...');
+                return;
+            }
+            if (this.state.passWord === '') {
+                Toast.show('密码不能为空...');
+                return;
+            }
+            loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
+                if (response.code === '0') {
+                    console.log(response.msg);
+                    if (response.data) {
+                        storge.save('userToken', response.data);
+                        storge.save('phoneNum', this.state.userName);
+                        storge.save('passWord', this.state.passWord);
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.replace({name: 'Main', component: Main});
+                        });
+                    }
+                }
+            });
+
+
+        } else if (position === 1) {
+            //用户注册
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({
+                    component: Register,
+                    name: 'Register'
+                });
+            });
+        }
+    }
+
+    _onLogin() {
+        Util.post('http://120.24.179.24:8080/smartMonitor/api/login', {
+            'repairUserPhone': this.state.userName.toString(),
+            'repairUserPassword': hex_md5(this.state.passWord.toString())
+        }, (response) => {
             Toast.show(response.msg);
             console.log(response.msg);
-            if(response.data){
+            if (response.data) {
                 storge.save('userToken', response.data);
                 storge.save('phoneNum', this.state.userName);
                 storge.save('passWord', this.state.passWord);
                 this._navigator.replace({id: 'Main'});
-            }});
+            }
+        });
     }
 
     getLoginUI() {
@@ -96,7 +143,7 @@ class Login extends React.Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
-                                onPress={()=> this._onLogin()}>
+                                onPress={()=> this.buttonRegisterOrLoginAction(0)}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                     <Text style={{color: 'red'}}>
@@ -124,11 +171,19 @@ class Login extends React.Component {
     }
 
 
-                                render() {
-                            return (
-                            this.getLoginUI()
-                            );
-                        }
-                            }
+    render() {
+        // const {login} = this.props;
+        // let msg = login.data.msg;
+        // console.log("dddddddddd"+msg);
+        return (
+            this.getLoginUI()
+        );
+    }
+}
 
-                            export default Login;
+export default connect((state) => {
+    const {login} = state;
+    return {
+        login
+    }
+}, {loginAction: loginAction})(Login);

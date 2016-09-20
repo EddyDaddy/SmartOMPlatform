@@ -15,10 +15,10 @@ import {
 import Util from '../../Utils/Utils.js'
 import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
-var screenWidth = Util.size.width;
-var screenHeight = Util.size.height;
 import ViewPager from 'react-native-viewpager';
 import GiftedListView from 'react-native-gifted-listview';
+var screenWidth = Util.size.width;
+var screenHeight = Util.size.height;
 var navigator;
 
 const BANNER_IMGS = [
@@ -72,13 +72,20 @@ export default class MainPage extends React.Component {
     _renderRowView(rowData) {
         return (
             <TouchableHighlight
-                style={myStyles.row}
+                style={myStyles.itemView}
                 underlayColor='#c8c7cc'
                 onPress={() => {
                     console.log(rowData + ' pressed')
                 }}
             >
-                <Text>{rowData}</Text>
+                <View>
+                    <Text >{'机场派出所'}</Text>
+                    <View style={{width: screenWidth, marginTop: 12, flexDirection: 'row'}}>
+                        <Text style={{color: '#4b4b4b'}}>{'J98khk'}</Text>
+                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{'紧急'}</Text>
+                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
+                    </View>
+                </View>
             </TouchableHighlight>
         );
     }
@@ -137,20 +144,26 @@ export default class MainPage extends React.Component {
         );
     }
 
+    _renderSeparator() {
+        return (
+            <View style={myStyles.separator}/>
+        )
+    }
+
     render() {
         return (
-            <View style={{marginBottom:screenWidth / 7.5}}>
+            <View style={{marginBottom: screenWidth / 7.5}}>
                 <Toolbar title={'首页'}>
                 </Toolbar>
                 <View style={{flex: 1}}>
-                    <View style={{width:screenWidth,height: screenHeight / 10 * 3, backgroundColor: '#ebebeb'}}>
+                    <View style={{width: screenWidth, height: screenHeight / 10 * 3, backgroundColor: '#ebebeb'}}>
                         <ViewPager
                             dataSource={this.state.dataSource}
                             renderPage={this._renderPage}
                             isLoop={true}
                             autoPlay={true}/>
                     </View>
-                    <View style={{width:screenWidth,height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
+                    <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
                             rowView={this._renderRowView}
                             onFetch={this._onFetch}
@@ -160,6 +173,7 @@ export default class MainPage extends React.Component {
                             withSections={false} // enable sections
                             paginationWaitingView={this._paginationWaitingView}
                             paginationAllLoadedView={this._paginationAllLoadedView}
+                            renderSeparator={this._renderSeparator}
                             emptyView={this._emptyView}
                         />
                     </View>
@@ -170,10 +184,6 @@ export default class MainPage extends React.Component {
 }
 
 var myStyles = {
-    row: {
-        padding: 10,
-        height: 44,
-    },
     paginationView: {
         height: 44,
         justifyContent: 'center',
@@ -200,8 +210,8 @@ var myStyles = {
         marginBottom: 15,
     },
     separator: {
-        height: 10,
-        backgroundColor: '#CCCbbb'
+        height: 1,
+        backgroundColor: '#D8D8D8'
     },
     image: {
         width: screenWidth,
@@ -211,4 +221,10 @@ var myStyles = {
         backgroundColor: '#bcd234',
         resizeMode: 'contain'
     },
+    itemView: {
+        width: screenWidth,
+        height: screenHeight / 10,
+        padding: 10,
+        backgroundColor: '#FFFFFF',
+    }
 };

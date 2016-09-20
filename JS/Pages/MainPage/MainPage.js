@@ -17,16 +17,31 @@ import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-import Swiper from 'react-native-swiper';
+import ViewPager from 'react-native-viewpager';
 import GiftedListView from 'react-native-gifted-listview';
 var navigator;
+
+const BANNER_IMGS = [
+    require('../img/bg.png'),
+    require('../img/logo_img.png'),
+    require('../img/tab_device.png'),
+    require('../img/tab_user.png')
+];
+
 export default class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         navigator = this.props.navigator;
         // 初始状态
-        this.state = {};
+        // 用于构建DataSource对象
+        var dataSource = new ViewPager.DataSource({
+            pageHasChanged: (p1, p2) => p1 !== p2,
+        });
+        // 实际的DataSources存放在state中
+        this.state = {
+            dataSource: dataSource.cloneWithPages(BANNER_IMGS)
+        }
     }
 
     _onFetch(page = 1, callback, options) {
@@ -114,7 +129,13 @@ export default class MainPage extends React.Component {
             </View>
         );
     }
-
+    _renderPage(data, pageID) {
+        return (
+            <Image
+                source={data}
+                style={myStyles.page}/>
+        );
+    }
     render() {
         return (
             <View >
@@ -122,21 +143,11 @@ export default class MainPage extends React.Component {
 
                 </Toolbar>
                 <View style={{width: screenWidth, height: screenHeight/3,backgroundColor: '#ebebeb'}}>
-                    <Swiper style={myStyles.wrapper}
-                            showsButtons={false} loop={true}
-                            activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 30,}} />}
-                            dot={<View style={{backgroundColor:'rgba(255,255,255,.3)', width: 13, height: 13,borderRadius: 7, marginLeft: 7, marginRight: 7,marginTop: 3, marginBottom: 30,}} />}
-                    >
-                        <View style={myStyles.slide}>
-                            <Text style={myStyles.text}>Hello Swiper</Text>
-                        </View>
-                        <View style={myStyles.slide}>
-                            <Text style={myStyles.text}>Beautiful</Text>
-                        </View>
-                        <View style={myStyles.slide}>
-                            <Text style={myStyles.text}>And simple</Text>
-                        </View>
-                    </Swiper>
+                    <ViewPager
+                        dataSource={this.state.dataSource}
+                        renderPage={this._renderPage}
+                        isLoop={true}
+                        autoPlay={true}/>
                 </View>
                 <View style={{width: screenWidth, height: screenHeight/3*2,backgroundColor: '#ebebeb'}}>
                    <GiftedListView
@@ -212,5 +223,11 @@ var myStyles = {
 
     image: {
         flex: 1,
+    },
+
+    page: {
+        flex: 1,
+        height: 130,
+        resizeMode: 'stretch'
     }
 };

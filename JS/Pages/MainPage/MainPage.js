@@ -2,8 +2,9 @@
  * Created by demon on 2016/9/14.
  * 首页
  */
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import {
+    Platform,
     BackAndroid,
     View,
     Text,
@@ -12,14 +13,19 @@ import {
     StyleSheet,
     TouchableHighlight,
     InteractionManager,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
 }from 'react-native';
+import { connect } from 'react-redux';
 import Util from '../../Utils/Utils.js'
 import WorkOrderDetail from './WorkOrderDetail.js'
+import storge from '../../Utils/Storage.js';
 import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import ViewPager from 'react-native-viewpager';
 import GiftedListView from 'react-native-gifted-listview';
+import Toast from 'react-native-root-toast';
+import getWOAction from '../../actions/GetWorkOrderAction';
+var TouchableByPlatForm = TouchableHighlight;
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
@@ -29,7 +35,16 @@ const BANNER_IMGS = [
     require('../img/tab_user.png')
 ];
 
-export default class MainPage extends React.Component {
+let isLoadMore = false;
+let isRefreshing = false;
+let isLoading = true;
+
+const propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    WOReducer: PropTypes.object.isRequired
+};
+
+class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
@@ -42,7 +57,22 @@ export default class MainPage extends React.Component {
         this.state = {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS)
         };
-        this._buttonClickItem = this._buttonClickItem.bind(this);
+        // this._buttonClickItem = this._buttonClickItem.bind(this);
+    }
+
+    componentDidMount() {
+        const {dispatch} = this.props;
+        storge.get('phoneNumAndUserToken').then((result) => {
+            console.log(result);
+            if(result){
+                dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
+            }else{
+                Toast.show('不能获取');
+            }
+        });
+        if(Platform.OS === 'android'){
+            TouchableByPlatForm = TouchableNativeFeedback
+        }
     }
 
     _onFetch(page = 1, callback, options) {
@@ -82,7 +112,7 @@ export default class MainPage extends React.Component {
     _renderRowView(rowData) {
 
         return (
-            <TouchableNativeFeedback
+            <TouchableByPlatForm
                 underlayColor='#c8c7cc'
                 onPress={() => this._buttonClickItem(rowData)}
             >
@@ -94,7 +124,7 @@ export default class MainPage extends React.Component {
                         <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
                     </View>
                 </View>
-            </TouchableNativeFeedback>
+            </TouchableByPlatForm>
         );
     }
 
@@ -239,3 +269,10 @@ var myStyles = {
         backgroundColor: '#FFFFFF',
     }
 };
+
+export default connect((state) => {
+    const {WOReducer} = state;
+    return {
+        WOReducer
+    }
+})(MainPage);

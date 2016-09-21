@@ -1,0 +1,162 @@
+/**
+ * Created by Anyone on 2016/9/21.
+ */
+import React, {Component} from 'react';
+import {
+    Platform,
+    BackAndroid,
+    StyleSheet,
+    ScrollView,
+    TouchableHighlight,
+    TouchableNativeFeedback,
+    View,
+    Text,
+    Navigator,
+}from 'react-native';
+import Util from '../../Utils/Utils.js'
+import Toolbar from '../../Utils/ToolBar.js';
+import Toast from 'react-native-root-toast';
+var screenWidth = Util.size.width;
+var screenHeight = Util.size.height;
+
+var dividerWidth = 2 * Util.pixel;
+var dividerColor = '#d8d8d8';
+var keyTextColor = '#666666';
+var valueTextColor = '#000';
+var keyTextSize = 35 * Util.pixel;
+var valueTextSize = 35 * Util.pixel;
+var keyTextWidth = 260 * Util.pixel;
+var itemHeight = 115 * Util.pixel;
+
+var TouchableElement = TouchableHighlight;
+
+import {naviGoBack} from '../../Utils/CommonUtil.js';
+
+const DeviceDetailStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    scrollView: {
+        width: screenWidth,
+    },
+    scrollRootView: {
+        width: screenWidth,
+        justifyContent: 'flex-start',
+    },
+    itemStyle: {
+        width: screenWidth,
+        height: itemHeight,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: dividerWidth,
+        borderBottomColor: dividerColor,
+        backgroundColor: '#fff',
+    },
+    keyTextContainer: {
+        width: keyTextWidth,
+        height: itemHeight,
+        //alignItems:'center',
+        justifyContent: 'center',
+        borderRightWidth: dividerWidth,
+        borderRightColor: dividerColor,
+    },
+    keyText: {
+        fontSize: keyTextSize,
+        textAlign: 'right',
+        //alignSelf:'flex-end',
+        marginRight: 30 * Util.pixel,
+        color: keyTextColor,
+    },
+    valueTextContainer: {},
+    valueText: {
+        flex: 1,
+        fontSize: valueTextSize,
+        textAlign: 'left',
+        marginLeft: 30 * Util.pixel,
+        color: valueTextColor,
+    },
+    btnItemStyle: {
+        width: screenWidth,
+        flexDirection: 'row',
+        marginTop: 70 * Util.pixel,
+        backgroundColor: '#ebebeb',
+        justifyContent: 'center',
+    },
+    btnStyle: {
+        width: 451 * Util.pixel,
+        height: 120 * Util.pixel,
+        borderRadius: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffd57d',
+        //elevation:20,
+    }
+});
+
+class DeviceDetailItem extends React.Component {
+    static defaultProps = {
+        leftData: 'left',
+        rightData: 'right'
+    };
+    static propTypes = {
+        leftData: React.PropTypes.string.isRequired,
+        rightData: React.PropTypes.string.isRequired,
+    };
+
+    render() {
+        return (
+            <View style={DeviceDetailStyles.itemStyle}>
+                <View style={DeviceDetailStyles.keyTextContainer}>
+                    <Text style={DeviceDetailStyles.keyText}>
+                        {this.props.leftData}
+                    </Text>
+                </View>
+                <Text style={DeviceDetailStyles.valueText}>
+                    {this.props.rightData}
+                </Text>
+            </View>
+        );
+    }
+}
+
+export default class DevicesDetails extends React.Component {
+    // 构造
+    constructor(props) {
+        super(props);
+        //成员变量需在构造函数中生命
+        this._navigator = this.props.navigator;
+
+        // 初始状态
+        this.state = {};
+    }
+
+    componentDidMount() {
+        var navigator = this._navigator;
+        if (Platform.OS === 'android') {
+            TouchableElement = TouchableNativeFeedback;
+        }
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            return naviGoBack(navigator)
+        });
+    }
+
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
+    }
+
+    render() {
+        return (
+            <View style={DeviceDetailStyles.container}>
+                <Toolbar title={'工单详情'}>
+                </Toolbar>
+                <ScrollView style={DeviceDetailStyles.scrollView}>
+                    <View style={DeviceDetailStyles.scrollRootView}>
+                        <DeviceDetailItem leftData='工地'
+                                          rightData='啊实打实大生的'/>
+                    </View>
+                </ScrollView>
+            </View>
+        );
+    }
+}

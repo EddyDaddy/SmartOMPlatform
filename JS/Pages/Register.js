@@ -17,6 +17,7 @@ import Util from '../Utils/Utils.js';
 import {naviGoBack} from '../Utils/CommonUtil.js';
 import storge from '../Utils/Storage.js';
 import Toast from 'react-native-root-toast';
+import ToolBar from '../Utils/ToolBar';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
@@ -38,7 +39,6 @@ class Register extends React.Component {
             countTime: 60
         };
     }
-
 
 
     componentDidMount() {
@@ -85,6 +85,7 @@ class Register extends React.Component {
     getLoginUI() {
         return (
             <View style={styles.root}>
+                <ToolBar title={'忘记密码'}/>
                 <Image style={{height: screenWidth/1.9, width: screenWidth}}
                        source={require('./img/reset_pw_img.png')}/>
                 <View style={styles.root}>
@@ -166,10 +167,6 @@ class Register extends React.Component {
 
             </View>
         )
-    }
-
-    configureScence() {
-        return Navigator.SceneConfigs.FadeAndroid;
     }
 
     render() {

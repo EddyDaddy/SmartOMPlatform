@@ -144,7 +144,7 @@ class Login extends Component {
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
                             <TouchableElement
-                                onPress={()=>this._navigator.push({name: 'Register', component: Register})}>
+                                onPress={()=>this._navigator.push({component: Register, name: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         忘记密码？
@@ -152,7 +152,7 @@ class Login extends Component {
                                 </View>
                             </TouchableElement>
                         </View>
-                        {loginReducer.loading?<Loading/>:null}
+                        {loginReducer.loading ? <Loading/> : null}
                     </View>
                 </Image>
 

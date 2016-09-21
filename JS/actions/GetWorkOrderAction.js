@@ -24,11 +24,12 @@ let getWOAction = (repairUserPhone, userToken, status, isLoadMore, isRefreshing,
         };
         fetch(urls.WORKORDER_URL, fetchOptions)
             .then((response) => {
-                console.log('response内容是：'+response.json());
                 if (response.ok) {
-                    return response.json()
+                    console.log('response内容是：'+response.json());
+                    return response.json();
                 } else {
-                    Toast.show('请求失败')
+                    Toast.show('请求失败');
+                    console.log('请求失败：'+response.json());
                 }
             })
             .then((responseData) => {

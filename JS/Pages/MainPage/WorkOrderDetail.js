@@ -18,6 +18,8 @@ import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
+import DispatchWorkOrder from './DispatchWorkOrder';
+import ProcessWorkOrder from './ProcessWorkOrder';
 
 
 var screenWidth = Util.size.width;
@@ -143,12 +145,13 @@ class WorkOrderDetail extends React.Component {
 
     processBySelf() {
         Toast.show('开始处理');
-        //this._navigator.push({id: 'Main'});
+        this._navigator.push({component: ProcessWorkOrder, name: 'ProcessWorkOrder'});
     }
 
     dispathToOther() {
         Toast.show('转派');
-        //this._navigator.push({id: 'Main'});
+        this._navigator.push({component: DispatchWorkOrder, name: 'DispatchWorkOrder'});
+
     }
 
     componentDidMount() {

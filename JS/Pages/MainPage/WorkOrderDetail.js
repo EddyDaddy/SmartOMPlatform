@@ -234,7 +234,7 @@ class WorkOrderDetail extends React.Component {
                                 {this.state.address}
                             </Text>
                             <TouchableOpacity onPress={this.showLocationInMap} style={{ width: 30, height: 30, marginLeft: 6 }}>
-                                <Image source={require('./../img/tab_order_unselected.png') }
+                                <Image source={require('../img/tab_user.png') }
                                        style={{ width: 30, height: 30 }}/>
                             </TouchableOpacity>
                         </View>
@@ -260,14 +260,14 @@ class WorkOrderDetail extends React.Component {
                         </Text>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginRight: 20 * Util.pixel }} onPress={this.processBySelf}>
+                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginRight: 6 }} onPress={this.processBySelf}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     开始处理
                                 </Text>
                             </View>
                         </TouchableElement>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginLeft: 20 * Util.pixel }} onPress={this.dispathToOther}>
+                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginLeft: 6 }} onPress={this.dispathToOther}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     转派

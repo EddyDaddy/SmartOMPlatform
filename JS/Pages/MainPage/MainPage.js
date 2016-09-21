@@ -207,7 +207,7 @@ class MainPage extends React.Component {
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
-                            rowView={(rowData)=>this._renderRowView()}
+                            rowView={(rowData)=>this._renderRowView(rowData)}
                             onFetch={this._onFetch}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more

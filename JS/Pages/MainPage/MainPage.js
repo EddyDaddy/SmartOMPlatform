@@ -57,7 +57,6 @@ class MainPage extends React.Component {
         this.state = {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS)
         };
-        // this._buttonClickItem = this._buttonClickItem.bind(this);
     }
 
     componentDidMount() {
@@ -203,7 +202,7 @@ class MainPage extends React.Component {
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
-                            rowView={this._renderRowView.bind(this)}
+                            rowView={(rowData)=>this._renderRowView()}
                             onFetch={this._onFetch}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more

@@ -9,6 +9,7 @@ import {
     TouchableHighlight,
     TouchableNativeFeedback,
     TouchableOpacity,
+    InteractionManager,
     View,
     Image,
     Text,
@@ -18,6 +19,8 @@ import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
+import ProcessWorkOrder from './ProcessWorkOrder.js';
+import DispatchWorkOrder from './DispatchWorkOrder.js';
 
 
 var screenWidth = Util.size.width;
@@ -31,12 +34,10 @@ var valueTextColor = '#000';
 var valueTextSize = Util.pxToTextSize(35);
 var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
-var dividerWidth = 2 * Util.pixel;
+var dividerWidth = Util.pxToHeight(2);
 var keyTextSize = Util.pxToTextSize(35);
 
 var TouchableElement = TouchableHighlight;
-
-
 
 const LocalStyles = StyleSheet.create({
     container: {
@@ -72,7 +73,7 @@ const LocalStyles = StyleSheet.create({
         fontSize: keyTextSize,
         textAlign: 'right',
         //alignSelf:'flex-end',
-        marginRight: 30 * Util.pixel,
+        marginRight: Util.pxToHeight(30),
         color: keyTextColor,
     },
     valueTextContainer: {
@@ -82,25 +83,24 @@ const LocalStyles = StyleSheet.create({
         flex: 1,
         fontSize: valueTextSize,
         textAlign: 'left',
-        marginLeft: 30 * Util.pixel,
+        marginLeft: Util.pxToHeight(30),
         color: valueTextColor,
     },
     btnItemStyle: {
         flex: 1,
         flexDirection: 'row',
-        paddingTop: 70 * Util.pixel,
+        paddingTop: Util.pxToHeight(70),
         backgroundColor: '#ebebeb',
         justifyContent: 'center',
         alignItems: 'flex-start',
     },
     btnStyle: {
-        width: 451 * Util.pixel,
-        height: 120 * Util.pixel,
+        width: Util.pxToWidth(390),
+        height: Util.pxToHeight(120),
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#ffd57d',
-        //elevation:20,
     }
 });
 
@@ -142,20 +142,24 @@ class WorkOrderDetail extends React.Component {
     }
 
     processBySelf() {
-        Toast.show('开始处理');
-        //this._navigator.push({id: 'Main'});
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name: 'ProcessWorkOrder', component: ProcessWorkOrder});
+        });
     }
 
     dispathToOther() {
-        Toast.show('转派');
-        //this._navigator.push({id: 'Main'});
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name: 'DispatchWorkOrder', component: DispatchWorkOrder});
+        });
     }
 
     componentDidMount() {
         var navigator = this._navigator;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
+        /*if (Platform.OS === 'android') {
+            TouchableElement = TouchableOpacity;
+        }*/
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -217,11 +221,11 @@ class WorkOrderDetail extends React.Component {
                                 设备
                             </Text>
                         </View>
-                        <TouchableOpacity onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
-                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: 30 * Util.pixel, color: valueTextColor, }}>
+                        <TouchableElement onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
+                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
                                 {this.state.deviceInfo}
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableElement>
                     </View>
                     <View style={LocalStyles.itemStyle}>
                         <View style={LocalStyles.keyTextContainer}>
@@ -230,7 +234,7 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                         </View>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: 30 * Util.pixel, color: valueTextColor, }}>
+                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
                                 {this.state.address}
                             </Text>
                             <TouchableOpacity onPress={this.showLocationInMap} style={{ width: 30, height: 30, marginLeft: 6 }}>
@@ -260,14 +264,14 @@ class WorkOrderDetail extends React.Component {
                         </Text>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginRight: 6 }} onPress={this.processBySelf}>
+                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}} onPress={this.processBySelf}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     开始处理
                                 </Text>
                             </View>
                         </TouchableElement>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6, marginLeft: 6 }} onPress={this.dispathToOther}>
+                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}} onPress={this.dispathToOther}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     转派

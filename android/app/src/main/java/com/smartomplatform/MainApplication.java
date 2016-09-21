@@ -11,6 +11,7 @@ import com.facebook.react.shell.MainReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
+import com.imagechooser.ImageChooserPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 

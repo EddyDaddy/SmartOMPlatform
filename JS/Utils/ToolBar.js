@@ -19,7 +19,7 @@ export default class ToolBar extends React.Component {
     // 构造
     constructor(props) {
         super(props);
-        this._navigator = this.props.navigator;
+        // this._navigator = this.props.navigator;
         // 初始状态
         this.state = {};
     }
@@ -28,15 +28,15 @@ export default class ToolBar extends React.Component {
         var title = this.props.title;
         var left = this.props.left;
         var right = this.props.right;
-
+        const {navigator} = this.props;
         if (this.props.left) {
             var leftView = (
-                <TouchableOpacity onPress={this._navigator.pop()}>
-                    <Text style={{color: 'white', marginLeft: screenWidth/60}}>
-                        返回
-                    </Text>
-                </TouchableOpacity>
-            )
+            <TouchableOpacity onPress={() => naviGoBack(navigator)}>
+                <Text style={{color: 'white', marginLeft: screenWidth/60}}>
+                    返回
+                </Text>
+            </TouchableOpacity>
+        )
         }
         if (this.props.right) {
             var rightView = (

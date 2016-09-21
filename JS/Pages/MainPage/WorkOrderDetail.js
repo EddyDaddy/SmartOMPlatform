@@ -148,7 +148,7 @@ class WorkOrderDetail extends React.Component{
     render() {
         return (
             <View style={LocalStyles.container}>
-                <Toolbar title={'工单详情'}>
+                <Toolbar title={'工单详情'} left = {true} navigator = {this._navigator}>
                 </Toolbar>
                 <ScrollView style={LocalStyles.scrollView}>
                     <View style={LocalStyles.scrollRootView}>

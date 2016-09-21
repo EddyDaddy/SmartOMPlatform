@@ -70,6 +70,7 @@ export default class MainPage extends React.Component {
     _buttonClickItem(rowData) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
+            console.log('跳转到工单详情');
             navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail});
         });
     }

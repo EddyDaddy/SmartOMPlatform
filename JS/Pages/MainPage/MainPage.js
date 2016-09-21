@@ -25,6 +25,7 @@ import ViewPager from 'react-native-viewpager';
 import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
 import getWOAction from '../../actions/GetWorkOrderAction';
+import LoadingView from '../../Utils/LoadingView';
 var TouchableByPlatForm = TouchableHighlight;
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
@@ -41,7 +42,7 @@ let isLoading = true;
 
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
-    WOReducer: PropTypes.object.isRequired
+    getWOReducer: PropTypes.object.isRequired
 };
 
 class MainPage extends React.Component {
@@ -188,6 +189,10 @@ class MainPage extends React.Component {
     }
 
     render() {
+        const {getWOReducer} = this.props;
+        if(getWOReducer.isLoading){
+            return <LoadingView/>;
+        }
         return (
             <View style={{marginBottom: screenWidth / 7.5}}>
                 <Toolbar title={'首页'}>
@@ -270,8 +275,8 @@ var myStyles = {
 };
 
 export default connect((state) => {
-    const {WOReducer} = state;
+    const {getWOReducer} = state;
     return {
-        WOReducer
+        getWOReducer
     }
 })(MainPage);

@@ -152,10 +152,10 @@ class Login extends Component {
                                 </View>
                             </TouchableElement>
                         </View>
-                        {loginReducer.loading ? <Loading/> : null}
+
                     </View>
                 </Image>
-
+                <Loading visible={loginReducer.loading}/>
             </View>
         )
             ;

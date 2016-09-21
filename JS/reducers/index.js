@@ -3,7 +3,9 @@
  */
 import {combineReducers} from 'redux';
 import loginReducer from './loginReducer';
+import getWOReducer from './GetWOReducer';
 
 export default index = combineReducers({
     loginReducer,
+    getWOReducer,
 })

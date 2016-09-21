@@ -4,6 +4,7 @@
 import * as types from '../actions/actionTypes'
 import {LOGIN_URL} from '../Utils/Request';
 import Toast from 'react-native-root-toast';
+import {toQueryString} from '../Utils/CommonUtil';
 
 let loginAction = (userPhone, passWord, callBack) => {
     return dispatch => {
@@ -20,18 +21,7 @@ let loginAction = (userPhone, passWord, callBack) => {
             })
         };
 
-        function toQueryString(obj) {
-            return obj ? Object.keys(obj).sort().map(function (key) {
-                var val = obj[key];
-                if (Array.isArray(val)) {
-                    return val.sort().map(function (val2) {
-                        return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
-                    }).join('&');
-                }
 
-                return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-            }).join('&') : '';
-        }
 
         fetch(LOGIN_URL, fetchOptions)
             .then((response) => {
@@ -52,6 +42,7 @@ let loginAction = (userPhone, passWord, callBack) => {
                 }
             }).catch((error) => {
             Toast.show('网络发生错误,请重试!');
+            dispatch(receiveLoginResult(''));
             console.log('ddddd'+error);
         });
     }

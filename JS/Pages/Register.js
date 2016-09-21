@@ -149,7 +149,6 @@ class Register extends React.Component {
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
                                 onPress={()=>{
-                                this._navigator.replace({id: 'Main'});
                                 storge.save('phoneNum', this.state.userName);
                                 storge.save('passWord', this.state.passWord1);
                                 storge.get('passWord').then((passWord)=>{Toast.show('点击登录'+passWord)});
@@ -168,10 +167,6 @@ class Register extends React.Component {
 
             </View>
         )
-    }
-
-    configureScence() {
-        return Navigator.SceneConfigs.FadeAndroid;
     }
 
     render() {

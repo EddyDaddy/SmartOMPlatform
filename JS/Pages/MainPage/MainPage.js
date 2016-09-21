@@ -119,9 +119,9 @@ class MainPage extends React.Component {
                 <View style={myStyles.itemView}>
                     <Text >{'机场派出所'}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text style={{color: '#4b4b4b'}}>{'J98khk'}</Text>
-                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{'紧急'}</Text>
-                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
+                        <Text style={{flex:2,color: '#4b4b4b'}}>{'J98khasdasdk'}</Text>
+                        <Text style={{flex:1,color: '#ff3f3f', }}>{'非常紧急'}</Text>
+                        <Text style={{flex:1,color: '#ff9900', marginLeft: 10}}>{'待处理'}</Text>
                     </View>
                 </View>
             </TouchableByPlatForm>
@@ -225,7 +225,7 @@ class MainPage extends React.Component {
     }
 }
 
-var myStyles = {
+export const myStyles = StyleSheet.create({
     paginationView: {
         height: 44,
         justifyContent: 'center',
@@ -272,7 +272,7 @@ var myStyles = {
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
     }
-};
+});
 
 export default connect((state) => {
     const {getWOReducer} = state;

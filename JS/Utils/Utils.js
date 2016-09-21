@@ -12,6 +12,21 @@ const Util = {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
   },
+
+  //zjw add.
+  pxToWidth(num) {
+    let screenWidthReference = this.size.width>this.size.height?1920:1080;
+    return (this.size.width*num)/screenWidthReference;
+  },
+  pxToHeight(num) {
+    let screenHeightReference = this.size.width>this.size.height?1080:1920;
+    return (this.size.height*num)/screenHeightReference;
+  },
+  pxToTextSize(num) {
+    let screenHeightReference = this.size.width>this.size.height?1080:1920;
+    return (this.size.height*num)/screenHeightReference;
+  },
+
   post(url, data, callback) {
     const fetchOptions = {
       method: 'POST',

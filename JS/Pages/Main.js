@@ -50,9 +50,10 @@ class Main extends React.Component {
         return (
             <ScrollableTabView
                 renderTabBar={() => <TabBarItem tabIconNames={this.state.tabIconNames}/>}
-                tabBarPosition='bottom'>
+                tabBarPosition='bottom'
+                locked={true}>
                 <View style={{flex: 1}} tabLabel='Tab1'>
-                    <MainPage navigator={_navigator} />
+                    <MainPage navigator={_navigator}/>
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab2'>
                     <DevicesPage/>

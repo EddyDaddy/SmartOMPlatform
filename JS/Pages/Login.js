@@ -35,8 +35,8 @@ class Login extends Component {
         super(props);
         this._navigator = this.props.navigator;
         this.state = {
-            userName: null,
-            passWord: null
+            userName: '',
+            passWord: '',
         };
         this.buttonRegisterOrLoginAction = this.buttonRegisterOrLoginAction.bind(this);
 
@@ -46,9 +46,9 @@ class Login extends Component {
         if (Platform.OS === 'android') {
             TouchableElement = TouchableNativeFeedback;
         }
-        storge.get('phoneNum').then((phoneNum)=> {
-            if (phoneNum !== null) {
-                this.setState({userName: phoneNum});
+        storge.get('phoneNumAndUserToken').then((result)=> {
+            if (result[0] !== null) {
+                this.setState({userName: result[0]});
             }
         });
         storge.get('passWord').then((passWord)=> {
@@ -76,7 +76,7 @@ class Login extends Component {
             dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
                 if (response.code === '0') {
                     console.log(response.msg);
-                    storge.save('phoneNum', this.state.userName);
+                    storge.save('phoneNumAndUserToken', [this.state.userName, response.data.userToken]);
                     storge.save('passWord', this.state.passWord);
                     if (response.data) {
                         InteractionManager.runAfterInteractions(() => {
@@ -144,7 +144,7 @@ class Login extends Component {
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
                             <TouchableElement
-                                onPress={()=>this._navigator.push({id: 'Register'})}>
+                                onPress={()=>this._navigator.push({component: Register, name: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         忘记密码？
@@ -152,7 +152,7 @@ class Login extends Component {
                                 </View>
                             </TouchableElement>
                         </View>
-                        {loginReducer.loading?<Loading/>:null}
+                        {loginReducer.loading ? <Loading/> : null}
                     </View>
                 </Image>
 

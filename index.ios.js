@@ -3,4 +3,16 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-require('./index.android')
+
+
+ import {
+     AppRegistry,
+     Navigator,
+     ToastAndroid,
+     BackAndroid,
+     View,
+     StatusBar
+ } from 'react-native';
+ import Root from './JS/root';
+
+ AppRegistry.registerComponent('SmartOMPlatform', () =>Root);

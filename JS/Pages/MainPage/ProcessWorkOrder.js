@@ -21,7 +21,8 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 
-import ImageChooser from "react-native-image-chooser";
+import ImagePicker from "react-native-image-picker";
+
 
 var TouchableElement = TouchableHighlight;
 
@@ -42,6 +43,17 @@ var keyTextSize = Util.pxToTextSize(35);
 var uploadPhotoItemHeight = Util.pxToHeight(300);
 var photoViewHeight = Util.pxToHeight(250);
 var photoViewWeight = Util.pxToHeight(250);
+
+var imagePickerOption = {
+    title: '',
+    takePhotoButtonTitle:'拍照',
+    cancelButtonTitle:'取消',
+    chooseFromLibraryButtonTitle:'照片',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images' //照片存储路径
+    }
+};
 
 const LocalStyles = StyleSheet.create({
     container:{
@@ -137,63 +149,45 @@ class ProcessWorkOrder extends React.Component{
     }
 
     uploadOldPhoto(){
-        //Toast.show('uploadOldPhoto');
-        ImageChooser.pickImage()
-            .then((data)=>{
-                console.info('ImageChooser return data:\n'
-                    +'data.name'+data.name+'\n'
-                    +'data.uri'+data.uri+'\n'
-                    +'data.height'+data.height+'\n'
-                    +'data.width'+data.width+'\n'
-                );
-                this.setState((state)=>{
-                    return {
-                        oldPhoto:data.uri
-                    };
+        ImagePicker.showImagePicker(imagePickerOption, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                Toast.show('选择图片失败');
+            }else{
+                let imageUri = response.uri;
+                if (Platform.OS === 'ios') {
+                    imageUri = response.uri.replace('file://');
+                }
+                this.setState({
+                    oldPhoto:imageUri
                 });
-            })
-            .catch((err)=>{
-            console.warn('uploadOldPhoto->err!:'+err.message);
-            Toast.show('选择图片失败');
+            }
         });
     }
 
     uploadNewPhoto(){
-        Toast.show('uploadNewPhoto');
-        // height: number;
-        // width: number;
-        // size: number;
-        // name: string;
-        // uri: string;
-        // do something with the data
-        ImageChooser.pickImage().then(
-                (data)=>{
-                    console.info('ImageChooser return data:\n'
-                        +'data.name'+data.name+'\n'
-                        +'data.uri'+data.uri+'\n'
-                        +'data.height'+data.height+'\n'
-                        +'data.width'+data.width+'\n'
-                    );
-
-                    this.setState((state)=>{
-                        return {
-                            newPhoto:data.uri
-                        };
-                    });
+        ImagePicker.showImagePicker(imagePickerOption, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                Toast.show('选择图片失败');
+            }else{
+                let imageUri = response.uri;
+                if (Platform.OS === 'ios') {
+                    imageUri = response.uri.replace('file://');
                 }
-            ).catch((err)=>{
-                console.warn('uploadOldPhoto->err!:'+err.message);
-                Toast.show('uploadOldPhoto->err:'+err.message);
-            });
+                this.setState({
+                    newPhoto:imageUri
+                });
+            }
+        });
     }
 
     updateComment(newStr){
         Toast.show('updateComment:'+newStr);
-        // this.setState((state=>{
-        //     return {
-        //         comment:newStr
-        //     };
-        // }));
     }
 
     workOrderDone(){

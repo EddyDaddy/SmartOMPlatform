@@ -77,7 +77,7 @@ class Register extends React.Component {
 
     getLoginUI() {
         return (
-            <View style={styles.root}>
+            <View style={{flex: 1}}>
                 <ToolBar title={'忘记密码'}/>
                 <Image style={{height: screenWidth/1.9, width: screenWidth}}
                        source={require('./img/reset_pw_img.png')}/>

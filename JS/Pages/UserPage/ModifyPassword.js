@@ -52,9 +52,10 @@ class ModifyPassword extends React.Component {
 
 
     getLoginUI() {
+        const {navigator} = this.props;
         return (
-            <View style={styles.root}>
-                <ToolBar title={'密码修改'} left={true} navigator={this._navigator}/>
+            <View style={{flex: 1}}>
+                <ToolBar title={'密码修改'} left={true} navigator={navigator}/>
                 <View style={styles.root}>
                     <View style={{height: screenWidth/1.6}}>
                         <View style={styles.borderView}>

@@ -20,6 +20,7 @@ import storge from '../../Utils/Storage';
 import UserInfo from './UserInfo';
 import Setting from './Setting';
 import About from './About';
+import MyWorkOrder from './MyWorkOrder';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
@@ -61,7 +62,7 @@ export default class User extends React.Component {
     _gotoMyWorkOrder(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'MyWorkOrder', component: MyWorkOrder});
         });
     }
 

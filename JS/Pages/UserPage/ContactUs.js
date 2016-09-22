@@ -29,6 +29,7 @@ var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
+import Communications from 'react-native-communications';
 
 class ContactUs extends React.Component {
     // 构造
@@ -87,9 +88,13 @@ class ContactUs extends React.Component {
                         <View style={styles.item3}>
                             <Image style={{width: screenWidth/27, height: screenWidth/27, marginRight: Util.pixel*12}}
                                    source={require('../img/phone_icon.png')}/>
-                            <Text style={styles.textRight}>
-                                400-123-123
-                            </Text>
+                            <TouchableElement onPress={() => Communications.phonecall('400123123', true)}
+                                              underlayColor={'#00000000'}
+                                              activeOpacity={0.5}>
+                                <Text style={styles.textRight}>
+                                    400-123-123
+                                </Text>
+                            </TouchableElement>
                         </View>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
@@ -101,9 +106,13 @@ class ContactUs extends React.Component {
                         </View>
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                http://www.jiuzhouas.com/
-                            </Text>
+                            <TouchableElement onPress={() => Communications.web('http://www.jiuzhouas.com/')}
+                                              activeOpacity={0.5}
+                                              underlayColor={'#00000000'}>
+                                <Text style={styles.textRight}>
+                                    http://www.jiuzhouas.com/
+                                </Text>
+                            </TouchableElement>
                         </View>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>

@@ -28,6 +28,7 @@ export default class DevicesPage extends React.Component {
         super(props);
         // 初始状态
         this.state = {};
+        this._buttonClickItem = this._buttonClickItem.bind(this);
     }
 
 
@@ -50,7 +51,7 @@ export default class DevicesPage extends React.Component {
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
-                            rowView={(rowData)=>this._renderRowView(rowData)}
+                            rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more
@@ -98,7 +99,7 @@ export default class DevicesPage extends React.Component {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             console.log('跳转到工单详情');
-            navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail});
+            navigator.push({name: 'DevicesDtails', component: DevicesDtails, data: rowData});
         });
     }
 
@@ -111,7 +112,7 @@ export default class DevicesPage extends React.Component {
         return (
             <TouchableByPlatForm
                 underlayColor='#c8c7cc'
-                onPress={() => this._buttonClickItem(rowData)}
+                onPress={this._buttonClickItem(this, rowData)}
             >
                 <View style={myStyles.itemView}>
                     <View style={{width: screenWidth, flexDirection: 'row'}}>

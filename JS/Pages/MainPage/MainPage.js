@@ -114,7 +114,13 @@ class MainPage extends React.Component {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             console.log('跳转到工单详情');
-            navigator.push({name: 'WorkOrderDetail', component: WorkOrderDetail});
+            navigator.push({
+                name: 'WorkOrderDetail',
+                component: WorkOrderDetail,
+                params: {
+                    data: rowData
+                }
+            });
         });
     }
 
@@ -127,14 +133,14 @@ class MainPage extends React.Component {
         return (
             <TouchableByPlatForm
                 underlayColor='#c8c7cc'
-                onPress={() => this._buttonClickItem(rowData)}
+                onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
                     <Text >{rowData.entName}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text style={{color: '#4b4b4b'}}>{rowData.deviceName}</Text>
-                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{rowData.pri}</Text>
-                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{rowData.status}</Text>
+                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{Util.returnPriType(rowData.pri)}</Text>
+                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{Util.returnStatus(rowData.status)}</Text>
                     </View>
                 </View>
             </TouchableByPlatForm>
@@ -200,6 +206,8 @@ class MainPage extends React.Component {
             <View style={myStyles.separator}/>
         )
     }
+
+    
 
     render() {
         return (

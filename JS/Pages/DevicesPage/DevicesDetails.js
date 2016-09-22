@@ -151,7 +151,7 @@ export default class DevicesDetails extends React.Component {
     render() {
         return (
             <View style={DeviceDetailStyles.container}>
-                <Toolbar title={'工单详情'}>
+                <Toolbar title={'设备详情'} left={true}  navigator={this._navigator}>
                 </Toolbar>
                 <ScrollView style={DeviceDetailStyles.scrollView}>
                     <View style={DeviceDetailStyles.scrollRootView}>

@@ -136,7 +136,7 @@ class MainPage extends React.Component {
                 onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
-                    <Text >{rowData.entName}</Text>
+                    <Text >{rowData.street}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text style={{color: '#4b4b4b'}}>{rowData.deviceName}</Text>
                         <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{Util.returnPriType(rowData.pri)}</Text>
@@ -297,3 +297,19 @@ export default connect((state) => {
         getWOReducer
     }
 })(MainPage);
+
+//数据格式
+/*
+{
+    "id": "1",
+    "status": "1",
+    "pri": "4",
+    "cameraId": "1",
+    "remark": "摄像头遮挡",
+    "entName": " ",
+    "deviceName": "J98H-26/1(高清球机)",
+    "ip": "51.37.1.10",
+    "street": "普明派出所",
+    "createTime": "2016-09-20 18:00:19",
+    "updateTime": ""
+}*/

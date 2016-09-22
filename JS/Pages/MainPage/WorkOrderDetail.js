@@ -101,7 +101,7 @@ const LocalStyles = StyleSheet.create({
         backgroundColor: '#ffd57d',
     }
 });
-
+var data;
 class WorkOrderDetail extends React.Component {
 
     // 构造
@@ -109,7 +109,7 @@ class WorkOrderDetail extends React.Component {
         super(props);
         //成员变量需在构造函数中生命
         this._navigator = this.props.navigator;
-        var data = this.props.data;
+        data = this.props.data;
         // 初始状态
         this.state = {
             // entName: 'aaa',
@@ -131,7 +131,7 @@ class WorkOrderDetail extends React.Component {
             addressLongitude: '176',
             addressLatitude: '189',
             statu: Util.returnStatus(data.status),
-            description: data.reMark
+            description: data.remark
         };
 
         //绑定回调函数和成员方法
@@ -149,10 +149,16 @@ class WorkOrderDetail extends React.Component {
         Toast.show('showLocationInMap');
     }
 
-    processBySelf() {
+    processBySelf(data) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'ProcessWorkOrder', component: ProcessWorkOrder});
+            navigator.push({
+                name: 'ProcessWorkOrder',
+                component: ProcessWorkOrder,
+                params:{
+                    data:data
+                }
+            });
         });
     }
 
@@ -277,7 +283,7 @@ class WorkOrderDetail extends React.Component {
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
                         <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}}
-                                          onPress={this.processBySelf}>
+                                          onPress={this.processBySelf.bind(this, data)}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     开始处理

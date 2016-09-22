@@ -1,12 +1,13 @@
 // obtained from react native tutorials
 
 import React from 'react'
-import {PixelRatio} from 'react-native';
+import {PixelRatio,Platform} from 'react-native';
 import Dimensions from 'Dimensions';
 import Toast from 'react-native-root-toast';
 import {toQueryString} from './CommonUtil';
 
 const Util = {
+    status_bar_height: Platform.OS === 'iOS' ? 20 : 25,
     ratio: PixelRatio.get(),
     pixel: 1 / PixelRatio.get(),
     size: {

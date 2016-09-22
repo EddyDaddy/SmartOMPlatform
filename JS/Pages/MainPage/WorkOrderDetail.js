@@ -6,8 +6,6 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
     TouchableOpacity,
     InteractionManager,
     View,
@@ -36,8 +34,6 @@ var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
 var dividerWidth = Util.pxToHeight(2);
 var keyTextSize = Util.pxToTextSize(35);
-
-var TouchableElement = TouchableHighlight;
 
 const LocalStyles = StyleSheet.create({
     container: {
@@ -76,9 +72,7 @@ const LocalStyles = StyleSheet.create({
         marginRight: Util.pxToHeight(30),
         color: keyTextColor,
     },
-    valueTextContainer: {
-
-    },
+    valueTextContainer: {},
     valueText: {
         flex: 1,
         fontSize: valueTextSize,
@@ -103,7 +97,7 @@ const LocalStyles = StyleSheet.create({
         backgroundColor: '#ffd57d',
     }
 });
-
+var data;
 class WorkOrderDetail extends React.Component {
 
     // 构造
@@ -111,19 +105,29 @@ class WorkOrderDetail extends React.Component {
         super(props);
         //成员变量需在构造函数中生命
         this._navigator = this.props.navigator;
-
+        data = this.props.data;
         // 初始状态
         this.state = {
-            entName: 'aaa',
-            id: 'GDHUH20160976889',
-            ipInfo: '192.168.1.1  192.168.1.0  255.255.255.255',
-            priority: '非常紧急',
-            deviceInfo: 'J98H-25/1(高清球)',
-            address: '成华区建设路',
+            // entName: 'aaa',
+            // id: 'GDHUH20160976889',
+            // ipInfo: '192.168.1.1  192.168.1.0  255.255.255.255',
+            // priority: '非常紧急',
+            // deviceInfo: 'J98H-25/1(高清球)',
+            // address: '成华区建设路',
+            // addressLongitude: '176',
+            // addressLatitude: '189',
+            // statu: '待处理',
+            // description: '摄像头被遮挡'
+            entName: data.entName,
+            id: data.id,
+            ipInfo: data.ip,
+            priority: Util.returnPriType(data.pri),
+            deviceInfo: data.deviceName,
+            address: data.street,
             addressLongitude: '176',
             addressLatitude: '189',
-            statu: '待处理',
-            description: '摄像头被遮挡'
+            statu: Util.returnStatus(data.status),
+            description: data.remark
         };
 
         //绑定回调函数和成员方法
@@ -141,10 +145,16 @@ class WorkOrderDetail extends React.Component {
         Toast.show('showLocationInMap');
     }
 
-    processBySelf() {
+    processBySelf(data) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'ProcessWorkOrder', component: ProcessWorkOrder});
+            navigator.push({
+                name: 'ProcessWorkOrder',
+                component: ProcessWorkOrder,
+                params:{
+                    data:data
+                }
+            });
         });
     }
 
@@ -157,9 +167,6 @@ class WorkOrderDetail extends React.Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        /*if (Platform.OS === 'android') {
-            TouchableElement = TouchableOpacity;
-        }*/
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -221,11 +228,12 @@ class WorkOrderDetail extends React.Component {
                                 设备
                             </Text>
                         </View>
-                        <TouchableElement onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
-                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
+                            <Text
+                                style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
                                 {this.state.deviceInfo}
                             </Text>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                     <View style={LocalStyles.itemStyle}>
                         <View style={LocalStyles.keyTextContainer}>
@@ -233,11 +241,14 @@ class WorkOrderDetail extends React.Component {
                                 地址
                             </Text>
                         </View>
-                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Text style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
+                        <View
+                            style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                            <Text
+                                style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
                                 {this.state.address}
                             </Text>
-                            <TouchableOpacity onPress={this.showLocationInMap} style={{ width: 30, height: 30, marginLeft: 6 }}>
+                            <TouchableOpacity onPress={this.showLocationInMap}
+                                              style={{ width: 30, height: 30, marginLeft: 6 }}>
                                 <Image source={require('../img/tab_user.png') }
                                        style={{ width: 30, height: 30 }}/>
                             </TouchableOpacity>
@@ -264,20 +275,22 @@ class WorkOrderDetail extends React.Component {
                         </Text>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}} onPress={this.processBySelf}>
+                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
+                                          onPress={this.processBySelf.bind(this, data)}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     开始处理
                                 </Text>
                             </View>
-                        </TouchableElement>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}} onPress={this.dispathToOther}>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
+                                          onPress={this.dispathToOther}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     转派
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

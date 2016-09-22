@@ -88,11 +88,17 @@ def releaseTime() {
 
 android {
     signingConfigs {
-        config {
+        configRelease {
             keyAlias 'smartomplatform'
             keyPassword '1122334455'
             storeFile file('../keystores/smartomplatform.jks')
             storePassword '1122334455'
+        }
+        configDebug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../keystores/debug.keystore')
+            storePassword 'android'
         }
     }
     compileSdkVersion 23
@@ -117,10 +123,15 @@ android {
         }
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.configDebug
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.config
+            signingConfig signingConfigs.configRelease
         }
     }
     productFlavors {

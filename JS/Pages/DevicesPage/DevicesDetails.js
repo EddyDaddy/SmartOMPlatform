@@ -7,30 +7,29 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
+    TouchableOpacity,
     View,
+    Image,
     Text,
-    Navigator,
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
+import {naviGoBack} from '../../Utils/CommonUtil.js';
+
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
-var dividerWidth = 2 * Util.pixel;
+
 var dividerColor = '#d8d8d8';
 var keyTextColor = '#666666';
 var valueTextColor = '#000';
-var keyTextSize = 35 * Util.pixel;
-var valueTextSize = 35 * Util.pixel;
-var keyTextWidth = 260 * Util.pixel;
-var itemHeight = 115 * Util.pixel;
 
-var TouchableElement = TouchableHighlight;
-
-import {naviGoBack} from '../../Utils/CommonUtil.js';
+var valueTextSize = Util.pxToTextSize(35);
+var keyTextWidth = Util.pxToWidth(260);
+var itemHeight = Util.pxToHeight(115);
+var dividerWidth = 2 * Util.pixel;
+var keyTextSize = Util.pxToTextSize(35);
 
 const DeviceDetailStyles = StyleSheet.create({
     container: {
@@ -68,7 +67,8 @@ const DeviceDetailStyles = StyleSheet.create({
         marginRight: 30 * Util.pixel,
         color: keyTextColor,
     },
-    valueTextContainer: {},
+    valueTextContainer: {
+    },
     valueText: {
         flex: 1,
         fontSize: valueTextSize,
@@ -133,9 +133,6 @@ export default class DevicesDetails extends React.Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -148,12 +145,50 @@ export default class DevicesDetails extends React.Component {
     render() {
         return (
             <View style={DeviceDetailStyles.container}>
-                <Toolbar title={'工单详情'}>
+                <Toolbar title={'设备详情'} left={true}  navigator={this._navigator}>
                 </Toolbar>
                 <ScrollView style={DeviceDetailStyles.scrollView}>
                     <View style={DeviceDetailStyles.scrollRootView}>
-                        <DeviceDetailItem leftData='工地'
-                                          rightData='啊实打实大生的'/>
+                        <DeviceDetailItem leftData='企业名称'
+                                          rightData='机场派出所'/>
+                        <DeviceDetailItem leftData='辖区'
+                                          rightData='普明派出所'/>
+                        <DeviceDetailItem leftData='籍号'
+                                          rightData='013311'/>
+                        <DeviceDetailItem leftData='名称'
+                                          rightData='四川成都市按实际对话'/>
+                        <DeviceDetailItem leftData='网络'
+                                          rightData='联通'/>
+                        <DeviceDetailItem leftData='IP地址'
+                                          rightData='10.132.20.1'/>
+                        <DeviceDetailItem leftData='掩码'
+                                          rightData='255.255.255.0'/>
+                        <DeviceDetailItem leftData='网关'
+                                          rightData='10.132.20.11'/>
+                        <DeviceDetailItem leftData='立杆'
+                                          rightData='立杆6米，臂长3米'/>
+                        <DeviceDetailItem leftData='位置'
+                                          rightData='机场'/>
+                        <DeviceDetailItem leftData='设备'
+                                          rightData='26/1（高清球机）'/>
+                        <View style={[DeviceDetailStyles.itemStyle, {height: null}]}>
+                            <View style={[DeviceDetailStyles.keyTextContainer, {height: null}]}>
+                                <View style={{flex: 1, justifyContent: 'center'}}>
+                                    <Text style={[DeviceDetailStyles.keyText]}>
+                                        地址
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center'
+                            }}>
+                                <Image source={require('../img/tab_user.png') }
+                                       style={{margin: 30 * Util.pixel}}/>
+                            </View>
+                        </View>
                     </View>
                 </ScrollView>
             </View>

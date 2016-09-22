@@ -4,67 +4,87 @@ import React from 'react'
 import {PixelRatio} from 'react-native';
 import Dimensions from 'Dimensions';
 import Toast from 'react-native-root-toast';
+import {toQueryString} from './CommonUtil';
 
 const Util = {
-  ratio: PixelRatio.get(),
-  pixel: 1 / PixelRatio.get(),
-  size: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
-  },
+    ratio: PixelRatio.get(),
+    pixel: 1 / PixelRatio.get(),
+    size: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
+    },
 
-  //zjw add.
-  pxToWidth(num) {
-    let screenWidthReference = this.size.width>this.size.height?1920:1080;
-    return (this.size.width*num)/screenWidthReference;
-  },
-  pxToHeight(num) {
-    let screenHeightReference = this.size.width>this.size.height?1080:1920;
-    return (this.size.height*num)/screenHeightReference;
-  },
-  pxToTextSize(num) {
-    let screenHeightReference = this.size.width>this.size.height?1080:1920;
-    return (this.size.height*num)/screenHeightReference;
-  },
+    //zjw add.
+    pxToWidth(num) {
+        let screenWidthReference = this.size.width > this.size.height ? 1920 : 1080;
+        return (this.size.width * num) / screenWidthReference;
+    },
+    pxToHeight(num) {
+        let screenHeightReference = this.size.width > this.size.height ? 1080 : 1920;
+        return (this.size.height * num) / screenHeightReference;
+    },
+    pxToTextSize(num) {
+        let screenHeightReference = this.size.width > this.size.height ? 1080 : 1920;
+        return (this.size.height * num) / screenHeightReference;
+    },
 
-  post(url, data, callback) {
-    const fetchOptions = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        // 'Content-Type': 'application/json'
-        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-      },
-      body: toQueryString(data)
-    };
-
-    function toQueryString(obj) {
-      return obj ? Object.keys(obj).sort().map(function (key) {
-        var val = obj[key];
-        if (Array.isArray(val)) {
-          return val.sort().map(function (val2) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
-          }).join('&');
+    //工单的一些状态
+    returnPriType(type){
+        switch (type) {
+            case '4':
+                return '非常紧急';
+            case '3':
+                return '紧急';
+            case '2':
+                return '一般';
+            case '1':
+                return '低';
+            default:
+                return '未知状态';
         }
+    },
 
-        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-      }).join('&') : '';
-    }
+    returnStatus(status){
+        switch (status) {
+            case '1':
+                return '待处理';
+            case '99':
+                return '已完成';
+            default:
+                return '未知';
+        }
+    },
 
-    fetch(url, fetchOptions)
-    .then((response) => {
-      if(response.ok) {
-        return response.json()
-      }else{
-        Toast.show('请求失败')
-      }
-    })
-    .then((responseData) => {
-      callback(responseData);
-      console.log(toQueryString(data));
-    });
-  },
-  key: 'BDKHFSDKJFHSDKFHWEFH-REACT-NATIVE',
+    post(url, data, callback) {
+        const fetchOptions = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: toQueryString(data)
+        };
+
+        fetch(url, fetchOptions)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    Toast.show('请求失败')
+                }
+            })
+            .then((responseData) => {
+                console.log('请求参数：' + toQueryString(data));
+                console.log('请求结果：' + JSON.stringify(responseData));
+                callback(responseData);
+            }).catch(
+            (error) => {
+                callback('');
+                console.log('错误信息：' + error);
+            }
+        );
+    },
+    key: 'BDKHFSDKJFHSDKFHWEFH-REACT-NATIVE',
 };
 
 

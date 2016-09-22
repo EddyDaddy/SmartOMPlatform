@@ -5,23 +5,19 @@ import {
     TextInput,
     View,
     Image,
-    TouchableNativeFeedback,
     InteractionManager,
-    TouchableHighlight,
-    Navigator,
-    DeviceEventEmitter,
+    TouchableOpacity
 } from 'react-native';
 import Util from '../Utils/Utils.js'
 import Register from './Register.js';
 import {styles} from '../Utils/Styles.js';
 import Toast from 'react-native-root-toast';
 import {connect} from 'react-redux';
-import loginAction from '../actions/LoginAction';
+import {loginAction} from '../actions/LoginAction';
 import Main from './Main';
 import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../Utils/Storage.js';
 import {hex_md5} from '../Utils/MD5.js';
@@ -42,12 +38,9 @@ class Login extends Component {
 
     }
 
-    componentDidMount() {
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
-        storge.get('phoneNumAndUserToken').then((result)=> {
-            if (result[0] !== null) {
+    componentWillMount() {
+        storge.get('loginInfo').then((result)=> {
+            if (result !== null && result[0] !== null) {
                 this.setState({userName: result[0]});
             }
         });
@@ -56,13 +49,11 @@ class Login extends Component {
                 this.setState({passWord: passWord});
             }
         });
-
-
     }
 
     //用户登录/注册
     buttonRegisterOrLoginAction(position) {
-        const {dispatch, navigator} = this.props;
+        const {dispatch} = this.props;
         if (position === 0) {
             //用户登录
             if (this.state.userName === '') {
@@ -73,33 +64,25 @@ class Login extends Component {
                 Toast.show('密码不能为空...');
                 return;
             }
-            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
-                if (response.code === '0') {
-                    console.log(response.msg);
-                    storge.save('phoneNumAndUserToken', [this.state.userName, response.data.userToken]);
+            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (responseData) => {
+                const {navigator} = this.props;
+                console.log('code---->' + responseData.code);
+                if (responseData.code === '0') {
+                    console.log('userToken---->' + responseData.data.userToken);
+                    console.log('repairId---->' + responseData.data.repairId);
+                    storge.save('loginInfo', [this.state.userName, responseData.data.userToken, responseData.data.repairId]);
                     storge.save('passWord', this.state.passWord);
-                    if (response.data) {
-                        InteractionManager.runAfterInteractions(() => {
-                            navigator.replace({name: 'Main', component: Main});
-                        });
-                    }
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.replace({name: 'Main', component: Main});
+                    });
                 }
             }));
-
-
-        } else if (position === 1) {
-            //用户注册
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: Register,
-                    name: 'Register'
-                });
-            });
         }
     }
 
     getLoginUI() {
         const {loginReducer} = this.props;
+        console.log('密码' + storge.get('passWord'));
         return (
             <View style={styles.root}>
                 <Image source={require('./img/bg.png')}
@@ -107,10 +90,8 @@ class Login extends Component {
                     <View style={styles.root}>
                         <Image source={require('./img/name.png')}
                                style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
-                        <Image
-                            source={require('./img/logo_img.png')}
-                            style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
-                        />
+                        <Image source={require('./img/logo_img.png')}
+                               style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}/>
                         <View style={styles.borderView}>
                             <TextInput style={styles.textInput}
                                        onChangeText={(userName) => this.setState({userName})}
@@ -118,8 +99,7 @@ class Login extends Component {
                                        maxLength={11}
                                        value={this.state.userName}
                                        placeholder="请输入您的手机号"
-                                       placeholderTextColor='white'
-                            />
+                                       placeholderTextColor='white'/>
                         </View>
 
                         <View style={styles.borderViewCommon}>
@@ -128,11 +108,11 @@ class Login extends Component {
                                        value={this.state.passWord}
                                        secureTextEntry={true}
                                        placeholder="请输入密码"
-                                       placeholderTextColor='white'
-                            />
+                                       placeholderTextColor='white'/>
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
-                            <TouchableElement
+                            <TouchableOpacity activeOpacity={0.5}
+                                style={{elevation: 3}}
                                 onPress={()=> this.buttonRegisterOrLoginAction(0)}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
@@ -140,22 +120,22 @@ class Login extends Component {
                                         登录
                                     </Text>
                                 </View>
-                            </TouchableElement>
+                            </TouchableOpacity>
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
-                            <TouchableElement
+                            <TouchableOpacity activeOpacity={0.5}
                                 onPress={()=>this._navigator.push({component: Register, name: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         忘记密码？
                                     </Text>
                                 </View>
-                            </TouchableElement>
+                            </TouchableOpacity>
                         </View>
-                        {loginReducer.loading ? <Loading/> : null}
+
                     </View>
                 </Image>
-
+                <Loading visible={loginReducer.loading}/>
             </View>
         )
             ;

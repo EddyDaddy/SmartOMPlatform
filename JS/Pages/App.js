@@ -3,17 +3,12 @@
  */
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    StyleSheet,
     Navigator,
     BackAndroid,
     View,
-    StatusBar,
-    Text
+    StatusBar
 } from 'react-native';
 import login from './Login';
-
-var _navigator = null;
 
 class App extends Component{
     constructor(props){
@@ -31,7 +26,6 @@ class App extends Component{
                     initialRoute={{name:"login",component:login}}
                     renderScene={
                         (route,navigator) =>{
-                            _navigator = navigator;
                             let Component = route.component;
                             console.log(route)
                             return <Component {...route.params} navigator={navigator} />

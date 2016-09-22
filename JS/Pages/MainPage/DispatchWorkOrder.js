@@ -9,8 +9,6 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
     TouchableOpacity,
     TextInput,
     ListView,
@@ -25,7 +23,6 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 
-var TouchableElement = TouchableHighlight;
 var textColor = '#666';
 
 
@@ -59,9 +56,6 @@ class DispatchWorkOrderNew extends React.Component{
 
     componentDidMount() {
         var navigator = this._navigator;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });

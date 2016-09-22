@@ -56,10 +56,10 @@ class Main extends React.Component {
                     <MainPage navigator={_navigator}/>
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab2'>
-                    <DevicesPage/>
+                    <DevicesPage navigator={_navigator}/>
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab3'>
-                    <User/>
+                    <User navigator={_navigator}/>
                 </View>
             </ScrollableTabView>
         );

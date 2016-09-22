@@ -104,12 +104,20 @@ class Register extends React.Component {
                             />
                         </View>
                         <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
+<<<<<<< HEAD
                              borderRadius: 6}}>
                             <TouchableOpacity activeOpacity={0.5}
                                               onPress={()=>{Toast.show('点击获取验证码');
                                                             this.setState({isPressed: true});
                                                             this.setInterval();
                                                             }}
+=======
+                             elevation: 3, borderRadius: 6}}>
+                            <TouchableElement onPress={()=>{Toast.show('点击获取验证码');
+                                                                this.setState({isPressed: true});
+                                                                this.setInterval();
+                                                                }}
+>>>>>>> origin/master
                                               underlayColor={'#ffd5ad'}
                                               disabled={this.state.isPressed}
                                               style={{flex: 1, borderRadius: 6}}>
@@ -148,7 +156,7 @@ class Register extends React.Component {
                                 storge.save('passWord', this.state.passWord1);
                                 storge.get('passWord').then((passWord)=>{Toast.show('点击登录'+passWord)});
                                 }}
-                            style={{borderRadius: 6}}>
+                            style={{elevation: 3, borderRadius: 6, margin:5}}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                 <Text style={{color: 'red'}}>
@@ -178,7 +186,9 @@ const styles = StyleSheet.create({
             width: screenWidth / 1.5,
             height: screenWidth / 9,
             marginTop: screenWidth / 9,
+            elevation: 3,
             borderRadius: 6,
+            margin:5,
             borderWidth: 1,
             borderColor: '#d0d0d0',
             backgroundColor: 'white',
@@ -188,7 +198,9 @@ const styles = StyleSheet.create({
             width: screenWidth / 1.5,
             height: screenWidth / 9,
             marginTop: screenWidth / 20,
+            elevation: 3,
             borderRadius: 6,
+            margin:5,
             borderWidth: 1,
             borderColor: '#d0d0d0',
             backgroundColor: 'white',
@@ -197,6 +209,7 @@ const styles = StyleSheet.create({
         borderViewshort: {
             width: screenWidth / 2.3,
             height: screenWidth / 9,
+            elevation: 3,
             borderRadius: 6,
             borderWidth: 1,
             borderColor: '#d0d0d0',

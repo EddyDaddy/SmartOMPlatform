@@ -9,6 +9,7 @@ import {
     Text,
     Image,
     TouchableOpacity,
+    InteractionManager,
     Navigator,
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
@@ -16,22 +17,58 @@ import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import storge from '../../Utils/Storage';
+import UserInfo from './UserInfo';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
+var _navigator;
+var userData;
 export default class User extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
+        // _navigator = this.props.navigator;
         this.state = {
-            phoneNum:'18012345678'
+            phoneNum: '18012345678'
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         storge.get('loginInfo').then((result) => {
             this.setState({phoneNum: result[0]});
+        });
+    }
+
+    componentDidMount() {
+
+    }
+
+    _gotoUserInfo(data){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name:'UserInfo', component: UserInfo});
+        });
+    }
+
+    _gotoMyWorkOrder(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name:'UserInfo', component: UserInfo});
+        });
+    }
+
+    _gotoSetting(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name:'UserInfo', component: UserInfo});
+        });
+    }
+
+    _gotoAbout(){
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({name:'UserInfo', component: UserInfo});
         });
     }
 
@@ -42,33 +79,51 @@ export default class User extends React.Component {
                 <Toolbar title={'我的'}/>
                 <View style={{width: screenWidth, height: Util.pixel, backgroundColor: 'white'}}/>
                 <View style={{flex: 1}}>
-                    <View style={{width: screenWidth, height:screenHeight/5, backgroundColor: '#3fd0a7'}}>
+                    <View style={{width: screenWidth, height:screenWidth/2.8, backgroundColor: '#3fd0a7'}}>
                         <TouchableOpacity
                             style={{flex: 1, flexDirection: 'row'}}
                             activeOpacity={1}
-                            onPress={() => Toast.show('点击个人信息')}>
-                            <View style={{width: screenWidth/4, justifyContent: 'center', alignItems: 'center'}}>
+                            onPress={this._gotoUserInfo.bind(this, userData)}>
+                            <View style={{marginLeft: screenWidth/13, justifyContent: 'center'}}>
                                 <Image
-                                    style={{width: screenWidth / 5, height: screenWidth / 5, borderRadius: screenWidth / 10}}
+                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 10}}
                                     source={require('../img/my_icon.png')}
                                 />
                             </View>
-                            <View style={{flex: 1, justifyContent: 'center'}}>
-                                <Text >
-                                    李四
+                            <View style={{marginLeft: screenWidth/15}}>
+                                <Text style={{color: 'white', marginTop: screenWidth/12, fontSize: Util.pixel*44}}>
+                                    职工姓名（生产一部）
                                 </Text>
-                                <Text style={{marginTop: Util*120}}>
-                                    {this.state.phoneNum}
-                                </Text>
+                                <View style={{flexDirection: 'row', marginTop: screenWidth/40}}>
+                                    <Text style={{color: 'white', fontSize: Util.pixel*37}}>
+                                        职位：
+                                    </Text>
+                                    <Text style={{color: '#ffff00', fontSize: Util.pixel*37}}>
+                                        工程师
+                                    </Text>
+                                </View>
+                                <View style={{flexDirection: 'row', marginTop: screenWidth/60}}>
+                                    <Text style={{color: 'white', fontSize: Util.pixel*37}}>
+                                        电话：
+                                    </Text>
+                                    <Text style={{color: '#ffff00', fontSize: Util.pixel*37}}>
+                                        {this.state.phoneNum}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View
+                                style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/28}}>
+                                <Image style={{witdh: screenWidth/30, height: screenWidth/16}}
+                                       source={require('../img/next_big.png')}/>
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#000000'}}/>
-                    <View style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
                         <TouchableOpacity
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
                             activeOpacity={1}
-                            onPress={() => Toast.show('我的工单')}>
+                            onPress={this._gotoMyWorkOrder.bind(this)}>
                             <Image
                                 style={{width: screenWidth/18, height: screenWidth/17, marginLeft: screenWidth/18}}
                                 source={require('../img/my_workorder_img.png')}/>
@@ -76,14 +131,19 @@ export default class User extends React.Component {
                                 style={{marginLeft: screenWidth/18}}>
                                 我的工单
                             </Text>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
+                                       source={require('../img/next_small.png')}/>
+                            </View>
                         </TouchableOpacity>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
                         <TouchableOpacity
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
                             activeOpacity={1}
-                            onPress={() => Toast.show('设置')}>
+                            onPress={this._gotoSetting.bind(this)}>
                             <Image
                                 style={{width: screenWidth/14, height: screenWidth/14, marginLeft: screenWidth/18}}
                                 source={require('../img/setting.png')}/>
@@ -91,14 +151,19 @@ export default class User extends React.Component {
                                 style={{marginLeft: screenWidth/18}}>
                                 设置
                             </Text>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
+                                       source={require('../img/next_small.png')}/>
+                            </View>
                         </TouchableOpacity>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
+                    <View
+                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
                         <TouchableOpacity
                             style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
                             activeOpacity={1}
-                            onPress={() => Toast.show('关于')}>
+                            onPress={this._gotoAbout.bind(this)}>
                             <Image
                                 style={{width: screenWidth/15, height: screenWidth/14, marginLeft: screenWidth/18}}
                                 source={require('../img/about_img.png')}/>
@@ -106,6 +171,10 @@ export default class User extends React.Component {
                                 style={{marginLeft: screenWidth/18}}>
                                 关于
                             </Text>
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
+                                       source={require('../img/next_small.png')}/>
+                            </View>
                         </TouchableOpacity>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>

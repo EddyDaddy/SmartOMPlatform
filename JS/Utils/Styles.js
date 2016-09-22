@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
             height: screenWidth / 9,
             marginTop: screenWidth / 18,
             borderRadius: 6,
+            elevation: 3,
             backgroundColor: '#6ab5ba',
 
         },
@@ -26,6 +27,7 @@ export const styles = StyleSheet.create({
             height: screenWidth / 9,
             marginTop: screenWidth / 36,
             borderRadius: 6,
+            elevation: 3,
             backgroundColor: '#6ab5ba',
 
         },
@@ -33,6 +35,7 @@ export const styles = StyleSheet.create({
             width: screenWidth / 2.3,
             height: screenWidth / 9,
             borderRadius: 6,
+            elevation: 3,
             backgroundColor: '#6ab5ba',
 
         },

@@ -1,7 +1,7 @@
 /**
  * Created by demon on 2016/9/20.
  */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Navigator,
     BackAndroid,
@@ -9,13 +9,15 @@ import {
     StatusBar
 } from 'react-native';
 import login from './Login';
-
-class App extends Component{
-    constructor(props){
+import testMap from './testMap';
+var _navigator = null;
+class App extends Component {
+    constructor(props) {
         super(props);
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <View style={{flex:1}}>
                 <StatusBar
                     // translucent={true}
@@ -26,8 +28,9 @@ class App extends Component{
                     initialRoute={{name:"login",component:login}}
                     renderScene={
                         (route,navigator) =>{
+                            _navigator = navigator;
                             let Component = route.component;
-                            console.log(route)
+                            console.log(route);
                             return <Component {...route.params} navigator={navigator} />
                         }
                     }
@@ -38,8 +41,8 @@ class App extends Component{
     }
 }
 
-BackAndroid.addEventListener("hardwareBackPress",()=>{
-    if(_navigator && _navigator.getCurrentRoutes().length > 1){
+BackAndroid.addEventListener("hardwareBackPress", ()=> {
+    if (_navigator && _navigator.getCurrentRoutes().length > 1) {
         _navigator.pop();
         return true;
     }

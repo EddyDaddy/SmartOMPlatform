@@ -30,13 +30,18 @@ export default class User extends React.Component {
         // 初始状态
         // _navigator = this.props.navigator;
         this.state = {
-            phoneNum: '18012345678'
+            phoneNum: '18012345678',
+            userIcon: '-'
         };
     }
 
     componentWillMount() {
         storge.get('loginInfo').then((result) => {
             this.setState({phoneNum: result[0]});
+        });
+        storge.get('userIcon').then((result) => {
+            this.setState({userIcon: result});
+            console.log('userIcon----'+result);
         });
     }
 
@@ -86,8 +91,8 @@ export default class User extends React.Component {
                             onPress={this._gotoUserInfo.bind(this, userData)}>
                             <View style={{marginLeft: screenWidth/13, justifyContent: 'center'}}>
                                 <Image
-                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 10}}
-                                    source={require('../img/my_icon.png')}
+                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 8}}
+                                    source={this.state.userIcon=='-'?require('../img/my_icon.png'):{uri:this.state.userIcon}}
                                 />
                             </View>
                             <View style={{marginLeft: screenWidth/15}}>

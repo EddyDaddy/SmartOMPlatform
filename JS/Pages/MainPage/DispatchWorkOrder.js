@@ -107,7 +107,7 @@ class DispatchWorkOrderNew extends React.Component{
                 </Toolbar>
                 <View style={LocalStyles.seacherStyle}>
                     <Text style={[LocalStyles.textStyle, {marginRight: 12}]}>搜索</Text>
-                    <View style={{height:39,width:270,borderColor:'bbb', borderWidth: 1}}>
+                    <View style={{height:39,width:270,borderColor:'#bbb', borderWidth: 1}}>
                         <TextInput
                             style={[LocalStyles.textStyle, {height:39,width: 260}]}
                             placeholder={'关键字'}

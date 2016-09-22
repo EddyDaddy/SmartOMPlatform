@@ -6,8 +6,6 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
     TouchableOpacity,
     InteractionManager,
     View,
@@ -36,8 +34,6 @@ var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
 var dividerWidth = Util.pxToHeight(2);
 var keyTextSize = Util.pxToTextSize(35);
-
-var TouchableElement = TouchableHighlight;
 
 const LocalStyles = StyleSheet.create({
     container: {
@@ -171,9 +167,6 @@ class WorkOrderDetail extends React.Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        /*if (Platform.OS === 'android') {
-         TouchableElement = TouchableOpacity;
-         }*/
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -235,12 +228,12 @@ class WorkOrderDetail extends React.Component {
                                 设备
                             </Text>
                         </View>
-                        <TouchableElement onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
                             <Text
                                 style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
                                 {this.state.deviceInfo}
                             </Text>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                     <View style={LocalStyles.itemStyle}>
                         <View style={LocalStyles.keyTextContainer}>
@@ -282,22 +275,22 @@ class WorkOrderDetail extends React.Component {
                         </Text>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}}
+                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
                                           onPress={this.processBySelf.bind(this, data)}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     开始处理
                                 </Text>
                             </View>
-                        </TouchableElement>
-                        <TouchableElement style={{ elevation: 3, borderRadius: 6,margin:5}}
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
                                           onPress={this.dispathToOther}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     转派
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

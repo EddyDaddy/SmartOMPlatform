@@ -9,9 +9,8 @@ import {
     Text,
     Image,
     Navigator,
-    TouchableHighlight,
+    TouchableOpacity,
     InteractionManager,
-    TouchableNativeFeedback,
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
 import {myStyles} from '../MainPage/MainPage.js';
@@ -19,7 +18,6 @@ import DevicesDtails from './DevicesDetails.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
-var TouchableByPlatForm = TouchableHighlight;
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 export default class DevicesPage extends React.Component {
@@ -67,11 +65,6 @@ export default class DevicesPage extends React.Component {
             </View>
         );
     }
-    componentDidMount() {
-        if(Platform.OS === 'android'){
-            TouchableByPlatForm = TouchableNativeFeedback
-        }
-    }
 
     _onFetch(page = 1, callback, options) {
         setTimeout(() => {
@@ -110,7 +103,7 @@ export default class DevicesPage extends React.Component {
     _renderRowView(rowData) {
 
         return (
-            <TouchableByPlatForm
+            <TouchableOpacity activeOpacity={0.5}
                 underlayColor='#c8c7cc'
                 onPress={this._buttonClickItem(this, rowData)}
             >
@@ -121,7 +114,7 @@ export default class DevicesPage extends React.Component {
                         <Text style={{flex:1,color: '#4b4b4b'}}>{'客源的哈派出所'}</Text>
                     </View>
                 </View>
-            </TouchableByPlatForm>
+            </TouchableOpacity>
         );
     }
 
@@ -139,7 +132,7 @@ export default class DevicesPage extends React.Component {
     /*加载更多的view*/
     _paginationWaitingView(paginateCallback) {
         return (
-            <TouchableHighlight
+            <TouchableOpacity activeOpacity={0.5}
                 underlayColor='#c8c7cc'
                 onPress={paginateCallback}
                 style={myStyles.paginationView}
@@ -147,7 +140,7 @@ export default class DevicesPage extends React.Component {
                 <Text style={myStyles.actionsLabel}>
                     加载更多...
                 </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
     }
 
@@ -159,14 +152,14 @@ export default class DevicesPage extends React.Component {
                     暂无数据
                 </Text>
 
-                <TouchableHighlight
+                <TouchableOpacity activeOpacity={0.5}
                     underlayColor='#c8c7cc'
                     onPress={refreshCallback}
                 >
                     <Text>
                         ↻
                     </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
         );
     }

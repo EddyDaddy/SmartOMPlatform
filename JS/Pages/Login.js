@@ -5,9 +5,8 @@ import {
     TextInput,
     View,
     Image,
-    TouchableNativeFeedback,
     InteractionManager,
-    TouchableHighlight
+    TouchableOpacity
 } from 'react-native';
 import Util from '../Utils/Utils.js'
 import Register from './Register.js';
@@ -19,7 +18,6 @@ import Main from './Main';
 import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../Utils/Storage.js';
 import {hex_md5} from '../Utils/MD5.js';
@@ -41,9 +39,6 @@ class Login extends Component {
     }
 
     componentWillMount() {
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         storge.get('loginInfo').then((result)=> {
             if (result !== null && result[0] !== null) {
                 this.setState({userName: result[0]});
@@ -95,10 +90,8 @@ class Login extends Component {
                     <View style={styles.root}>
                         <Image source={require('./img/name.png')}
                                style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
-                        <Image
-                            source={require('./img/logo_img.png')}
-                            style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}
-                        />
+                        <Image source={require('./img/logo_img.png')}
+                               style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}/>
                         <View style={styles.borderView}>
                             <TextInput style={styles.textInput}
                                        onChangeText={(userName) => this.setState({userName})}
@@ -106,8 +99,7 @@ class Login extends Component {
                                        maxLength={11}
                                        value={this.state.userName}
                                        placeholder="请输入您的手机号"
-                                       placeholderTextColor='white'
-                            />
+                                       placeholderTextColor='white'/>
                         </View>
 
                         <View style={styles.borderViewCommon}>
@@ -116,11 +108,10 @@ class Login extends Component {
                                        value={this.state.passWord}
                                        secureTextEntry={true}
                                        placeholder="请输入密码"
-                                       placeholderTextColor='white'
-                            />
+                                       placeholderTextColor='white'/>
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
-                            <TouchableElement
+                            <TouchableOpacity activeOpacity={0.5}
                                 onPress={()=> this.buttonRegisterOrLoginAction(0)}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
@@ -128,17 +119,17 @@ class Login extends Component {
                                         登录
                                     </Text>
                                 </View>
-                            </TouchableElement>
+                            </TouchableOpacity>
                         </View>
                         <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
-                            <TouchableElement
+                            <TouchableOpacity activeOpacity={0.5}
                                 onPress={()=>this._navigator.push({component: Register, name: 'Register'})}>
                                 <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
                                     <Text style={{color: 'red'}}>
                                         忘记密码？
                                     </Text>
                                 </View>
-                            </TouchableElement>
+                            </TouchableOpacity>
                         </View>
 
                     </View>

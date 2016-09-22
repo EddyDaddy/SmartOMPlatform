@@ -6,8 +6,7 @@ import {
     TextInput,
     View,
     Image,
-    TouchableNativeFeedback,
-    TouchableHighlight,
+    TouchableOpacity,
     Navigator,
     BackAndroid,
     DeviceEventEmitter,
@@ -20,7 +19,6 @@ import Toast from 'react-native-root-toast';
 import ToolBar from '../Utils/ToolBar';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var TouchableElement = TouchableHighlight;
 var _navigator;
 var phone;
 var goBack = () => {
@@ -42,13 +40,8 @@ class Register extends React.Component {
 
 
     componentDidMount() {
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
-
         BackAndroid.addEventListener('hardwareBackPress', goBack);
         phone = this.state.userName;
-
     }
 
     componentWillUnmount() {
@@ -112,10 +105,11 @@ class Register extends React.Component {
                         </View>
                         <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
                              borderRadius: 6}}>
-                            <TouchableElement onPress={()=>{Toast.show('点击获取验证码');
-                                                                this.setState({isPressed: true});
-                                                                this.setInterval();
-                                                                }}
+                            <TouchableOpacity activeOpacity={0.5}
+                                              onPress={()=>{Toast.show('点击获取验证码');
+                                                            this.setState({isPressed: true});
+                                                            this.setInterval();
+                                                            }}
                                               underlayColor={'#ffd5ad'}
                                               disabled={this.state.isPressed}
                                               style={{flex: 1, borderRadius: 6}}>
@@ -125,7 +119,7 @@ class Register extends React.Component {
                                         {this.state.isPressed ? this.state.countTime + 's后获取' : '验证码'}
                                     </Text>
                                 </View>
-                            </TouchableElement>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.borderViewCommon}>
@@ -147,7 +141,7 @@ class Register extends React.Component {
                         />
                     </View>
                     <View style={{marginTop: screenWidth / 20}}>
-                        <TouchableElement
+                        <TouchableOpacity activeOpacity={0.5}
                             onPress={()=>{
                                 this._navigator.replace({name: 'Main', component: Main});
                                 storge.save('phoneNum', this.state.userName);
@@ -161,7 +155,7 @@ class Register extends React.Component {
                                     确 认
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                 </View>
 

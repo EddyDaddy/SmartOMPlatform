@@ -11,9 +11,8 @@ import {
     Image,
     Navigator,
     StyleSheet,
-    TouchableHighlight,
+    TouchableOpacity,
     InteractionManager,
-    TouchableNativeFeedback,
     RefreshControl,
 }from 'react-native';
 import {connect} from 'react-redux';
@@ -28,7 +27,6 @@ import Toast from 'react-native-root-toast';
 import getWOAction from '../../actions/GetWorkOrderAction';
 import LoadingView from '../../Utils/LoadingView';
 import * as urls from '../../Utils/Request';
-var TouchableByPlatForm = TouchableHighlight;
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
@@ -64,10 +62,6 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-
-        if (Platform.OS === 'android') {
-            TouchableByPlatForm = TouchableNativeFeedback
-        }
         const {dispatch} = this.props;
         // storge.get('loginInfo').then((result) => {
         //     console.log(result);
@@ -131,7 +125,7 @@ class MainPage extends React.Component {
     _renderRowView(rowData) {
 
         return (
-            <TouchableByPlatForm
+            <TouchableOpacity activeOpacity={0.5}
                 underlayColor='#c8c7cc'
                 onPress={this._buttonClickItem.bind(this, rowData)}
             >
@@ -143,7 +137,7 @@ class MainPage extends React.Component {
                         <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{Util.returnStatus(rowData.status)}</Text>
                     </View>
                 </View>
-            </TouchableByPlatForm>
+            </TouchableOpacity>
         );
     }
 
@@ -161,7 +155,7 @@ class MainPage extends React.Component {
     /*加载更多的view*/
     _paginationWaitingView(paginateCallback) {
         return (
-            <TouchableHighlight
+            <TouchableOpacity activeOpacity={0.5}
                 underlayColor='#c8c7cc'
                 onPress={paginateCallback}
                 style={myStyles.paginationView}
@@ -169,7 +163,7 @@ class MainPage extends React.Component {
                 <Text style={myStyles.actionsLabel}>
                     加载更多...
                 </Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
     }
 
@@ -181,14 +175,14 @@ class MainPage extends React.Component {
                     暂无数据
                 </Text>
 
-                <TouchableHighlight
+                <TouchableOpacity activeOpacity={0.5}
                     underlayColor='#c8c7cc'
                     onPress={refreshCallback}
                 >
                     <Text>
                         ↻
                     </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -207,7 +201,7 @@ class MainPage extends React.Component {
         )
     }
 
-    
+
 
     render() {
         return (

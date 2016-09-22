@@ -7,8 +7,7 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
+    TouchableOpacity,
     View,
     Image,
     Text,
@@ -31,8 +30,6 @@ var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
 var dividerWidth = 2 * Util.pixel;
 var keyTextSize = Util.pxToTextSize(35);
-
-var TouchableElement = TouchableHighlight;
 
 const DeviceDetailStyles = StyleSheet.create({
     container: {
@@ -136,9 +133,6 @@ export default class DevicesDetails extends React.Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });

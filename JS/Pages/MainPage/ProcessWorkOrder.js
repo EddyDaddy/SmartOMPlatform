@@ -6,8 +6,6 @@ import {
     BackAndroid,
     StyleSheet,
     ScrollView,
-    TouchableHighlight,
-    TouchableNativeFeedback,
     TouchableOpacity,
     TextInput,
     Picker,
@@ -22,9 +20,6 @@ import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 
 import ImagePicker from "react-native-image-picker";
-
-
-var TouchableElement = TouchableHighlight;
 
 var screenWidth = Util.size.width;
 
@@ -194,9 +189,6 @@ class ProcessWorkOrder extends React.Component {
 
     componentDidMount() {
         var navigator = this._navigator;
-        if (Platform.OS === 'android') {
-            TouchableElement = TouchableNativeFeedback;
-        }
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -299,13 +291,13 @@ class ProcessWorkOrder extends React.Component {
                         </View>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableElement style={{elevation:3,borderRadius:6}} onPress={this.workOrderDone}>
+                        <TouchableOpacity activeOpacity={0.5} style={{elevation:3,borderRadius:6}} onPress={this.workOrderDone}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{color: 'red'}}>
                                     完成
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

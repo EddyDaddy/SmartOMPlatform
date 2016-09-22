@@ -10,6 +10,8 @@
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
 
+    <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="gqIlmP6QzLyHLKHf1D4g68LP75DFWkHH"/>
+
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="22" />

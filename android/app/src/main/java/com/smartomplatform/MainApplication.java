@@ -12,6 +12,7 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.List;
 import com.imagepicker.ImagePickerPackage;
+import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,7 +26,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new ImagePickerPackage()
+          new ImagePickerPackage(),
+          new BaiduMapPackage(getApplicationContext())
       );
     }
   };

@@ -231,7 +231,7 @@ class ProcessWorkOrder extends React.Component {
                             </Text>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <View style={{borderWidth: 1, borderColor: 'bbb'}}>
+                            <View style={{borderWidth: 1, borderColor: '#bbb'}}>
                                 <Picker
                                     style={{height:20, width:120,justifyContent: 'center', alignItems: 'center'}}
                                     selectedValue={this.state.type}

@@ -153,6 +153,7 @@ class UserInfo extends React.Component {
                     <View style={{marginTop: screenWidth/18}}>
                         <TouchableElement
                             style={{borderRadius: 6, elevation: 3}}
+                            activeOpacity={0.5}
                             onPress={()=> Toast.show('保存')}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

@@ -113,7 +113,7 @@ export default class User extends React.Component {
                             </View>
                             <View
                                 style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/28}}>
-                                <Image style={{witdh: screenWidth/30, height: screenWidth/16}}
+                                <Image style={{width: screenWidth/30, height: screenWidth/16}}
                                        source={require('../img/next_big.png')}/>
                             </View>
                         </TouchableOpacity>

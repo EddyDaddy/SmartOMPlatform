@@ -2,4 +2,6 @@ rootProject.name = 'SmartOMPlatform'
 
 include ':app'
 include ':react-native-image-picker'
+include ':react-native-baidu-map'
 project(':react-native-image-picker').projectDir = new File(settingsDir, '../node_modules/react-native-image-picker/android')
+project(':react-native-baidu-map').projectDir = new File(settingsDir, '../node_modules/react-native-baidu-map/android')

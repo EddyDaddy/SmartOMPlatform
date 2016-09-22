@@ -11,10 +11,18 @@ import {
 import login from './Login';
 import testMap from './testMap';
 var _navigator = null;
+//禁止左滑返回
+const NoBackSwipe = {
+    ...Navigator.SceneConfigs.HorizontalSwipeJump,
+    gestures: {
+        pop: {}
+    }
+};
 class App extends Component {
     constructor(props) {
         super(props);
     }
+
 
     render() {
         return (
@@ -34,7 +42,7 @@ class App extends Component {
                             return <Component {...route.params} navigator={navigator} />
                         }
                     }
-                    configureScene={() => Navigator.SceneConfigs.PushFromRight}
+                    configureScene={() => {return NoBackSwipe}}
                 />
             </View>
         );

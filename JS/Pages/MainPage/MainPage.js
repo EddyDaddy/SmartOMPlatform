@@ -234,7 +234,7 @@ class MainPage extends React.Component {
     }
 }
 
-var myStyles = {
+export const myStyles = StyleSheet.create({
     paginationView: {
         height: 44,
         justifyContent: 'center',
@@ -281,7 +281,7 @@ var myStyles = {
         justifyContent: 'center',
         backgroundColor: '#FFFFFF',
     }
-};
+});
 
 export default connect((state) => {
     const {getWOReducer} = state;

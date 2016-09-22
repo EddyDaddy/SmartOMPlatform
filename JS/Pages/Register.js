@@ -103,21 +103,12 @@ class Register extends React.Component {
                                        placeholderTextColor='#666666'
                             />
                         </View>
-                        <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d',
-<<<<<<< HEAD
-                             borderRadius: 6}}>
+                        <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d', borderRadius: 6}}>
                             <TouchableOpacity activeOpacity={0.5}
                                               onPress={()=>{Toast.show('点击获取验证码');
                                                             this.setState({isPressed: true});
                                                             this.setInterval();
                                                             }}
-=======
-                             elevation: 3, borderRadius: 6}}>
-                            <TouchableElement onPress={()=>{Toast.show('点击获取验证码');
-                                                                this.setState({isPressed: true});
-                                                                this.setInterval();
-                                                                }}
->>>>>>> origin/master
                                               underlayColor={'#ffd5ad'}
                                               disabled={this.state.isPressed}
                                               style={{flex: 1, borderRadius: 6}}>

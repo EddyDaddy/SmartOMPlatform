@@ -61,7 +61,6 @@ class MainPage extends React.Component {
         };
     }
 
-<<<<<<< HEAD
     componentDidMount() {
         const {dispatch} = this.props;
         // storge.get('loginInfo').then((result) => {
@@ -73,12 +72,6 @@ class MainPage extends React.Component {
         //         Toast.show('未登录');
         //     }
         // });
-=======
-    componentWillMount() {
-        if (Platform.OS === 'android') {
-            TouchableByPlatForm = TouchableNativeFeedback
-        }
->>>>>>> origin/master
     }
 
     _onFetch(page = 1, callback, options) {
@@ -209,11 +202,6 @@ class MainPage extends React.Component {
             <View style={myStyles.separator}/>
         )
     }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 
     render() {
         return (

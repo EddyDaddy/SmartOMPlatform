@@ -121,6 +121,7 @@ class Login extends Component {
                         </View>
                         <View style={{marginTop: screenWidth/36}}>
                             <TouchableElement
+                                style={{elevation: 3}}
                                 onPress={()=> this.buttonRegisterOrLoginAction(0)}>
                                 <View
                                     style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

@@ -7,6 +7,7 @@ import {
     View,
     Text,
     Navigator,
+    Image,
     TouchableOpacity
 }from 'react-native';
 import Util from '../Utils/Utils.js';
@@ -32,9 +33,8 @@ export default class ToolBar extends React.Component {
         if (this.props.left) {
             var leftView = (
             <TouchableOpacity onPress={() => naviGoBack(navigator)}>
-                <Text style={{color: 'white', marginLeft: screenWidth/60}}>
-                    返回
-                </Text>
+                <Image style={{marginLeft: screenWidth/18, height: screenWidth/18, width: screenWidth/27}}
+                       source={require('../Pages/img/back.png')}/>
             </TouchableOpacity>
         )
         }

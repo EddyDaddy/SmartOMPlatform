@@ -63,21 +63,10 @@ class MainPage extends React.Component {
         };
     }
 
-    componentDidMount() {
-
+    componentWillMount() {
         if (Platform.OS === 'android') {
             TouchableByPlatForm = TouchableNativeFeedback
         }
-        const {dispatch} = this.props;
-        // storge.get('loginInfo').then((result) => {
-        //     console.log(result);
-        //     loginInfo = result;
-        //     if (result) {
-        //         dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
-        //     } else {
-        //         Toast.show('未登录');
-        //     }
-        // });
     }
 
     _onFetch(page = 1, callback, options) {
@@ -99,7 +88,7 @@ class MainPage extends React.Component {
                             Toast.show('获取失败');
                             callback([]);
                         }
-                    }else{
+                    } else {
                         callback([]);
                     }
                 });
@@ -139,8 +128,10 @@ class MainPage extends React.Component {
                     <Text >{rowData.street}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text style={{color: '#4b4b4b'}}>{rowData.deviceName}</Text>
-                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{Util.returnPriType(rowData.pri)}</Text>
-                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{Util.returnStatus(rowData.status)}</Text>
+                        <Text
+                            style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{Util.returnPriType(rowData.pri)}</Text>
+                        <Text
+                            style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{Util.returnStatus(rowData.status)}</Text>
                     </View>
                 </View>
             </TouchableByPlatForm>
@@ -207,7 +198,6 @@ class MainPage extends React.Component {
         )
     }
 
-    
 
     render() {
         return (
@@ -300,16 +290,16 @@ export default connect((state) => {
 
 //数据格式
 /*
-{
-    "id": "1",
-    "status": "1",
-    "pri": "4",
-    "cameraId": "1",
-    "remark": "摄像头遮挡",
-    "entName": " ",
-    "deviceName": "J98H-26/1(高清球机)",
-    "ip": "51.37.1.10",
-    "street": "普明派出所",
-    "createTime": "2016-09-20 18:00:19",
-    "updateTime": ""
-}*/
+ {
+ "id": "1",
+ "status": "1",
+ "pri": "4",
+ "cameraId": "1",
+ "remark": "摄像头遮挡",
+ "entName": " ",
+ "deviceName": "J98H-26/1(高清球机)",
+ "ip": "51.37.1.10",
+ "street": "普明派出所",
+ "createTime": "2016-09-20 18:00:19",
+ "updateTime": ""
+ }*/

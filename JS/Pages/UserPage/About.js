@@ -2,6 +2,7 @@
  * Created by demon on 2016/9/22.
  */
 
+
 import React, {Component, PropTypes} from 'react';
 import {
     StyleSheet,
@@ -42,7 +43,7 @@ var imagePickerOption = {
     }
 };
 
-class UserInfo extends React.Component {
+class About extends React.Component {
     // 构造
     constructor(props) {
         super(props);
@@ -104,48 +105,29 @@ class UserInfo extends React.Component {
     render() {
         return (
             <View style={styles.root}>
-                <ToolBar title={'个人信息'} left={true} navigator={this.props.navigator}/>
+                <ToolBar title={'关于'} left={true} navigator={this.props.navigator}/>
                 <View style={styles.top}>
                     <View style={styles.item}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                头像
-                            </Text>
-                        </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <TouchableElement onPress={this.choiceUserIcon.bind(this)}
-                                          activeOpacity={0.5}
-                                          underlayColor={'white'}
-                                          style={{flexDirection:'row', alignItems:'center', flex: 3.2, paddingLeft: screenWidth/20}}>
-                            <View
-                                style={{flexDirection:'row', alignItems:'center', flex: 3.2}}>
-
-                                <Image
-                                    style={{width: screenWidth/7.2, height: screenWidth/7.2, borderRadius: screenWidth/14.4}}
-                                    source={this.state.userIcon=='-'?require('../img/my_icon_detail.png'):{uri:this.state.userIcon}}/>
-                                <View
-                                    style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
-                                    <Image style={{width: screenWidth/38.6, height: screenWidth/24}}
-                                           source={require('../img/next_small.png')}/>
-                                </View>
-                            </View>
-                        </TouchableElement>
+                        <Image style={{tintColor: '#0054a7',marginTop: screenWidth/12, width: screenWidth/1.8, height: screenWidth/18}}
+                               source={require('../img/name.png')}
+                        />
+                        <Image style={{marginTop: screenWidth/18, width: screenWidth/3.8, height: screenWidth/3.8}}
+                               source={require('../img/logo_img.png')}
+                        />
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                     <View style={styles.item1}>
                         <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                公司名称
-                            </Text>
+                            <Image style={{width: screenWidth/27, height: screenWidth/27}}
+                                   source={require('../img/help_icon.png')}/>
                         </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <TouchableElement style={styles.item3}
                                           onPress={this._gotoEntInfo.bind(this)}
                                           activeOpacity={0.5}
                                           underlayColor={'white'}>
-                            <View style={{flex: 3.2, alignItems: 'center', flexDirection: 'row'}}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
                                 <Text style={styles.textRight}>
-                                    九洲视讯
+                                    帮助中心
                                 </Text>
                                 <View
                                     style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
@@ -158,47 +140,32 @@ class UserInfo extends React.Component {
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                     <View style={styles.item1}>
                         <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                姓名
-                            </Text>
+                            <Image style={{width: screenWidth/27, height: screenWidth/27}}
+                                   source={require('../img/phone_icon.png')}/>
                         </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                李四
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                电话
-                            </Text>
-                        </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                13812345678
-                            </Text>
-                        </View>
+                        <TouchableElement style={styles.item3}
+                                          onPress={this._gotoEntInfo.bind(this)}
+                                          activeOpacity={0.5}
+                                          underlayColor={'white'}>
+                            <View style={{flex: 1, flexDirection: 'row'}}>
+                                <Text style={styles.textRight}>
+                                    联系我们
+                                </Text>
+                                <View
+                                    style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
+                                    <Image style={{width: screenWidth/38.6, height: screenWidth/24}}
+                                           source={require('../img/next_small.png')}/>
+                                </View>
+                            </View>
+                        </TouchableElement>
                     </View>
                     <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                 </View>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}>
                     <View style={{marginTop: screenWidth/18}}>
-                        <TouchableElement
-                            style={{borderRadius: 6, elevation: 3}}
-                            activeOpacity={0.5}
-                            onPress={()=> {Toast.show('保存');
-                            storge.save('userIcon', this.state.userIcon)}}>
-                            <View
-                                style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                <Text style={{color: 'red'}}>
-                                    保 存
-                                </Text>
-                            </View>
-                        </TouchableElement>
+                        <Text>
+                            九洲视讯科技有限责任公司 版权所有
+                        </Text>
                     </View>
                 </View>
             </View>
@@ -212,35 +179,32 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     top: {
-        height: screenWidth / 1.5,
+        height: screenWidth / 1.2,
         width: screenWidth,
         backgroundColor: 'white',
     },
     item: {
-        flex: 1.5,
         width: screenWidth,
-        flexDirection: 'row',
-        justifyContent: 'center',
+        height: screenWidth/1.9,
+        alignItems: 'center',
         overflow: 'hidden'
     },
     item1: {
         flex: 1,
         width: screenWidth,
         flexDirection: 'row',
-        justifyContent: 'center',
         overflow: 'hidden'
     },
     item2: {
-        flex: 1,
         justifyContent: 'center',
-        alignItems: 'flex-end',
-        paddingRight: screenWidth / 20,
+        alignItems: 'center',
+        marginLeft: screenWidth/14,
     },
     item3: {
-        flex: 3.2,
+        flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
-        paddingLeft: screenWidth / 20,
+        marginLeft: screenWidth/28,
     },
     textLeft: {
         fontSize: Util.pixel * 37,
@@ -253,4 +217,5 @@ const styles = StyleSheet.create({
 
 });
 
-export default UserInfo;
+export default About;
+

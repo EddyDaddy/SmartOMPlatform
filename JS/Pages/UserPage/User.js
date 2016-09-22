@@ -18,6 +18,8 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import storge from '../../Utils/Storage';
 import UserInfo from './UserInfo';
+import Setting from './Setting';
+import About from './About';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
@@ -66,14 +68,14 @@ export default class User extends React.Component {
     _gotoSetting(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'Setting', component: Setting});
         });
     }
 
     _gotoAbout(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'About', component: About});
         });
     }
 

@@ -4,6 +4,7 @@ import React from 'react'
 import {PixelRatio} from 'react-native';
 import Dimensions from 'Dimensions';
 import Toast from 'react-native-root-toast';
+import { toQueryString } from './CommonUtil';
 
 const Util = {
   ratio: PixelRatio.get(),
@@ -32,24 +33,10 @@ const Util = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        // 'Content-Type': 'application/json'
         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
       },
       body: toQueryString(data)
     };
-
-    function toQueryString(obj) {
-      return obj ? Object.keys(obj).sort().map(function (key) {
-        var val = obj[key];
-        if (Array.isArray(val)) {
-          return val.sort().map(function (val2) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
-          }).join('&');
-        }
-
-        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-      }).join('&') : '';
-    }
 
     fetch(url, fetchOptions)
     .then((response) => {
@@ -60,9 +47,15 @@ const Util = {
       }
     })
     .then((responseData) => {
+      console.log('请求参数：'+toQueryString(data));
+      console.log('请求结果：'+JSON.stringify(responseData));
       callback(responseData);
-      console.log(toQueryString(data));
-    });
+    }).catch(
+        (error) => {
+            callback('');
+            console.log('错误信息：'+error);
+        }
+    );
   },
   key: 'BDKHFSDKJFHSDKFHWEFH-REACT-NATIVE',
 };

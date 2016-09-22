@@ -16,7 +16,7 @@ import Register from './Register.js';
 import {styles} from '../Utils/Styles.js';
 import Toast from 'react-native-root-toast';
 import {connect} from 'react-redux';
-import loginAction from '../actions/LoginAction';
+import {loginAction} from '../actions/LoginAction';
 import Main from './Main';
 import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
@@ -46,7 +46,7 @@ class Login extends Component {
         if (Platform.OS === 'android') {
             TouchableElement = TouchableNativeFeedback;
         }
-        storge.get('phoneNumAndUserToken').then((result)=> {
+        storge.get('loginInfo').then((result)=> {
             if (result[0] !== null) {
                 this.setState({userName: result[0]});
             }
@@ -62,7 +62,7 @@ class Login extends Component {
 
     //用户登录/注册
     buttonRegisterOrLoginAction(position) {
-        const {dispatch, navigator} = this.props;
+        const {dispatch} = this.props;
         if (position === 0) {
             //用户登录
             if (this.state.userName === '') {
@@ -73,33 +73,25 @@ class Login extends Component {
                 Toast.show('密码不能为空...');
                 return;
             }
-            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (response) => {
-                if (response.code === '0') {
-                    console.log(response.msg);
-                    storge.save('phoneNumAndUserToken', [this.state.userName, response.data.userToken]);
+            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (responseData) => {
+                const {navigator} = this.props;
+                console.log('code---->' + responseData.code);
+                if (responseData.code === '0') {
+                    console.log('userToken---->' + responseData.data.userToken);
+                    console.log('repairId---->' + responseData.data.repairId);
+                    storge.save('loginInfo', [this.state.userName, responseData.data.userToken, responseData.data.repairId]);
                     storge.save('passWord', this.state.passWord);
-                    if (response.data) {
-                        InteractionManager.runAfterInteractions(() => {
-                            navigator.replace({name: 'Main', component: Main});
-                        });
-                    }
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.replace({name: 'Main', component: Main});
+                    });
                 }
             }));
-
-
-        } else if (position === 1) {
-            //用户注册
-            InteractionManager.runAfterInteractions(() => {
-                navigator.push({
-                    component: Register,
-                    name: 'Register'
-                });
-            });
         }
     }
 
     getLoginUI() {
         const {loginReducer} = this.props;
+        console.log('密码' + storge.get('passWord'));
         return (
             <View style={styles.root}>
                 <Image source={require('./img/bg.png')}

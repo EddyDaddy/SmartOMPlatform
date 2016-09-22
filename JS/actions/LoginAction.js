@@ -6,7 +6,7 @@ import {LOGIN_URL} from '../Utils/Request';
 import Toast from 'react-native-root-toast';
 import {toQueryString} from '../Utils/CommonUtil';
 
-let loginAction = (userPhone, passWord, callBack) => {
+export let loginAction = (userPhone, passWord, callBack) => {
     return dispatch => {
         dispatch(performLogin());
         const fetchOptions = {
@@ -22,7 +22,6 @@ let loginAction = (userPhone, passWord, callBack) => {
         };
 
 
-
         fetch(LOGIN_URL, fetchOptions)
             .then((response) => {
                 if (response.ok) {
@@ -32,7 +31,7 @@ let loginAction = (userPhone, passWord, callBack) => {
                 }
             })
             .then((responseData) => {
-                console.log(responseData);
+                console.log('登录时的responseData' + responseData.data);
                 callBack(responseData);
                 dispatch(receiveLoginResult(responseData));
                 if (responseData.code === '0') {
@@ -43,7 +42,7 @@ let loginAction = (userPhone, passWord, callBack) => {
             }).catch((error) => {
             Toast.show('网络发生错误,请重试!');
             dispatch(receiveLoginResult(''));
-            console.log('ddddd'+error);
+            console.log('ddddd' + error);
         });
     }
 }
@@ -62,3 +61,7 @@ let receiveLoginResult = (result) => {
 }
 
 export default loginAction;
+
+
+
+

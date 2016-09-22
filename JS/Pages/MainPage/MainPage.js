@@ -2,7 +2,7 @@
  * Created by demon on 2016/9/14.
  * 首页
  */
-import React, {Component,PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     Platform,
     BackAndroid,
@@ -14,8 +14,9 @@ import {
     TouchableHighlight,
     InteractionManager,
     TouchableNativeFeedback,
+    RefreshControl,
 }from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Util from '../../Utils/Utils.js'
 import WorkOrderDetail from './WorkOrderDetail.js'
 import storge from '../../Utils/Storage.js';
@@ -26,6 +27,7 @@ import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
 import getWOAction from '../../actions/GetWorkOrderAction';
 import LoadingView from '../../Utils/LoadingView';
+import * as urls from '../../Utils/Request';
 var TouchableByPlatForm = TouchableHighlight;
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
@@ -44,7 +46,7 @@ const propTypes = {
     dispatch: PropTypes.func.isRequired,
     getWOReducer: PropTypes.object.isRequired
 };
-
+var loginInfo;
 class MainPage extends React.Component {
     // 构造
     constructor(props) {
@@ -54,47 +56,58 @@ class MainPage extends React.Component {
         var dataSource = new ViewPager.DataSource({
             pageHasChanged: (p1, p2) => p1 !== p2,
         });
+
         // 实际的DataSources存放在state中
         this.state = {
-            dataSource: dataSource.cloneWithPages(BANNER_IMGS)
+            dataSource: dataSource.cloneWithPages(BANNER_IMGS),
         };
     }
 
     componentDidMount() {
-        const {dispatch} = this.props;
-        storge.get('phoneNumAndUserToken').then((result) => {
-            console.log(result);
-            if(result){
-                dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
-            }else{
-                Toast.show('不能获取');
-            }
-        });
-        if(Platform.OS === 'android'){
+
+        if (Platform.OS === 'android') {
             TouchableByPlatForm = TouchableNativeFeedback
         }
+        const {dispatch} = this.props;
+        // storge.get('loginInfo').then((result) => {
+        //     console.log(result);
+        //     loginInfo = result;
+        //     if (result) {
+        //         dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
+        //     } else {
+        //         Toast.show('未登录');
+        //     }
+        // });
     }
 
     _onFetch(page = 1, callback, options) {
-        setTimeout(() => {
-            var rows = ['row ' + ((page - 1) * 3 + 1), 'row ' + ((page - 1) * 3 + 2), 'row ' + ((page - 1) * 3 + 3)];
-            if (page === 3) {
-                callback(rows, {
-                    allLoaded: true, // the end of the list is reached
+        storge.get('loginInfo').then((result) => {
+            console.log(result);
+            if (result) {
+                // dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
+                var body = {
+                    'repairUserPhone': result[0],
+                    'userToken': result[1],
+                    // 'status': '',
+                };
+                Util.post(urls.WORKORDER_URL, body, (response) => {
+                    if (response !== undefined) {
+                        if (response.code === '0') {
+                            callback(response.data);
+                            console.log('获取数据成功-------')
+                        } else {
+                            Toast.show('获取失败');
+                            callback([]);
+                        }
+                    }else{
+                        callback([]);
+                    }
                 });
             } else {
-                callback(rows);
+                Toast.show('未登录');
             }
-        }, 1000); // simulating network fetching
-        // Util.post("https://www.baidu.com", '', function (responseData){
-        //     var rows = ['row ' + ((page - 1) * 3 + 1), 'row ' + ((page - 1) * 3 + 2), 'row ' + ((page - 1) * 3 + 3)];
-        //     var rows2 = ['row ' + ((page - 1) * 3 + 1)];
-        //     if (responseData !== null) {
-        //         callback(rows)
-        //     } else {
-        //         callback(rows2)
-        //     }
-        // });
+        });
+
     }
 
     _buttonClickItem(rowData) {
@@ -117,11 +130,11 @@ class MainPage extends React.Component {
                 onPress={() => this._buttonClickItem(rowData)}
             >
                 <View style={myStyles.itemView}>
-                    <Text >{'机场派出所'}</Text>
+                    <Text >{rowData.entName}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text style={{color: '#4b4b4b'}}>{'J98khk'}</Text>
-                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{'紧急'}</Text>
-                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{'待处理'}</Text>
+                        <Text style={{color: '#4b4b4b'}}>{rowData.deviceName}</Text>
+                        <Text style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{rowData.pri}</Text>
+                        <Text style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{rowData.status}</Text>
                     </View>
                 </View>
             </TouchableByPlatForm>
@@ -189,10 +202,6 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const {getWOReducer} = this.props;
-        if(getWOReducer.isLoading){
-            return <LoadingView/>;
-        }
         return (
             <View style={{marginBottom: screenWidth / 7.5}}>
                 <Toolbar title={'首页'}>
@@ -207,8 +216,8 @@ class MainPage extends React.Component {
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
-                            rowView={(rowData)=>this._renderRowView()}
-                            onFetch={this._onFetch}
+                            rowView={this._renderRowView.bind(this)}
+                            onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more
                             refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android

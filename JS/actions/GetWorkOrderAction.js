@@ -31,8 +31,12 @@ let getWOAction = (repairUserPhone, userToken, status, isLoadMore, isRefreshing,
                 }
             })
             .then((responseData) => {
-                console.log('responseData内容是' + responseData.json());
-                dispatch(receiveWorkOrderResult(responseData.data));
+                var result = responseData.data;
+                console.log('responseData的data[0]是' + result);
+                console.log('responseData的data是' + JSON.stringify(responseData.data));
+                console.log('responseData的msg是' + responseData.msg);
+                console.log('responseData的code是' + responseData.code);
+                dispatch(receiveWorkOrderResult(responseData));
                 if (responseData.code === '0') {
                     Toast.show('获取成功');
                 } else {
@@ -40,7 +44,7 @@ let getWOAction = (repairUserPhone, userToken, status, isLoadMore, isRefreshing,
                 }
             }).catch((error) => {
             Toast.show('网络发生错误,请重试!');
-            dispatch(receiveWorkOrderResult([]));
+            dispatch(receiveWorkOrderResult(''));
             console.log('ddddd获取工单接口错误' + error);
         });
     }

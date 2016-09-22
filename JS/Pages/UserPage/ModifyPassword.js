@@ -24,13 +24,9 @@ var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var _navigator;
 var phone;
-var goBack = () => {
-    return naviGoBack(this._navigator);
-};
 class ModifyPassword extends React.Component {
     constructor(props) {
         super(props);
-        this._navigator = this.props.navigator;
         this.state = {
             passWord: '',
             passWord1: '',
@@ -39,12 +35,15 @@ class ModifyPassword extends React.Component {
     }
 
     componentWillMount() {
-
+        const {navigator} = this.props;
+        Toast.show('navigator===='+navigator);
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            return naviGoBack(navigator)
+        });
     }
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress');
-        phone = this.state.userName;
+
     }
 
     componentWillUnmount() {
@@ -117,7 +116,7 @@ class ModifyPassword extends React.Component {
 
 const styles = StyleSheet.create({
         root: {
-            flex: 1, alignItems: 'center'
+            flex: 1, alignItems: 'center', width: screenWidth
         },
         borderView: {
             width: screenWidth / 1.5,

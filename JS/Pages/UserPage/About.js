@@ -25,23 +25,12 @@ import Main from '../Main';
 import Loading from '../../Utils/Loading';
 import ToolBar from '../../Utils/ToolBar';
 import {naviGoBack} from '../../Utils/CommonUtil';
-import EntInfo from './EntInfo';
-import ImagePicker from "react-native-image-picker";
+import ContactUs from './ContactUs';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
-var imagePickerOption = {
-    title: '',
-    takePhotoButtonTitle: '拍照',
-    cancelButtonTitle: '取消',
-    chooseFromLibraryButtonTitle: '照片',
-    storageOptions: {
-        skipBackup: true,
-        path: 'images' //照片存储路径
-    }
-};
 
 class About extends React.Component {
     // 构造
@@ -62,9 +51,6 @@ class About extends React.Component {
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
-        storge.get('userIcon').then((result) => {
-            this.setState({userIcon: result});
-        });
     }
 
     componentDidMount() {
@@ -75,32 +61,12 @@ class About extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
-    _gotoEntInfo() {
+    _gotoContactUs() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'EntInfo', component: EntInfo});
+            navigator.push({name: 'ContactUs', component: ContactUs});
         });
     }
-
-    choiceUserIcon() {
-        ImagePicker.showImagePicker(imagePickerOption, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-                Toast.show('选择图片失败');
-            } else {
-                let imageUri = response.uri;
-                if (Platform.OS === 'ios') {
-                    imageUri = response.uri.replace('file://');
-                }
-                this.setState({
-                    userIcon: imageUri
-                });
-            }
-        });
-    }
-
 
     render() {
         return (
@@ -122,7 +88,7 @@ class About extends React.Component {
                                    source={require('../img/help_icon.png')}/>
                         </View>
                         <TouchableElement style={styles.item3}
-                                          onPress={this._gotoEntInfo.bind(this)}
+                                          onPress={this._gotoContactUs.bind(this)}
                                           activeOpacity={0.5}
                                           underlayColor={'white'}>
                             <View style={{flex: 1, flexDirection: 'row'}}>
@@ -144,7 +110,7 @@ class About extends React.Component {
                                    source={require('../img/phone_icon.png')}/>
                         </View>
                         <TouchableElement style={styles.item3}
-                                          onPress={this._gotoEntInfo.bind(this)}
+                                          onPress={this._gotoContactUs.bind(this)}
                                           activeOpacity={0.5}
                                           underlayColor={'white'}>
                             <View style={{flex: 1, flexDirection: 'row'}}>

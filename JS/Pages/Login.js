@@ -40,7 +40,7 @@ class Login extends Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (Platform.OS === 'android') {
             TouchableElement = TouchableNativeFeedback;
         }

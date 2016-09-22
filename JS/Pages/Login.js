@@ -7,9 +7,7 @@ import {
     Image,
     TouchableNativeFeedback,
     InteractionManager,
-    TouchableHighlight,
-    Navigator,
-    DeviceEventEmitter,
+    TouchableHighlight
 } from 'react-native';
 import Util from '../Utils/Utils.js'
 import Register from './Register.js';
@@ -47,7 +45,7 @@ class Login extends Component {
             TouchableElement = TouchableNativeFeedback;
         }
         storge.get('loginInfo').then((result)=> {
-            if (result[0] !== null) {
+            if (result !== null && result[0] !== null) {
                 this.setState({userName: result[0]});
             }
         });
@@ -56,8 +54,6 @@ class Login extends Component {
                 this.setState({passWord: passWord});
             }
         });
-
-
     }
 
     //用户登录/注册

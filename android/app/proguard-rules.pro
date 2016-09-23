@@ -71,9 +71,10 @@
 -keep class vi.com.** {*;}
 -dontwarn com.baidu.**
 
-# xinge
+# tencent xinge
 
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep class com.tencent.android.tpush.**  {* ;}
 -keep class com.tencent.mid.**  {* ;}
+-dontwarn com.tencent.**

@@ -12,7 +12,6 @@ import {
     InteractionManager,
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
-import storge from '../../Utils/Storage.js';
 import {myStyles} from '../MainPage/MainPage.js';
 import DevicesDtails from './DevicesDetails.js'
 import Toolbar from '../../Utils/ToolBar.js';

@@ -18,7 +18,6 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 import ProcessWorkOrder from './ProcessWorkOrder.js';
-import DispatchWorkOrder from './DispatchWorkOrder.js';
 import BaiduMapPage from './BaiduMapPage.js';
 
 

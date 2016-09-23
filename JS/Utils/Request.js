@@ -1,7 +1,7 @@
 
 
 export const LOGIN_URL='http://120.24.179.24:8080/smartMonitor/api/login';  //登录地址
-//查询工单
+
 export const WORKORDER_URL='http://120.24.179.24:8080/smartMonitor/api/queryProcess';
 //修改密码
 export const MODIFYPASSWORD_URL='http://120.24.179.24:8080/smartMonitor/api/resetPassword';

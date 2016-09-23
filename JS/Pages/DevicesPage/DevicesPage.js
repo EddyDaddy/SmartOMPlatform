@@ -44,7 +44,7 @@ export default class DevicesPage extends React.Component {
                             backgroundColor: '#bcd234',
                             resizeMode: 'contain'
                         }}
-                               source={require('../img/tab_user.png')}/>
+                               source={require('../img/deviceBanner.png')}/>
                     </View>
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView

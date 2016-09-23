@@ -31,9 +31,9 @@ var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
 const BANNER_IMGS = [
-    require('../img/logo_img.png'),
-    require('../img/tab_device.png'),
-    require('../img/tab_user.png')
+    require('../img/mainBanner_1.png'),
+    require('../img/mainBanner_2.png'),
+    require('../img/mainBanner_3.png')
 ];
 
 let isLoadMore = false;

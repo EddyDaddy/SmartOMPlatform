@@ -95,7 +95,7 @@ export default class User extends React.Component {
                             <View style={{marginLeft: screenWidth/13, justifyContent: 'center'}}>
                                 <Image
                                     style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 8}}
-                                    source={this.state.userIcon=='-'?require('../img/my_icon.png'):{uri:this.state.userIcon}}
+                                    source={require('../img/my_icon.png')}
                                 />
                             </View>
                             <View style={{marginLeft: screenWidth/15}}>

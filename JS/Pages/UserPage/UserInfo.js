@@ -41,7 +41,7 @@ var imagePickerOption = {
         path: 'images' //照片存储路径
     }
 };
-
+var display = false;
 
 class UserInfo extends React.Component {
     // 构造
@@ -123,7 +123,7 @@ class UserInfo extends React.Component {
 
                                 <Image
                                     style={{width: screenWidth/7.2, height: screenWidth/7.2, borderRadius: screenWidth/14.4}}
-                                    source={this.state.userIcon=='-'?require('../img/my_icon_detail.png'):{uri:this.state.userIcon}}/>
+                                    source={require('../img/my_icon_detail.png')}/>
                                 <View
                                     style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
                                     <Image style={{width: screenWidth/38.6, height: screenWidth/24}}
@@ -188,7 +188,7 @@ class UserInfo extends React.Component {
                 </View>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}>
                     <View style={{marginTop: screenWidth/18}}>
-                        <TouchableElement
+                        {display?<TouchableElement
                             style={{borderRadius: 6, elevation: 3}}
                             activeOpacity={0.5}
                             onPress={()=> {Toast.show('保存');
@@ -199,7 +199,7 @@ class UserInfo extends React.Component {
                                     保 存
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableElement>:null}
                     </View>
                 </View>
             </View>

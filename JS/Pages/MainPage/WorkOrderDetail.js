@@ -19,6 +19,7 @@ import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 import ProcessWorkOrder from './ProcessWorkOrder.js';
 import DispatchWorkOrder from './DispatchWorkOrder.js';
+import BaiduMapPage from './BaiduMapPage.js';
 
 
 var screenWidth = Util.size.width;
@@ -142,7 +143,16 @@ class WorkOrderDetail extends React.Component {
     }
 
     showLocationInMap() {
-        Toast.show('showLocationInMap');
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                name: 'BaiduMapPage',
+                component: BaiduMapPage,
+                params:{
+                    data:data
+                }
+            });
+        });
     }
 
     processBySelf(data) {

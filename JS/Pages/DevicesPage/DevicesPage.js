@@ -4,7 +4,6 @@
  */
 import React, {Component} from 'react';
 import {
-    Platform,
     View,
     Text,
     Image,
@@ -26,7 +25,6 @@ export default class DevicesPage extends React.Component {
         super(props);
         // 初始状态
         this.state = {};
-        this._buttonClickItem = this._buttonClickItem.bind(this);
     }
 
 
@@ -77,15 +75,6 @@ export default class DevicesPage extends React.Component {
                 callback(rows);
             }
         }, 1000); // simulating network fetching
-        // Util.post("https://www.baidu.com", '', function (responseData){
-        //     var rows = ['row ' + ((page - 1) * 3 + 1), 'row ' + ((page - 1) * 3 + 2), 'row ' + ((page - 1) * 3 + 3)];
-        //     var rows2 = ['row ' + ((page - 1) * 3 + 1)];
-        //     if (responseData !== null) {
-        //         callback(rows)
-        //     } else {
-        //         callback(rows2)
-        //     }
-        // });
     }
 
     _buttonClickItem(rowData) {
@@ -105,7 +94,7 @@ export default class DevicesPage extends React.Component {
         return (
             <TouchableOpacity activeOpacity={0.5}
                 underlayColor='#c8c7cc'
-                onPress={this._buttonClickItem(this, rowData)}
+                onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
                     <View style={{width: screenWidth, flexDirection: 'row'}}>

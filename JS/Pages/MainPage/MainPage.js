@@ -132,11 +132,13 @@ class MainPage extends React.Component {
                 <View style={myStyles.itemView}>
                     <Text >{rowData.street}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text style={{color: '#4b4b4b'}}>{rowData.deviceName}</Text>
+                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex:2.2}}>{rowData.deviceName}</Text>
                         <Text
-                            style={{color: '#ff3f3f', marginLeft: screenWidth / 5}}>{Util.returnPriType(rowData.pri)}</Text>
+                            numberOfLines={1}
+                            style={{color: '#ff3f3f', flex:1}}>{Util.returnPriType(rowData.pri)}</Text>
                         <Text
-                            style={{color: '#ff9900', marginLeft: screenWidth / 6}}>{Util.returnStatus(rowData.status)}</Text>
+                            numberOfLines={1}
+                            style={{color: '#ff9900',flex:0.8}}>{Util.returnStatus(rowData.status)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -250,7 +252,8 @@ export const myStyles = StyleSheet.create({
         backgroundColor: '#FFF',
     },
     actionsLabel: {
-        fontSize: 20,
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     emptyView: {
         justifyContent: 'center',

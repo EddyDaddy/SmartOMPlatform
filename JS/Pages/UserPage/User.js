@@ -18,6 +18,9 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import storge from '../../Utils/Storage';
 import UserInfo from './UserInfo';
+import Setting from './Setting';
+import About from './About';
+import MyWorkOrder from './MyWorkOrder';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
@@ -30,13 +33,18 @@ export default class User extends React.Component {
         // 初始状态
         // _navigator = this.props.navigator;
         this.state = {
-            phoneNum: '18012345678'
+            phoneNum: '18012345678',
+            userIcon: '-'
         };
     }
 
     componentWillMount() {
         storge.get('loginInfo').then((result) => {
             this.setState({phoneNum: result[0]});
+        });
+        storge.get('userIcon').then((result) => {
+            this.setState({userIcon: result});
+            console.log('userIcon----'+result);
         });
     }
 
@@ -54,21 +62,21 @@ export default class User extends React.Component {
     _gotoMyWorkOrder(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'MyWorkOrder', component: MyWorkOrder});
         });
     }
 
     _gotoSetting(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'Setting', component: Setting});
         });
     }
 
     _gotoAbout(){
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({name:'About', component: About});
         });
     }
 
@@ -86,7 +94,7 @@ export default class User extends React.Component {
                             onPress={this._gotoUserInfo.bind(this, userData)}>
                             <View style={{marginLeft: screenWidth/13, justifyContent: 'center'}}>
                                 <Image
-                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 10}}
+                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 8}}
                                     source={require('../img/my_icon.png')}
                                 />
                             </View>

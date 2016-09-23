@@ -25,11 +25,23 @@ import Loading from '../../Utils/Loading';
 import ToolBar from '../../Utils/ToolBar';
 import {naviGoBack} from '../../Utils/CommonUtil';
 import EntInfo from './EntInfo';
+import ImagePicker from "react-native-image-picker";
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
+var imagePickerOption = {
+    title: '',
+    takePhotoButtonTitle: '拍照',
+    cancelButtonTitle: '取消',
+    chooseFromLibraryButtonTitle: '照片',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images' //照片存储路径
+    }
+};
+var display = false;
 
 class UserInfo extends React.Component {
     // 构造
@@ -37,7 +49,9 @@ class UserInfo extends React.Component {
         super(props);
         // 初始状态
         _navigator = this.props.navigator;
-        this.state = {};
+        this.state = {
+            userIcon: '-'
+        };
     }
 
     componentWillMount() {
@@ -47,6 +61,9 @@ class UserInfo extends React.Component {
         }
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
+        });
+        storge.get('userIcon').then((result) => {
+            this.setState({userIcon: result});
         });
     }
 
@@ -58,10 +75,29 @@ class UserInfo extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
-    _gotoEntInfo(){
+    _gotoEntInfo() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             navigator.push({name: 'EntInfo', component: EntInfo});
+        });
+    }
+
+    choiceUserIcon() {
+        ImagePicker.showImagePicker(imagePickerOption, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+                Toast.show('选择图片失败');
+            } else {
+                let imageUri = response.uri;
+                if (Platform.OS === 'ios') {
+                    imageUri = response.uri.replace('file://');
+                }
+                this.setState({
+                    userIcon: imageUri
+                });
+            }
         });
     }
 
@@ -78,15 +114,16 @@ class UserInfo extends React.Component {
                             </Text>
                         </View>
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <TouchableElement onPress={() => Toast.show('选择头像')}
-                                          activeOpacity = {0.5}
+                        <TouchableElement onPress={this.choiceUserIcon.bind(this)}
+                                          activeOpacity={0.5}
                                           underlayColor={'white'}
                                           style={{flexDirection:'row', alignItems:'center', flex: 3.2, paddingLeft: screenWidth/20}}>
                             <View
                                 style={{flexDirection:'row', alignItems:'center', flex: 3.2}}>
 
-                                <Image style={{width: screenWidth/7.2, height: screenWidth/7.2}}
-                                       source={require('../img/my_icon_detail.png')}/>
+                                <Image
+                                    style={{width: screenWidth/7.2, height: screenWidth/7.2, borderRadius: screenWidth/14.4}}
+                                    source={require('../img/my_icon_detail.png')}/>
                                 <View
                                     style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
                                     <Image style={{width: screenWidth/38.6, height: screenWidth/24}}
@@ -105,7 +142,7 @@ class UserInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <TouchableElement style={styles.item3}
                                           onPress={this._gotoEntInfo.bind(this)}
-                                          activeOpacity = {0.5}
+                                          activeOpacity={0.5}
                                           underlayColor={'white'}>
                             <View style={{flex: 3.2, alignItems: 'center', flexDirection: 'row'}}>
                                 <Text style={styles.textRight}>
@@ -151,17 +188,18 @@ class UserInfo extends React.Component {
                 </View>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}>
                     <View style={{marginTop: screenWidth/18}}>
-                        <TouchableElement
+                        {display?<TouchableElement
                             style={{borderRadius: 6, elevation: 3}}
                             activeOpacity={0.5}
-                            onPress={()=> Toast.show('保存')}>
+                            onPress={()=> {Toast.show('保存');
+                            storge.save('userIcon', this.state.userIcon)}}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                 <Text style={{color: 'red'}}>
                                     保 存
                                 </Text>
                             </View>
-                        </TouchableElement>
+                        </TouchableElement>:null}
                     </View>
                 </View>
             </View>

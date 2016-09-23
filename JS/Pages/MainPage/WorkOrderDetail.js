@@ -18,7 +18,6 @@ import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 import ProcessWorkOrder from './ProcessWorkOrder.js';
-import DispatchWorkOrder from './DispatchWorkOrder.js';
 import BaiduMapPage from './BaiduMapPage.js';
 
 
@@ -149,7 +148,7 @@ class WorkOrderDetail extends React.Component {
                 name: 'BaiduMapPage',
                 component: BaiduMapPage,
                 params:{
-                    data:data
+                    addr:this.state.address
                 }
             });
         });
@@ -169,10 +168,7 @@ class WorkOrderDetail extends React.Component {
     }
 
     dispathToOther() {
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'DispatchWorkOrder', component: DispatchWorkOrder});
-        });
+
     }
 
     componentDidMount() {
@@ -187,6 +183,18 @@ class WorkOrderDetail extends React.Component {
     }
 
     render() {
+        let statuTextColor = valueTextColor;
+        if('1'===data.status){
+            statuTextColor = '#FFB90F';
+        }else if('99'===data.status){
+            statuTextColor = 'green';
+        }
+        let priorityTextColor = valueTextColor;
+        if('4'===data.pri){
+            priorityTextColor = 'red';
+        }else if('3'===data.pri()){
+            priorityTextColor = 'yellow';
+        }
         return (
             <View style={LocalStyles.container}>
                 <Toolbar title={'工单详情'} left={true} navigator={this._navigator}>
@@ -228,7 +236,7 @@ class WorkOrderDetail extends React.Component {
                                 优先级
                             </Text>
                         </View>
-                        <Text style={LocalStyles.valueText}>
+                        <Text style={[LocalStyles.valueText,{color:priorityTextColor}]}>
                             {this.state.priority}
                         </Text>
                     </View>
@@ -270,7 +278,7 @@ class WorkOrderDetail extends React.Component {
                                 工单状态
                             </Text>
                         </View>
-                        <Text style={LocalStyles.valueText}>
+                        <Text style={[LocalStyles.valueText,{color:statuTextColor}]}>
                             {this.state.statu}
                         </Text>
                     </View>

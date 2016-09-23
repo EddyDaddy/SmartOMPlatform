@@ -1,7 +1,6 @@
 
-
 export const LOGIN_URL='http://120.24.179.24:8080/smartMonitor/api/login';  //登录地址
-
+//查询工单
 export const WORKORDER_URL='http://120.24.179.24:8080/smartMonitor/api/queryProcess';
 //修改密码
 export const MODIFYPASSWORD_URL='http://120.24.179.24:8080/smartMonitor/api/resetPassword';
@@ -13,3 +12,5 @@ export const QUERYENTINFO_URL='http://120.24.179.24:8080/smartMonitor/api/queryE
 export const SEARCHPROCESS_URL='http://120.24.179.24:8080/smartMonitor/api/searchProcess';
 //上传附件
 export const UPLOAD_URL='http://120.24.179.24:8080/smartMonitor/api/upload';
+
+export const DEVICESINFO_URL='http://120.24.179.24:8080/smartMonitor/api/queryCameraInfo';

@@ -84,6 +84,8 @@ class Login extends Component {
         const {loginReducer} = this.props;
         console.log('密码' + storge.get('passWord'));
         return (
+          <View style={{flexDirection: 'column'}}>
+            <View style={{height:Util.status_bar_height,backgroundColor: '#3fd0a7'}}></View>
             <View style={styles.root}>
                 <Image source={require('./img/bg.png')}
                        style={{width: screenWidth, height: screenHeight}}>
@@ -137,6 +139,7 @@ class Login extends Component {
                 </Image>
                 <Loading visible={loginReducer.loading}/>
             </View>
+          </View>
         )
             ;
     }

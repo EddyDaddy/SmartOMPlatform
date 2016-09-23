@@ -10,6 +10,8 @@ import {
     StatusBar
 } from 'react-native';
 import login from './Login';
+import Welcome from './Welcome';
+import * as XG from 'react-native-tencent-xg';
 var _navigator = null;
 //禁止左滑返回
 const NoBackSwipe = {
@@ -87,34 +89,32 @@ class App extends Component {
         XG.setCredential(2100230682, 'ANF2QS47Q44W');
         XG.register('SampleTester');
         if (Platform.OS === 'ios') {
-        }
         XG.getApplicationIconBadgeNumber()
             .then(badgeNum => {
                 this.setState({badgeNum});
             })
             .then(() => XG.checkPermissions())
             .then(data => console.log(data));
+        }
     }
-}
-
-componentWillUnmount()
-{
-    this.state.eventsHolder.filter(h => !!h).forEach(holder => holder.remove());
-}
 
 
-render()
-{
-    return (
-        <View style={{flex:1}}>
-            <StatusBar
-                translucent={true}
-                backgroundColor="rgba(0, 0, 0, 0.2)"
-                barStyle="light-content"
-            />
-            <Navigator
-                initialRoute={{name:"login",component:login}}
-                renderScene={
+    componentWillUnmount() {
+        this.state.eventsHolder.filter(h => !!h).forEach(holder => holder.remove());
+    }
+
+
+    render() {
+        return (
+            <View style={{flex:1}}>
+                <StatusBar
+                    translucent={true}
+                    backgroundColor="rgba(0, 0, 0, 0.2)"
+                    barStyle="light-content"
+                />
+                <Navigator
+                    initialRoute={{name:"Welcome",component:Welcome}}
+                    renderScene={
                         (route,navigator) =>{
                             _navigator = navigator;
                             let Component = route.component;
@@ -122,10 +122,11 @@ render()
                             return <Component {...route.params} navigator={navigator} />
                         }
                     }
-                configureScene={() => {return NoBackSwipe}}
-            />
-        </View>
-    );
+                    configureScene={() => {return NoBackSwipe}}
+                />
+            </View>
+        );
+    }
 
 }
 

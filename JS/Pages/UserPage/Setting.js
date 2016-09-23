@@ -104,7 +104,10 @@ class Setting extends React.Component {
                             style={{borderRadius: 6, elevation: 3}}
                             activeOpacity={0.5}
                             underlayColor={'#00000000'}
-                            onPress={()=> {Toast.show('退　出');
+                            onPress={()=> {
+                                Toast.show('退出登录');
+                                storge.save('loginInfo', null);
+                                storge.save('passWord', '');
                             }}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

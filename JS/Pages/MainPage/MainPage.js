@@ -62,16 +62,6 @@ class MainPage extends React.Component {
     }
 
     componentDidMount() {
-        const {dispatch} = this.props;
-        // storge.get('loginInfo').then((result) => {
-        //     console.log(result);
-        //     loginInfo = result;
-        //     if (result) {
-        //         dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
-        //     } else {
-        //         Toast.show('未登录');
-        //     }
-        // });
     }
 
     _onFetch(page = 1, callback, options) {

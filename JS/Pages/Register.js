@@ -7,6 +7,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    InteractionManager,
     Navigator,
     BackAndroid,
     DeviceEventEmitter,
@@ -20,15 +21,10 @@ import ToolBar from '../Utils/ToolBar';
 import * as urls from '../Utils/Request';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var _navigator;
 var phone;
-var goBack = () => {
-    return naviGoBack(this._navigator);
-};
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this._navigator = this.props.navigator;
         this.state = {
             userName: '',
             verificationCode: '',
@@ -42,12 +38,14 @@ class Register extends React.Component {
 
 
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', goBack);
-        phone = this.state.userName;
+        const {navigator} = this.props;
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            return naviGoBack(navigator)
+        });
     }
 
     componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress', goBack);
+        BackAndroid.removeEventListener('hardwareBackPress');
         this.clearInterval();
     }
 
@@ -94,7 +92,7 @@ class Register extends React.Component {
             Toast.show('请输入验证码');
             return;
         }
-        if(this.state.passWord1 === this.state.passWord2){
+        if(this.state.passWord1 !== this.state.passWord2){
             Toast.show('两次输入的密码不一致');
             return;
         }
@@ -103,13 +101,18 @@ class Register extends React.Component {
             'newPassword': this.state.passWord1,
             'checkCode': this.state.verificationCode,
         };
+        const {navigator} = this.props;
         Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
             this.setState({isLoading: false});
             if (response !== undefined || response === '') {
                 if (response.code === '0') {
-                    console.log('修改成功');
-                    Toast.show(response.msg);
-                    
+                    console.log(response.msg);
+                    Toast.show('修改成功');
+                    storge.save('loginInfo', [this.state.userName, '', '']);
+                    storge.save('passWord', this.state.passWord1);
+                    InteractionManager.runAfterInteractions(() => {
+                        navigator.pop();
+                    });
                 } else {
                     Toast.show('修改失败');
                     console.log(response.msg);
@@ -187,12 +190,7 @@ class Register extends React.Component {
                     </View>
                     <View style={{marginTop: screenWidth / 20}}>
                         <TouchableOpacity activeOpacity={0.5}
-                            onPress={()=>{
-                                this._navigator.replace({name: 'Main', component: Main});
-                                storge.save('phoneNum', this.state.userName);
-                                storge.save('passWord', this.state.passWord1);
-                                storge.get('passWord').then((passWord)=>{Toast.show('点击登录'+passWord)});
-                                }}
+                            onPress={this.confirmModify.bind(this)}
                             style={{elevation: 3, borderRadius: 6, margin:5}}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

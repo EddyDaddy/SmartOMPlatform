@@ -19,6 +19,7 @@ import Toolbar from '../../Utils/ToolBar.js';
 import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
 import * as urls from '../../Utils/Request';
+import storge from '../../Utils/Storage';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 export default class DevicesPage extends React.Component {

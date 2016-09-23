@@ -19,6 +19,7 @@ import storge from '../Utils/Storage.js';
 import Toast from 'react-native-root-toast';
 import ToolBar from '../Utils/ToolBar';
 import * as urls from '../Utils/Request';
+import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phone;
@@ -74,25 +75,25 @@ class Register extends React.Component {
         this.setState({isPressed: !this.state.isPressed});
     }
 
-    confirmModify(){
+    confirmModify() {
         this.setState({isLoading: true});
-        if(this.state.userName === ''){
+        if (this.state.userName === '') {
             Toast.show('请输入电话号码');
             return;
         }
-        if(this.state.passWord1 === ''){
+        if (this.state.passWord1 === '') {
             Toast.show('请输入新密码');
             return;
         }
-        if(this.state.passWord2 === ''){
+        if (this.state.passWord2 === '') {
             Toast.show('请再次输入新密码');
             return;
         }
-        if(this.state.verificationCode === ''){
+        if (this.state.verificationCode === '') {
             Toast.show('请输入验证码');
             return;
         }
-        if(this.state.passWord1 !== this.state.passWord2){
+        if (this.state.passWord1 !== this.state.passWord2) {
             Toast.show('两次输入的密码不一致');
             return;
         }
@@ -152,7 +153,8 @@ class Register extends React.Component {
                                        placeholderTextColor='#666666'
                             />
                         </View>
-                        <View style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d', borderRadius: 6}}>
+                        <View
+                            style={{marginLeft: screenWidth/30, flex: 1, backgroundColor: '#ffd57d', borderRadius: 6}}>
                             <TouchableOpacity activeOpacity={0.5}
                                               onPress={()=>{Toast.show('点击获取验证码');
                                                             this.setState({isPressed: true});
@@ -190,8 +192,8 @@ class Register extends React.Component {
                     </View>
                     <View style={{marginTop: screenWidth / 20}}>
                         <TouchableOpacity activeOpacity={0.5}
-                            onPress={this.confirmModify.bind(this)}
-                            style={{elevation: 3, borderRadius: 6, margin:5}}>
+                                          onPress={this.confirmModify.bind(this)}
+                                          style={{elevation: 3, borderRadius: 6, margin:5}}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
                                 <Text style={{color: 'red'}}>
@@ -201,7 +203,7 @@ class Register extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-
+                <Loading visible={this.state.isLoading}/>
             </View>
         )
     }

@@ -20,6 +20,7 @@ import {naviGoBack} from '../../Utils/CommonUtil.js';
 import storge from '../../Utils/Storage.js';
 import Toast from 'react-native-root-toast';
 import ToolBar from '../../Utils/ToolBar';
+import Loading from '../../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var _navigator;
@@ -31,12 +32,13 @@ class ModifyPassword extends React.Component {
             passWord: '',
             passWord1: '',
             passWord2: '',
+            isLoading: false
         };
     }
 
     componentWillMount() {
         const {navigator} = this.props;
-        Toast.show('navigator===='+navigator);
+        Toast.show('navigator====' + navigator);
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
@@ -48,6 +50,58 @@ class ModifyPassword extends React.Component {
 
     componentWillUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress');
+    }
+
+    confirmModify() {
+        this.setState({isLoading: true});
+        if (this.state.passWord === '') {
+            Toast.show('请输入旧密码');
+            return;
+        }
+        if (this.state.passWord1 === '') {
+            Toast.show('请输入新密码');
+            return;
+        }
+        if (this.state.passWord2 === '') {
+            Toast.show('请再次输入新密码');
+            return;
+        }
+        if (this.state.verificationCode === '') {
+            Toast.show('请输入验证码');
+            return;
+        }
+        if (this.state.passWord1 !== this.state.passWord2) {
+            Toast.show('两次输入的密码不一致');
+            return;
+        }
+        storge.get('loginInfo').then((result) => {
+            const body = {
+                'repairUserPhone': result[0],
+                'newPassword': this.state.passWord1,
+                'checkCode': this.state.verificationCode,
+            };
+            const {navigator} = this.props;
+            Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
+                this.setState({isLoading: false});
+                if (response !== undefined || response === '') {
+                    if (response.code === '0') {
+                        console.log(response.msg);
+                        Toast.show('修改成功');
+                        storge.save('loginInfo', [this.state.userName, '', '']);
+                        storge.save('passWord', this.state.passWord1);
+                        InteractionManager.runAfterInteractions(() => {
+                            navigator.pop();
+                        });
+                    } else {
+                        Toast.show('修改失败');
+                        console.log(response.msg);
+                    }
+                } else {
+                    Toast.show('网络异常');
+                }
+            });
+        });
+
     }
 
 
@@ -103,7 +157,7 @@ class ModifyPassword extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-
+                <Loading visible={this.state.isLoading}/>
             </View>
         )
     }

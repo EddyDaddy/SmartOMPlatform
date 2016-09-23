@@ -7,6 +7,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.imagepicker.ImagePickerPackage;
+import com.kh.tencentxg.TencentXGPackage;
 
 import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 
@@ -27,7 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new ImagePickerPackage(),
-          new BaiduMapPackage(getApplicationContext())
+          new BaiduMapPackage(getApplicationContext()),
+          new TencentXGPackage()
       );
     }
   };

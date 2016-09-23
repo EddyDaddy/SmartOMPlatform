@@ -35,9 +35,9 @@ var itemHeight = Util.pxToHeight(115);
 var dividerWidth = 2 * Util.pixel;
 var keyTextSize = Util.pxToTextSize(35);
 
-var uploadPhotoItemHeight = Util.pxToHeight(325);
-var photoViewHeight = Util.pxToHeight(270);
-var photoViewWidth = Util.pxToHeight(480);
+var uploadPhotoItemHeight = Util.pxToHeight(300);
+var photoViewHeight = Util.pxToHeight(250);
+var photoViewWeight = Util.pxToHeight(250);
 
 var imagePickerOption = {
     title: '',
@@ -84,7 +84,7 @@ const LocalStyles = StyleSheet.create({
         fontSize: keyTextSize,
         textAlign: 'right',
         //alignSelf:'flex-end',
-        marginRight: Util.pxToWidth(30),
+        marginRight: 30 * Util.pixel,
         color: keyTextColor,
     },
     valueTextContainer: {},
@@ -92,20 +92,20 @@ const LocalStyles = StyleSheet.create({
         flex: 1,
         fontSize: valueTextSize,
         textAlign: 'left',
-        marginLeft: Util.pxToWidth(30),
+        marginLeft: 30 * Util.pixel,
         color: valueTextColor,
     },
     btnItemStyle: {
         flex: 1,
         flexDirection: 'row',
-        paddingTop: Util.pxToHeight(70),
+        paddingTop: 70 * Util.pixel,
         backgroundColor: '#ebebeb',
         justifyContent: 'center',
         alignItems: 'flex-start',
     },
     btnStyle: {
-        width: Util.pxToWidth(730),
-        height: Util.pxToHeight(120),
+        width: 451 * Util.pixel,
+        height: 120 * Util.pixel,
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
@@ -113,11 +113,10 @@ const LocalStyles = StyleSheet.create({
         //elevation:20,
     },
     textInputStyle: {
-        flex:1,
-        margin:6,
+        width: 200,
+        height: 100,
         borderWidth: 3 * Util.pixel,
-        borderColor: '#d7d7d7',
-        elevation:1,
+        borderColor: '#777',
     }
 });
 var data;
@@ -231,10 +230,10 @@ class ProcessWorkOrder extends React.Component {
                                 处理类型
                             </Text>
                         </View>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start',marginLeft:6}}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <View style={{borderWidth: 1, borderColor: '#bbb'}}>
                                 <Picker
-                                    style={{height:Util.pxToHeight(85), width:Util.pxToWidth(430),justifyContent: 'center', alignItems: 'center'}}
+                                    style={{height:20, width:120,justifyContent: 'center', alignItems: 'center'}}
                                     selectedValue={this.state.type}
                                     mode={'dropdown'}
                                     onValueChange={(value) => this.setState({type: value})}>
@@ -250,11 +249,11 @@ class ProcessWorkOrder extends React.Component {
                                 处理前照片
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-start',margin:6}}>
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                             <TouchableOpacity onPress={this.uploadOldPhoto}>
                                 <Image
                                     source={this.state.oldPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.oldPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight,resizeMode:'cover'}}/>
+                                    style={{ width: photoViewWeight, height: photoViewHeight}}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -264,25 +263,28 @@ class ProcessWorkOrder extends React.Component {
                                 处理后照片
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-start',margin:6}}>
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                             <TouchableOpacity onPress={this.uploadNewPhoto}>
                                 <Image
                                     source={this.state.newPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.newPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight}}/>
+                                    style={{ width: photoViewWeight, height: photoViewHeight}}/>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={[LocalStyles.itemStyle,{height:Util.pxToHeight(350)}]}>
-                        <View style={[LocalStyles.keyTextContainer,{height:Util.pxToHeight(350)}]}>
+                    <View style={[LocalStyles.itemStyle,{height:120}]}>
+                        <View style={[LocalStyles.keyTextContainer,{height:120}]}>
                             <Text style={LocalStyles.keyText}>
                                 处理备注
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'stretch'}}>
+                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
                             <View style={LocalStyles.textInputStyle}>
-                                <TextInput style={{flex:1,textAlign:'left',textAlignVertical:'top'}}
+                                <TextInput style={{flex:1}}
+                                           placeholder={'备注信息'}
                                            underlineColorAndroid='#fff'
                                            multiline={true}
+                                    //value={this.state.comment}
+                                           defaultValue={this.state.comment}
                                            maxLength={120}
                                            onChangeText={(newText)=>this.updateComment(newText)}/>
                             </View>

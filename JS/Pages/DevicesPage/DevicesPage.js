@@ -17,7 +17,6 @@ import DevicesDtails from './DevicesDetails.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
-import * as urls from '../../Utils/Request';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 export default class DevicesPage extends React.Component {
@@ -66,37 +65,23 @@ export default class DevicesPage extends React.Component {
     }
 
     _onFetch(page = 1, callback, options) {
-        storge.get('loginInfo').then((result) => {
-            console.log(result);
-            if (result) {
-                var body = {
-                    'repairUserPhone': result[0],
-                    'userToken': result[1],
-                };
-                Util.post(urls.DEVICESINFO_URL, body, (response) => {
-                    if (response !== undefined) {
-                        if (response.code === '0') {
-                            callback(response.data);
-                            console.log('获取数据成功-------')
-                        } else {
-                            Toast.show('获取失败');
-                            callback([]);
-                        }
-                    } else {
-                        callback([]);
-                    }
+        setTimeout(() => {
+            var rows = ['row ' + ((page - 1) * 3 + 1), 'row ' + ((page - 1) * 3 + 2), 'row ' + ((page - 1) * 3 + 3)];
+            if (page === 3) {
+                callback(rows, {
+                    allLoaded: true, // the end of the list is reached
                 });
             } else {
-                Toast.show('未登录');
+                callback(rows);
             }
-        });
+        }, 1000); // simulating network fetching
     }
 
     _buttonClickItem(rowData) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             console.log('跳转到工单详情');
-            navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: rowData}});
+            navigator.push({name: 'DevicesDtails', component: DevicesDtails, data: rowData});
         });
     }
 
@@ -113,9 +98,9 @@ export default class DevicesPage extends React.Component {
             >
                 <View style={myStyles.itemView}>
                     <View style={{width: screenWidth, flexDirection: 'row'}}>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.name}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.deviceName}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.Street}</Text>
+                        <Text style={{flex:1,color: '#4b4b4b'}}>{'天山路口（东）'}</Text>
+                        <Text style={{flex:1,color: '#4b4b4b'}}>{'DSP（抠脚大汉）'}</Text>
+                        <Text style={{flex:1,color: '#4b4b4b'}}>{'客源的哈派出所'}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

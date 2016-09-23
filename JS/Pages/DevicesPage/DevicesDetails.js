@@ -128,9 +128,7 @@ export default class DevicesDetails extends React.Component {
         this._navigator = this.props.navigator;
 
         // 初始状态
-        this.state = {
-            data : this.props.data
-        };
+        this.state = {};
     }
 
     componentDidMount() {
@@ -152,27 +150,27 @@ export default class DevicesDetails extends React.Component {
                 <ScrollView style={DeviceDetailStyles.scrollView}>
                     <View style={DeviceDetailStyles.scrollRootView}>
                         <DeviceDetailItem leftData='企业名称'
-                                          rightData= {this.state.data.name}/>
+                                          rightData='机场派出所'/>
                         <DeviceDetailItem leftData='辖区'
-                                          rightData={this.state.data.Street}/>
+                                          rightData='普明派出所'/>
                         <DeviceDetailItem leftData='籍号'
-                                          rightData={this.state.data.boxId}/>
+                                          rightData='013311'/>
                         <DeviceDetailItem leftData='名称'
-                                          rightData={this.state.data.name}/>
+                                          rightData='四川成都市按实际对话'/>
                         <DeviceDetailItem leftData='网络'
-                                          rightData=''/>
+                                          rightData='联通'/>
                         <DeviceDetailItem leftData='IP地址'
-                                          rightData={this.state.data.ip}/>
+                                          rightData='10.132.20.1'/>
                         <DeviceDetailItem leftData='掩码'
-                                          rightData={this.state.data.mask}/>
+                                          rightData='255.255.255.0'/>
                         <DeviceDetailItem leftData='网关'
-                                          rightData={this.state.data.pole}/>
+                                          rightData='10.132.20.11'/>
                         <DeviceDetailItem leftData='立杆'
-                                          rightData=''/>
+                                          rightData='立杆6米，臂长3米'/>
                         <DeviceDetailItem leftData='位置'
-                                          rightData=''/>
+                                          rightData='机场'/>
                         <DeviceDetailItem leftData='设备'
-                                          rightData={this.state.data.deviceName}/>
+                                          rightData='26/1（高清球机）'/>
                         <View style={[DeviceDetailStyles.itemStyle, {height: null}]}>
                             <View style={[DeviceDetailStyles.keyTextContainer, {height: null}]}>
                                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -187,7 +185,7 @@ export default class DevicesDetails extends React.Component {
                                 justifyContent: 'flex-start',
                                 alignItems: 'center'
                             }}>
-                                <Image source={{uri:this.state.data.photoUrl}}
+                                <Image source={require('../img/tab_user.png') }
                                        style={{margin: 30 * Util.pixel}}/>
                             </View>
                         </View>

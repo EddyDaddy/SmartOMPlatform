@@ -17,6 +17,7 @@ import {naviGoBack} from '../Utils/CommonUtil.js';
 import storge from '../Utils/Storage.js';
 import Toast from 'react-native-root-toast';
 import ToolBar from '../Utils/ToolBar';
+import * as urls from '../Utils/Request';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var _navigator;
@@ -34,7 +35,8 @@ class Register extends React.Component {
             passWord1: '',
             passWord2: '',
             isPressed: false,
-            countTime: 60
+            countTime: 60,
+            isLoading: false
         };
     }
 
@@ -74,10 +76,54 @@ class Register extends React.Component {
         this.setState({isPressed: !this.state.isPressed});
     }
 
+    confirmModify(){
+        this.setState({isLoading: true});
+        if(this.state.userName === ''){
+            Toast.show('请输入电话号码');
+            return;
+        }
+        if(this.state.passWord1 === ''){
+            Toast.show('请输入新密码');
+            return;
+        }
+        if(this.state.passWord2 === ''){
+            Toast.show('请再次输入新密码');
+            return;
+        }
+        if(this.state.verificationCode === ''){
+            Toast.show('请输入验证码');
+            return;
+        }
+        if(this.state.passWord1 === this.state.passWord2){
+            Toast.show('两次输入的密码不一致');
+            return;
+        }
+        const body = {
+            'repairUserPhone': this.state.userName,
+            'newPassword': this.state.passWord1,
+            'checkCode': this.state.verificationCode,
+        };
+        Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
+            this.setState({isLoading: false});
+            if (response !== undefined || response === '') {
+                if (response.code === '0') {
+                    console.log('修改成功');
+                    Toast.show(response.msg);
+                    
+                } else {
+                    Toast.show('修改失败');
+                    console.log(response.msg);
+                }
+            } else {
+                Toast.show('网络异常');
+            }
+        });
+    }
+
 
     getLoginUI() {
         return (
-            <View style={styles.root}>
+            <View style={{flex: 1}}>
                 <ToolBar title={'忘记密码'}/>
                 <Image style={{height: screenWidth/1.9, width: screenWidth}}
                        source={require('./img/reset_pw_img.png')}/>
@@ -171,7 +217,7 @@ class Register extends React.Component {
 
 const styles = StyleSheet.create({
         root: {
-            flex: 1, alignItems: 'center'
+            flex: 1, alignItems: 'center', backgroundColor: 'white'
         },
         borderView: {
             width: screenWidth / 1.5,

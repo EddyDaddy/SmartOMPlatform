@@ -78,7 +78,6 @@ class MainPage extends React.Component {
         storge.get('loginInfo').then((result) => {
             console.log(result);
             if (result) {
-                // dispatch(getWOAction(result[0], result[1], '', isLoadMore, isRefreshing, isLoading));
                 var body = {
                     'repairUserPhone': result[0],
                     'userToken': result[1],

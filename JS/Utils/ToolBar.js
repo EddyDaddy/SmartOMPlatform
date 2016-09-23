@@ -46,6 +46,8 @@ export default class ToolBar extends React.Component {
             )
         }
         return (
+          <View style={{flexDirection: 'column'}}>
+            <View style={{height:Util.status_bar_height,backgroundColor: '#3fd0a7'}}></View>
             <View style={{flexDirection: 'row', backgroundColor: '#3fd0a7'}}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     {leftView}
@@ -60,6 +62,7 @@ export default class ToolBar extends React.Component {
                     {rightView}
                 </View>
             </View>
+          </View>
         );
     }
 }

@@ -17,11 +17,12 @@ import {
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
-import {naviGoBack} from '../../Utils/CommonUtil.js';
+import {naviGoBack, getFileName} from '../../Utils/CommonUtil.js';
 import storge from '../../Utils/Storage';
 import ImagePicker from "react-native-image-picker";
 import * as urls from '../../Utils/Request';
 import Main from '../Main';
+import LoadViewing from '../../Utils/LoadingView';
 
 var screenWidth = Util.size.width;
 
@@ -136,7 +137,9 @@ class ProcessWorkOrder extends React.Component {
             type: '维修',
             oldPhoto: '-',
             newPhoto: '-',
-            comment: data.remark
+            comment: data.remark,
+            isUploadingOld: false,
+            isUploadingNew: false,
         };
 
         this.uploadOldPhoto = this.uploadOldPhoto.bind(this);
@@ -156,9 +159,66 @@ class ProcessWorkOrder extends React.Component {
                 if (Platform.OS === 'ios') {
                     imageUri = response.uri.replace('file://');
                 }
-                this.setState({
-                    oldPhoto: imageUri
+                storge.get('loginInfo').then((result) => {
+                    this.setState({isUploading: true});
+                    let formData = new FormData();
+                    formData.append('file', {uri: imageUri, type: 'application/octet-stream',
+                        name: getFileName(imageUri)});
+                    formData.append('key', getFileName(imageUri));
+                    formData.append('userToken', result[1]);
+                    formData.append('repairUserPhone', result[0]);
+                    formData.append('fileType', 1);
+                    formData.append('businessType', 1);
+                    formData.append('processId', data.id);
+                    console.log(JSON.stringify(formData));
+                    let options = {};
+                    options.body = formData;
+                    options.method = 'post';
+                    fetch(urls.UPLOAD_URL, options).then((response) => {
+                        this.setState({isUploadingOld: false});
+                        console.log('response'+JSON.stringify(response));
+                        if (response.ok) {
+                            return response.json()
+                        } else {
+                            Toast.show('请求失败')
+                        }
+                    }).then((responseData) => {
+                        console.log('请求结果：' + JSON.stringify(responseData));
+                        if (responseData !== undefined) {
+                            if (responseData.code === '-109') {
+                                navigator.resetTo({
+                                    name: 'Login',
+                                    component: Login
+                                })
+                            } else if(responseData.code === '0'){
+                                Toast.show('上传成功');
+                                this.setState({
+                                    oldPhoto: imageUri
+                                });
+                            }else{
+                                Toast.show('上传失败');
+                                console.log(JSON.stringify(responseData.data));
+                            }
+                        }
+                    }).catch(
+                        (error) => {
+                            this.setState({isUploadingOld: false});
+                            Toast.show('上传图片异常')
+                            console.log('错误信息：' + error);
+                        }
+                    );
+                    // storge.get('loginInfo').then((result) => {
+                    //     var body = {
+                    //         'userToken': result[1],
+                    //         'repairUserPhone': result[0],
+                    //         'fileType': '1',
+                    //         'businessType': '1',
+                    //         'processId': data.id,
+                    //         'file':
+                    //     }
+                    // });
                 });
+
             }
         });
     }
@@ -175,8 +235,64 @@ class ProcessWorkOrder extends React.Component {
                 if (Platform.OS === 'ios') {
                     imageUri = response.uri.replace('file://');
                 }
-                this.setState({
-                    newPhoto: imageUri
+                storge.get('loginInfo').then((result) => {
+                    this.setState({isUploadingNew: true});
+                    let formData = new FormData();
+                    formData.append('file', {uri: imageUri, type: 'application/octet-stream',
+                        name: getFileName(imageUri)});
+                    formData.append('key', getFileName(imageUri));
+                    formData.append('userToken', result[1]);
+                    formData.append('repairUserPhone', result[0]);
+                    formData.append('fileType', 1);
+                    formData.append('businessType', 1);
+                    formData.append('processId', data.id);
+                    console.log(JSON.stringify(formData));
+                    let options = {};
+                    options.body = formData;
+                    options.method = 'post';
+                    fetch(urls.UPLOAD_URL, options).then((response) => {
+                        this.setState({isUploadingNew: false});
+                        console.log('response'+JSON.stringify(response));
+                        if (response.ok) {
+                            return response.json()
+                        } else {
+                            Toast.show('请求失败')
+                        }
+                    }).then((responseData) => {
+                        console.log('请求结果：' + JSON.stringify(responseData));
+                        if (responseData !== undefined) {
+                            if (responseData.code === '-109') {
+                                navigator.resetTo({
+                                    name: 'Login',
+                                    component: Login
+                                })
+                            } else if(responseData.code === '0'){
+                                Toast.show('上传成功');
+                                this.setState({
+                                    newPhoto: imageUri
+                                });
+                            }else{
+                                Toast.show('上传失败');
+                                console.log(JSON.stringify(responseData.data));
+                            }
+                        }
+                    }).catch(
+                        (error) => {
+                            this.setState({isUploadingNew: false});
+                            Toast.show('上传图片异常')
+                            console.log('错误信息：' + error);
+                        }
+                    );
+                    // storge.get('loginInfo').then((result) => {
+                    //     var body = {
+                    //         'userToken': result[1],
+                    //         'repairUserPhone': result[0],
+                    //         'fileType': '1',
+                    //         'businessType': '1',
+                    //         'processId': data.id,
+                    //         'file':
+                    //     }
+                    // });
                 });
             }
         });
@@ -279,7 +395,9 @@ class ProcessWorkOrder extends React.Component {
                             <TouchableOpacity onPress={this.uploadOldPhoto}>
                                 <Image
                                     source={this.state.oldPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.oldPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight,resizeMode:'cover'}}/>
+                                    style={{ width: photoViewWidth, height: photoViewHeight,resizeMode:'cover'}}>
+                                    {this.state.isUploadingOld?<LoadViewing/>:null}
+                                </Image>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -293,7 +411,9 @@ class ProcessWorkOrder extends React.Component {
                             <TouchableOpacity onPress={this.uploadNewPhoto}>
                                 <Image
                                     source={this.state.newPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.newPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight}}/>
+                                    style={{ width: photoViewWidth, height: photoViewHeight}}>
+                                    {this.state.isUploadingNew?<LoadViewing/>:null}
+                                    </Image>
                             </TouchableOpacity>
                         </View>
                     </View>

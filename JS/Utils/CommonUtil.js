@@ -16,60 +16,64 @@
  *
  */
 export const naviGoBack = (navigator) => {
-  if (navigator && navigator.getCurrentRoutes().length > 1) {
-    navigator.pop();
-    return true;
-  }
-  return false;
+    if (navigator && navigator.getCurrentRoutes().length > 1) {
+        navigator.pop();
+        return true;
+    }
+    return false;
 };
 
 export const toQueryString = (obj) => {
-  return obj ? Object.keys(obj).sort().map(function (key) {
-    var val = obj[key];
-    if (Array.isArray(val)) {
-      return val.sort().map(function (val2) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
-      }).join('&');
-    }
+    return obj ? Object.keys(obj).sort().map(function (key) {
+        var val = obj[key];
+        if (Array.isArray(val)) {
+            return val.sort().map(function (val2) {
+                return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+            }).join('&');
+        }
 
-    return encodeURIComponent(key) + '=' + encodeURIComponent(val);
-  }).join('&') : '';
+        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+    }).join('&') : '';
 }
 
 export const obj2str = (o) => {
 
-  var r = [];
+    var r = [];
 
-  if(typeof o =="string") return "\""+o.replace(/([\'\"\\])/g,"\\$1").replace(/(\n)/g,"\\n").replace(/(\r)/g,"\\r").replace(/(\t)/g,"\\t")+"\"";
+    if (typeof o == "string") return "\"" + o.replace(/([\'\"\\])/g, "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g, "\\t") + "\"";
 
-  if(typeof o =="undefined") return "";
+    if (typeof o == "undefined") return "";
 
-  if(typeof o == "object"){
+    if (typeof o == "object") {
 
-    if(o===null) return "null";
+        if (o === null) return "null";
 
-    else if(!o.sort){
+        else if (!o.sort) {
 
-      for(var i in o)
+            for (var i in o)
 
-        r.push(i+":"+obj2str(o[i]))
+                r.push(i + ":" + obj2str(o[i]))
 
-      r="{"+r.join()+"}"
+            r = "{" + r.join() + "}"
 
-    }else{
+        } else {
 
-      for(var i =0;i<o.length;i++)
+            for (var i = 0; i < o.length; i++)
 
-        r.push(obj2str(o[i]))
+                r.push(obj2str(o[i]))
 
-      r="["+r.join()+"]"
+            r = "[" + r.join() + "]"
+
+        }
+
+        return r;
 
     }
 
-    return r;
+    return o.toString();
 
-  }
-
-  return o.toString();
-
+}
+export const getFileName = (o) => {
+    var pos = o.lastIndexOf("\/");
+    return o.substring(pos + 1);
 }

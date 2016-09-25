@@ -41,7 +41,7 @@ class Main extends React.Component {
         });
     }
 
-    componentWillUnMount() {
+    componentDidUnMount() {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 

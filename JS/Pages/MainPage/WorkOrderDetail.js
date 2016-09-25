@@ -149,7 +149,9 @@ class WorkOrderDetail extends React.Component {
                 name: 'BaiduMapPage',
                 component: BaiduMapPage,
                 params:{
-                    addr:this.state.address
+                    addr:this.state.address,
+                    longitudeBd:data.longitudeBd,
+                    latitudeBd:data.latitudeBd
                 }
             });
         });

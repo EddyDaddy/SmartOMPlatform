@@ -25,20 +25,20 @@ class BaiduMapPage extends React.Component {
         //成员变量需在构造函数中生命
         this._navigator = this.props.navigator;
         this.addr = this.props.addr;
-        this.longitudeBd = this.props.longitudeBd;
-        this.latitudeBd = this.props.latitudeBd;
+        this.longitudeBd = Number(this.props.longitudeBd);
+        this.latitudeBd = Number(this.props.latitudeBd);
         this.mLocation = undefined;
 
         this.state = {
             mayType: MapTypes.NORMAL,
             zoom: 18,
             marker: {
-                latitude:this.latitudeBd,
-                longitude:this.longitudeBd
+                latitude:Number(this.latitudeBd),
+                longitude:Number(this.longitudeBd)
             },
             center: {
-                latitude:this.latitudeBd,
-                longitude:this.longitudeBd
+                latitude:Number(this.latitudeBd),
+                longitude:Number(this.longitudeBd)
             },
             loading:false
         };

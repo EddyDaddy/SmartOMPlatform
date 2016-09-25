@@ -50,7 +50,7 @@ export default class DevicesPage extends React.Component {
                     <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
                         <GiftedListView
                             rowView={this._renderRowView.bind(this)}
-                            onFetch={this._onFetch}
+                            onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
                             pagination={true} // enable infinite scrolling using touch to load more
                             refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android

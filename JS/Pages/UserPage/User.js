@@ -21,11 +21,12 @@ import UserInfo from './UserInfo';
 import Setting from './Setting';
 import About from './About';
 import MyWorkOrder from './MyWorkOrder';
+import * as urls from '../../Utils/Request';
+import LoadView from '../../Utils/LoadingView';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
 var _navigator;
-var userData;
 export default class User extends React.Component {
     // 构造
     constructor(props) {
@@ -34,17 +35,34 @@ export default class User extends React.Component {
         // _navigator = this.props.navigator;
         this.state = {
             phoneNum: '18012345678',
-            userIcon: '-'
+            userName: '',
+            userIcon: '-',
+            isOk: false,
         };
     }
 
     componentWillMount() {
+        const {navigator} = this.props;
         storge.get('loginInfo').then((result) => {
             this.setState({phoneNum: result[0]});
-        });
-        storge.get('userIcon').then((result) => {
-            this.setState({userIcon: result});
-            console.log('userIcon----'+result);
+            var body = {
+                'repairUserPhone': result[0],
+                'userToken': result[1]
+            }
+            Util.post(urls.QUERYENTINFO_URL, body, navigator, (response) => {
+                this.setState({
+                    isOk: true
+                });
+                if (response !== undefined && response !== '') {
+                    Toast.show('返回结果异常');
+                } else {
+                    if (response.code === '0') {
+                        userName = response.data[0].linkMan;
+                    } else {
+                        Toast.show('获取失败');
+                    }
+                }
+            });
         });
     }
 
@@ -52,31 +70,35 @@ export default class User extends React.Component {
 
     }
 
-    _gotoUserInfo(data){
+    _gotoUserInfo(data) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'UserInfo', component: UserInfo});
+            navigator.push({
+                name: 'UserInfo', component: UserInfo, params: {
+                    data: this.state.data
+                }
+            });
         });
     }
 
-    _gotoMyWorkOrder(){
+    _gotoMyWorkOrder() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'MyWorkOrder', component: MyWorkOrder});
+            navigator.push({name: 'MyWorkOrder', component: MyWorkOrder});
         });
     }
 
-    _gotoSetting(){
+    _gotoSetting() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'Setting', component: Setting});
+            navigator.push({name: 'Setting', component: Setting});
         });
     }
 
-    _gotoAbout(){
+    _gotoAbout() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name:'About', component: About});
+            navigator.push({name: 'About', component: About});
         });
     }
 
@@ -86,107 +108,161 @@ export default class User extends React.Component {
             <View style={{flex: 1}}>
                 <Toolbar title={'我的'}/>
                 <View style={{width: screenWidth, height: Util.pixel, backgroundColor: 'white'}}/>
-                <View style={{flex: 1}}>
-                    <View style={{width: screenWidth, height:screenWidth/2.8, backgroundColor: '#3fd0a7'}}>
-                        <TouchableOpacity
-                            style={{flex: 1, flexDirection: 'row'}}
-                            activeOpacity={1}
-                            onPress={this._gotoUserInfo.bind(this, userData)}>
-                            <View style={{marginLeft: screenWidth/13, justifyContent: 'center'}}>
+                {this.state.isOk ?
+                    <View style={{flex: 1}}>
+                        <View style={{width: screenWidth, height: screenWidth / 2.8, backgroundColor: '#3fd0a7'}}>
+                            <TouchableOpacity
+                                style={{flex: 1, flexDirection: 'row'}}
+                                activeOpacity={1}
+                                onPress={this._gotoUserInfo.bind(this)}>
+                                <View style={{marginLeft: screenWidth / 13, justifyContent: 'center'}}>
+                                    <Image
+                                        style={{
+                                            width: screenWidth / 4,
+                                            height: screenWidth / 4,
+                                            borderRadius: screenWidth / 8
+                                        }}
+                                        source={require('../img/my_icon.png')}
+                                    />
+                                </View>
+                                <View style={{marginLeft: screenWidth / 15}}>
+                                    <Text style={{
+                                        color: 'white',
+                                        marginTop: screenWidth / 12,
+                                        fontSize: Util.pixel * 44
+                                    }}>
+                                        {this.state.userName}
+                                    </Text>
+                                    <View style={{flexDirection: 'row', marginTop: screenWidth / 40}}>
+                                        <Text style={{color: 'white', fontSize: Util.pixel * 37}}>
+                                            职位：
+                                        </Text>
+                                        <Text style={{color: '#ffff00', fontSize: Util.pixel * 37}}>
+                                            工程师
+                                        </Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', marginTop: screenWidth / 60}}>
+                                        <Text style={{color: 'white', fontSize: Util.pixel * 37}}>
+                                            电话：
+                                        </Text>
+                                        <Text style={{color: '#ffff00', fontSize: Util.pixel * 37}}>
+                                            {this.state.phoneNum}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        alignItems: 'flex-end',
+                                        justifyContent: 'center',
+                                        marginRight: screenWidth / 28
+                                    }}>
+                                    <Image style={{width: screenWidth / 30, height: screenWidth / 16}}
+                                           source={require('../img/next_big.png')}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={{
+                                height: screenHeight / 12,
+                                width: screenWidth,
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }}>
+                            <TouchableOpacity
+                                style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
+                                activeOpacity={1}
+                                onPress={this._gotoMyWorkOrder.bind(this)}>
                                 <Image
-                                    style={{width: screenWidth / 4, height: screenWidth / 4, borderRadius: screenWidth / 8}}
-                                    source={require('../img/my_icon.png')}
-                                />
-                            </View>
-                            <View style={{marginLeft: screenWidth/15}}>
-                                <Text style={{color: 'white', marginTop: screenWidth/12, fontSize: Util.pixel*44}}>
-                                    职工姓名（生产一部）
+                                    style={{
+                                        width: screenWidth / 18,
+                                        height: screenWidth / 17,
+                                        marginLeft: screenWidth / 18
+                                    }}
+                                    source={require('../img/my_workorder_img.png')}/>
+                                <Text
+                                    style={{marginLeft: screenWidth / 18}}>
+                                    我的工单
                                 </Text>
-                                <View style={{flexDirection: 'row', marginTop: screenWidth/40}}>
-                                    <Text style={{color: 'white', fontSize: Util.pixel*37}}>
-                                        职位：
-                                    </Text>
-                                    <Text style={{color: '#ffff00', fontSize: Util.pixel*37}}>
-                                        工程师
-                                    </Text>
+                                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                    <Image style={{
+                                        width: screenWidth / 56,
+                                        height: screenWidth / 30,
+                                        marginRight: screenWidth / 18
+                                    }}
+                                           source={require('../img/next_small.png')}/>
                                 </View>
-                                <View style={{flexDirection: 'row', marginTop: screenWidth/60}}>
-                                    <Text style={{color: 'white', fontSize: Util.pixel*37}}>
-                                        电话：
-                                    </Text>
-                                    <Text style={{color: '#ffff00', fontSize: Util.pixel*37}}>
-                                        {this.state.phoneNum}
-                                    </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View
+                            style={{
+                                height: screenHeight / 12,
+                                width: screenWidth,
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }}>
+                            <TouchableOpacity
+                                style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
+                                activeOpacity={1}
+                                onPress={this._gotoSetting.bind(this)}>
+                                <Image
+                                    style={{
+                                        width: screenWidth / 14,
+                                        height: screenWidth / 14,
+                                        marginLeft: screenWidth / 18
+                                    }}
+                                    source={require('../img/setting.png')}/>
+                                <Text
+                                    style={{marginLeft: screenWidth / 18}}>
+                                    设置
+                                </Text>
+                                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                    <Image style={{
+                                        width: screenWidth / 56,
+                                        height: screenWidth / 30,
+                                        marginRight: screenWidth / 18
+                                    }}
+                                           source={require('../img/next_small.png')}/>
                                 </View>
-                            </View>
-                            <View
-                                style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/28}}>
-                                <Image style={{width: screenWidth/30, height: screenWidth/16}}
-                                       source={require('../img/next_big.png')}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View
-                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
-                            activeOpacity={1}
-                            onPress={this._gotoMyWorkOrder.bind(this)}>
-                            <Image
-                                style={{width: screenWidth/18, height: screenWidth/17, marginLeft: screenWidth/18}}
-                                source={require('../img/my_workorder_img.png')}/>
-                            <Text
-                                style={{marginLeft: screenWidth/18}}>
-                                我的工单
-                            </Text>
-                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
-                                       source={require('../img/next_small.png')}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View
-                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
-                            activeOpacity={1}
-                            onPress={this._gotoSetting.bind(this)}>
-                            <Image
-                                style={{width: screenWidth/14, height: screenWidth/14, marginLeft: screenWidth/18}}
-                                source={require('../img/setting.png')}/>
-                            <Text
-                                style={{marginLeft: screenWidth/18}}>
-                                设置
-                            </Text>
-                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
-                                       source={require('../img/next_small.png')}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View
-                        style={{height: screenHeight/12, width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
-                        <TouchableOpacity
-                            style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
-                            activeOpacity={1}
-                            onPress={this._gotoAbout.bind(this)}>
-                            <Image
-                                style={{width: screenWidth/15, height: screenWidth/14, marginLeft: screenWidth/18}}
-                                source={require('../img/about_img.png')}/>
-                            <Text
-                                style={{marginLeft: screenWidth/18}}>
-                                关于
-                            </Text>
-                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
-                                <Image style={{width: screenWidth/56, height: screenWidth/30, marginRight: screenWidth/18}}
-                                       source={require('../img/next_small.png')}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View
+                            style={{
+                                height: screenHeight / 12,
+                                width: screenWidth,
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }}>
+                            <TouchableOpacity
+                                style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
+                                activeOpacity={1}
+                                onPress={this._gotoAbout.bind(this)}>
+                                <Image
+                                    style={{
+                                        width: screenWidth / 15,
+                                        height: screenWidth / 14,
+                                        marginLeft: screenWidth / 18
+                                    }}
+                                    source={require('../img/about_img.png')}/>
+                                <Text
+                                    style={{marginLeft: screenWidth / 18}}>
+                                    关于
+                                </Text>
+                                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                    <Image style={{
+                                        width: screenWidth / 56,
+                                        height: screenWidth / 30,
+                                        marginRight: screenWidth / 18
+                                    }}
+                                           source={require('../img/next_small.png')}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                    </View> :
+                    <LoadView/>}
             </View>
         );
     }

@@ -42,6 +42,7 @@ var imagePickerOption = {
     }
 };
 var display = false;
+var userData;
 
 class UserInfo extends React.Component {
     // 构造

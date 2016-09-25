@@ -30,7 +30,6 @@ import ImagePicker from "react-native-image-picker";
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
-var _navigator;
 import storge from '../../Utils/Storage.js';
 import DatePicker from 'react-native-datepicker';
 import * as urls from '../../Utils/Request';
@@ -50,7 +49,7 @@ export default class MyWorkOrder extends React.Component {
     }
 
     componentWillMount() {
-        var navigator = this._navigator;
+        const {navigator} = this.props;
         if (Platform.OS === 'android') {
             TouchableElement = TouchableOpacity;
         }
@@ -118,11 +117,11 @@ export default class MyWorkOrder extends React.Component {
                     Toast.show('搜索访问异常');
                 } else {
                     if (response.code === '0') {
-                        if(response.data.length > 0) {
+                        if (response.data.length > 0) {
                             this.setState({
                                 dataSource: ds.cloneWithRows(response.data),
                             });
-                        }else{
+                        } else {
                             Toast.show('搜索结果为空')
                         }
                     } else {
@@ -139,80 +138,93 @@ export default class MyWorkOrder extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <ToolBar title={'我的工单'} left={true} navigator={navigator}/>
-                <DatePicker
-                    style={{width: 200}}
-                    date={this.state.startDate}
-                    mode="date"
-                    placeholder="2016-01-01"
-                    format="YYYY-MM-DD"
-                    minDate="2016-01-01"
-                    maxDate="2019-12-31"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36,
-                        },
-                    }}
-                    onDateChange={(date) => {
-                        this.setState({startDate: date})
-                    }}
-                />
-                <DatePicker
-                    style={{width: 200}}
-                    date={this.state.endDate}
-                    mode="date"
-                    placeholder="2016-01-01"
-                    format="YYYY-MM-DD"
-                    minDate="2016-01-01"
-                    maxDate="2019-12-31"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    showIcon={false}
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36,
-                        },
-                    }}
-                    onDateChange={(date) => {
-                        this.setState({endDate: date})
-                    }}
-                />
-                <TouchableOpacity
-                    style={{borderRadius: 6, elevation: 3}}
-                    activeOpacity={0.5}
-                    onPress={this._search.bind(this)}>
-                    <View
-                        style={{
-                            width: screenWidth / 1.5,
-                            height: screenWidth / 9,
-                            borderRadius: 6,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#ffd57d'
-                        }}>
-                        <Text style={{color: 'red'}}>
-                            搜 索
+                <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: screenWidth / 20,}}>
+                            开始时间
                         </Text>
+                        <DatePicker
+                            style={{width: 180}}
+                            date={this.state.startDate}
+                            mode="date"
+                            placeholder="2016-01-01"
+                            format="YYYY-MM-DD"
+                            minDate="2016-01-01"
+                            maxDate="2019-12-31"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({startDate: date})
+                            }}
+                        />
                     </View>
-                </TouchableOpacity>
-                <View style={{flex: 1}}>
-                    <ListView
-                        renderRow={(rowData) => this._renderRowView(rowData)}
-                        dataSource={this.state.dataSource}
-                    />
+                    <View style={{flexDirection: 'row', alignItems: 'center',marginTop: screenWidth/100}}>
+                        <Text style={{fontSize: screenWidth / 20,}}>
+                            结束时间
+                        </Text>
+                        <DatePicker
+                            style={{width: 180}}
+                            date={this.state.endDate}
+                            mode="date"
+                            placeholder="2016-01-01"
+                            format="YYYY-MM-DD"
+                            minDate="2016-01-01"
+                            maxDate="2019-12-31"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            showIcon={true}
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({endDate: date})
+                            }}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={{borderRadius: 6, elevation: 3, marginTop: screenWidth/30}}
+                        activeOpacity={0.5}
+                        onPress={this._search.bind(this)}>
+                        <View
+                            style={{
+                                width: screenWidth / 1.5,
+                                height: screenWidth / 9,
+                                borderRadius: 6,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: '#ffd57d',
+                            }}>
+                            <Text style={{color: 'red'}}>
+                                搜 索
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={{flex: 1}}>
+                        <ListView
+                            style={{marginTop: screenWidth/30}}
+                            renderRow={(rowData) => this._renderRowView(rowData)}
+                            dataSource={this.state.dataSource}
+                        />
+                    </View>
                 </View>
             </View>
         );

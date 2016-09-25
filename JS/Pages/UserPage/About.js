@@ -29,7 +29,6 @@ import ContactUs from './ContactUs';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
-var _navigator;
 import storge from '../../Utils/Storage.js';
 
 class About extends React.Component {
@@ -44,7 +43,7 @@ class About extends React.Component {
     }
 
     componentWillMount() {
-        var navigator = this._navigator;
+        const {navigator} = this.props;
         if (Platform.OS === 'android') {
             TouchableElement = TouchableOpacity;
         }
@@ -173,11 +172,11 @@ const styles = StyleSheet.create({
         marginLeft: screenWidth/28,
     },
     textLeft: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: '#666666',
     },
     textRight: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: 'black',
     },
 

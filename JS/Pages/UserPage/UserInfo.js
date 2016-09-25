@@ -29,7 +29,6 @@ import ImagePicker from "react-native-image-picker";
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
-var _navigator;
 import storge from '../../Utils/Storage.js';
 var imagePickerOption = {
     title: '',
@@ -49,7 +48,6 @@ class UserInfo extends React.Component {
     constructor(props) {
         super(props);
         // 初始状态
-        _navigator = this.props.navigator;
         userData = this.props.data;
         this.state = {
             userIcon: '-'
@@ -57,7 +55,7 @@ class UserInfo extends React.Component {
     }
 
     componentWillMount() {
-        var navigator = this._navigator;
+        const {navigator} = this.props;
         if (Platform.OS === 'android') {
             TouchableElement = TouchableOpacity;
         }
@@ -248,11 +246,11 @@ const styles = StyleSheet.create({
         paddingLeft: screenWidth / 20,
     },
     textLeft: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: '#666666',
     },
     textRight: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: 'black',
     },
 

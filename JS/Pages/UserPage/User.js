@@ -132,23 +132,23 @@ export default class User extends React.Component {
                                     <Text style={{
                                         color: 'white',
                                         marginTop: screenWidth / 12,
-                                        fontSize: Util.pixel * 44
+                                        fontSize: screenWidth/24.5
                                     }}>
                                         {this.state.userName}
                                     </Text>
                                     <View style={{flexDirection: 'row', marginTop: screenWidth / 40}}>
-                                        <Text style={{color: 'white', fontSize: Util.pixel * 37}}>
+                                        <Text style={{color: 'white', fontSize: screenWidth/29}}>
                                             职位：
                                         </Text>
-                                        <Text style={{color: '#ffff00', fontSize: Util.pixel * 37}}>
+                                        <Text style={{color: '#ffff00', fontSize: screenWidth/29}}>
                                             工程师
                                         </Text>
                                     </View>
                                     <View style={{flexDirection: 'row', marginTop: screenWidth / 60}}>
-                                        <Text style={{color: 'white', fontSize: Util.pixel * 37}}>
+                                        <Text style={{color: 'white', fontSize: screenWidth/29}}>
                                             电话：
                                         </Text>
-                                        <Text style={{color: '#ffff00', fontSize: Util.pixel * 37}}>
+                                        <Text style={{color: '#ffff00', fontSize: screenWidth/29}}>
                                             {this.state.phoneNum}
                                         </Text>
                                     </View>
@@ -184,7 +184,7 @@ export default class User extends React.Component {
                                     }}
                                     source={require('../img/my_workorder_img.png')}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     我的工单
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -217,7 +217,7 @@ export default class User extends React.Component {
                                     }}
                                     source={require('../img/setting.png')}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     设置
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -250,7 +250,7 @@ export default class User extends React.Component {
                                     }}
                                     source={require('../img/about_img.png')}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     关于
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>

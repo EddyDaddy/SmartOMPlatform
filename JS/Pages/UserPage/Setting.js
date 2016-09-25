@@ -50,7 +50,7 @@ class Setting extends React.Component {
     }
 
     componentWillMount() {
-        var navigator = this._navigator;
+        const {navigator} = this.props;
         if (Platform.OS === 'android') {
             TouchableElement = TouchableOpacity;
         }
@@ -114,7 +114,7 @@ class Setting extends React.Component {
                     <View style={styles.top}>
                         <Image style={{width: screenWidth/27, height: screenWidth/19, marginLeft: screenWidth/16}}
                                source={require('../img/lock_icon.png')}/>
-                        <Text style={{marginLeft: Util.pixel*38, fontSize: Util.pixel*38, color:'#666666'}}>
+                        <Text style={{marginLeft: screenWidth/28, fontSize: screenWidth/28, color:'#666666'}}>
                             登录密码修改
                         </Text>
                         <View

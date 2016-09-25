@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
         paddingLeft: screenWidth / 20,
     },
     textLeft: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: '#666666',
     },
     textRight: {
-        fontSize: Util.pixel * 37,
+        fontSize: screenWidth/29,
         color: 'black',
     },
 

@@ -38,7 +38,6 @@ class ModifyPassword extends React.Component {
 
     componentWillMount() {
         const {navigator} = this.props;
-        Toast.show('navigator====' + navigator);
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });

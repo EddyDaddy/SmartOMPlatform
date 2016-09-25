@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import {
     Platform,
+    Alert,
     BackAndroid,
     StyleSheet,
     ScrollView,
@@ -168,7 +169,10 @@ class WorkOrderDetail extends React.Component {
     }
 
     dispathToOther() {
-
+        Alert.alert('提示','您确定要转派吗?',
+            [{text:'取消',onPress:() => {}},
+                {text:'确定',onPress:() => {}}
+            ]);
     }
 
     componentDidMount() {
@@ -192,7 +196,7 @@ class WorkOrderDetail extends React.Component {
         let priorityTextColor = valueTextColor;
         if('4'===data.pri){
             priorityTextColor = 'red';
-        }else if('3'===data.pri()){
+        }else if('3'===data.pri){
             priorityTextColor = 'yellow';
         }
         return (
@@ -302,7 +306,7 @@ class WorkOrderDetail extends React.Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
-                                          onPress={this.dispathToOther}>
+                                          onPress={this.dispathToOther.bind(this)}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{ color: 'red' }}>
                                     转派

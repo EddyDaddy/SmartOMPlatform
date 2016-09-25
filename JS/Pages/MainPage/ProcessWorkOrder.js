@@ -18,8 +18,10 @@ import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
-
+import storge from '../../Utils/Storage';
 import ImagePicker from "react-native-image-picker";
+import * as urls from '../../Utils/Request';
+import Main from '../Main';
 
 var screenWidth = Util.size.width;
 
@@ -185,7 +187,30 @@ class ProcessWorkOrder extends React.Component {
     }
 
     workOrderDone() {
-        Toast.show('workOrderDone');
+        const {navigator} = this.props;
+        storge.get('loginInfo').then((result) => {
+            var body = {
+                'repairUserPhone': result[0],
+                'userToken': result[1],
+                'typeId': this.state.type,
+                'processId': data.id,
+                'status': data.status,
+                'remark': this.state.comment,
+            }
+            Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
+                if(response === undefined || response === ''){
+                    Toast.show('处理失败');
+                }else{
+                    if(response.code === '0'){
+                        Toast.show('处理成功');
+                        navigator.resetTo({name: 'Main', component: Main});
+                    }else{
+                        Toast.show('处理失败');
+                        console.log(response.msg);
+                    }
+                }
+            });
+        });
     }
 
     componentDidMount() {

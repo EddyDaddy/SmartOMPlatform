@@ -10,6 +10,7 @@ import React, {Component, PropTypes} from 'react';
 import {
     StyleSheet,
     Platform,
+    Alert,
     Text,
     TextInput,
     View,
@@ -35,6 +36,7 @@ var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
 import ModifyPassword from './ModifyPassword';
+import * as urls from '../../Utils/Request';
 
 class Setting extends React.Component {
     // 构造
@@ -76,6 +78,30 @@ class Setting extends React.Component {
         });
     }
 
+    _logout(){
+        const {navigator} = this.props;
+        storge.get('loginInfo').then((result) => {
+            var body = {
+                'repairUserPhone': result[0],
+                'userToken': result[1],
+            };
+            Util.post(urls.LOGOUT_URL, body, navigator, (response) => {
+                if(response === undefined || response === ''){
+                    Toast.show('退出失败!');
+                }else{
+                    if(response.code === '0'){
+                        Toast.show('退出登录');
+                        storge.save('loginInfo', null);
+                        storge.save('passWord', '');
+                        navigator.pop();
+                    }else{
+                        Toast.show('退出失败');
+                        console.log(response.msg);
+                    }
+                }
+            });
+        })
+    }
 
     render() {
         return (
@@ -105,9 +131,10 @@ class Setting extends React.Component {
                             activeOpacity={0.5}
                             underlayColor={'#00000000'}
                             onPress={()=> {
-                                Toast.show('退出登录');
-                                storge.save('loginInfo', null);
-                                storge.save('passWord', '');
+                                Alert.alert('提示','您确定要退出吗?',
+                                    [{text:'取消',onPress:() => {}},
+                                        {text:'确定',onPress:() => { this._logout() }}
+                                    ]);
                             }}>
                             <View
                                 style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>

@@ -67,6 +67,7 @@ export default class DevicesPage extends React.Component {
     }
 
     _onFetch(page = 1, callback, options) {
+        const {navigator} = this.props;
         storge.get('loginInfo').then((result) => {
             console.log(result);
             if (result) {
@@ -74,7 +75,7 @@ export default class DevicesPage extends React.Component {
                     'repairUserPhone': result[0],
                     'userToken': result[1],
                 };
-                Util.post(urls.DEVICESINFO_URL, body, (response) => {
+                Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
                     if (response !== undefined) {
                         if (response.code === '0') {
                             callback(response.data);

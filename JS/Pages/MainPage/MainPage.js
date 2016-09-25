@@ -27,6 +27,7 @@ import Toast from 'react-native-root-toast';
 import getWOAction from '../../actions/GetWorkOrderAction';
 import LoadingView from '../../Utils/LoadingView';
 import * as urls from '../../Utils/Request';
+import Login from '../Login';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 
@@ -65,6 +66,7 @@ class MainPage extends React.Component {
     }
 
     _onFetch(page = 1, callback, options) {
+        const {navigator} = this.props;
         storge.get('loginInfo').then((result) => {
             console.log(result);
             if (result) {
@@ -73,7 +75,7 @@ class MainPage extends React.Component {
                     'userToken': result[1],
                     // 'status': '',
                 };
-                Util.post(urls.WORKORDER_URL, body, (response) => {
+                Util.post(urls.WORKORDER_URL, body, navigator, (response) => {
                     if (response !== undefined) {
                         if (response.code === '0') {
                             callback(response.data);
@@ -88,6 +90,10 @@ class MainPage extends React.Component {
                 });
             } else {
                 Toast.show('未登录');
+                navigator.resetTo({
+                    name: 'Login',
+                    component:Login
+                })
             }
         });
 

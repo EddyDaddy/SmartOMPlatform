@@ -83,7 +83,9 @@ class ModifyPassword extends React.Component {
             const {navigator} = this.props;
             Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
                 this.setState({isLoading: false});
-                if (response !== undefined || response === '') {
+                if (response === undefined || response !== '') {
+                    Toast.show('网络异常');
+                } else {
                     if (response.code === '0') {
                         console.log(response.msg);
                         Toast.show('修改成功');
@@ -96,8 +98,6 @@ class ModifyPassword extends React.Component {
                         Toast.show('修改失败');
                         console.log(response.msg);
                     }
-                } else {
-                    Toast.show('网络异常');
                 }
             });
         });

@@ -1,10 +1,11 @@
 // obtained from react native tutorials
 
 import React from 'react'
-import {PixelRatio,Platform} from 'react-native';
+import {PixelRatio, Platform} from 'react-native';
 import Dimensions from 'Dimensions';
 import Toast from 'react-native-root-toast';
 import {toQueryString} from './CommonUtil';
+import Login from '../Pages/Login';
 
 const Util = {
     status_bar_height: Platform.OS === 'iOS' ? 20 : 25,
@@ -56,7 +57,7 @@ const Util = {
         }
     },
 
-    post(url, data, callback) {
+    post(url, data, navigator, callback) {
         const fetchOptions = {
             method: 'POST',
             headers: {
@@ -77,7 +78,17 @@ const Util = {
             .then((responseData) => {
                 console.log('请求参数：' + toQueryString(data));
                 console.log('请求结果：' + JSON.stringify(responseData));
-                callback(responseData);
+                if (responseData !== undefined) {
+                    if (responseData.code === '-109') {
+                        navigator.resetTo({
+                            name: 'Login',
+                            component: Login
+                        })
+                    } else {
+                        callback(responseData);
+                    }
+
+                }
             }).catch(
             (error) => {
                 callback('');

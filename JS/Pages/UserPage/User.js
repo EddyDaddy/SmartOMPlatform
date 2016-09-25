@@ -53,11 +53,14 @@ export default class User extends React.Component {
                 this.setState({
                     isOk: true
                 });
-                if (response !== undefined && response !== '') {
+                if (response === undefined && response === '') {
                     Toast.show('返回结果异常');
                 } else {
                     if (response.code === '0') {
-                        userName = response.data[0].linkMan;
+                        this.setState({
+                            userName: response.data[0].linkman,
+                            data: response.data[0],
+                        });
                     } else {
                         Toast.show('获取失败');
                     }

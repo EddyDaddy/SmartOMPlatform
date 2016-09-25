@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.kh.tencentxg.TencentXGPackage;
+import com.smartomplatform.nav.NavPackage;
 
 import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 
@@ -29,7 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new ImagePickerPackage(),
           new BaiduMapPackage(getApplicationContext()),
-          new TencentXGPackage()
+          new TencentXGPackage(),
+          new NavPackage()
       );
     }
   };

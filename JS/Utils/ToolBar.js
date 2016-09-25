@@ -22,6 +22,7 @@ export default class ToolBar extends React.Component {
         super(props);
         // this._navigator = this.props.navigator;
         // 初始状态
+        this.rightCallBack = this.props.rightCallBack;
         this.state = {};
     }
 
@@ -38,9 +39,20 @@ export default class ToolBar extends React.Component {
             </TouchableOpacity>
         )
         }
-        if (this.props.right) {
+        if(Object.prototype.toString.call(this.props.right) === "[object String]"){
             var rightView = (
-                <Text style={{color: 'white', marginRight: screenWidth/60}}>
+                <TouchableOpacity
+                    onPress={
+                        this.rightCallBack
+                    }>
+                    <Text style={{color: 'white', marginRight: screenWidth/50}}>
+                        {this.props.right}
+                    </Text>
+                </TouchableOpacity>
+            )
+        }else if (this.props.right) {
+            var rightView = (
+                <Text style={{color: 'white', marginRight: screenWidth/50}}>
                     保存
                 </Text>
             )

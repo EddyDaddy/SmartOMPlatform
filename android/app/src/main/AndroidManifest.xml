@@ -122,6 +122,17 @@
                 <!--android:name="XG_V2_ACCESS_KEY"-->
                 <!--android:value="ANF2QS47Q44W" />-->
 
+        <activity
+                android:name=".nav.NavGuideActivity"
+                android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
+                android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
     </application>
 

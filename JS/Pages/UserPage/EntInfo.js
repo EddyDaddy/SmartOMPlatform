@@ -33,6 +33,7 @@ var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
+var userData
 
 class EntInfo extends React.Component {
     // 构造
@@ -40,6 +41,7 @@ class EntInfo extends React.Component {
         super(props);
         // 初始状态
         _navigator = this.props.navigator;
+        userData = this.props.data;
         this.state = {};
     }
 
@@ -76,7 +78,7 @@ class EntInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                2454545
+                                {userData.repairId}
                             </Text>
                         </View>
                     </View>
@@ -90,7 +92,7 @@ class EntInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                九洲视讯
+                                {userData.repairName}
                             </Text>
                         </View>
                     </View>
@@ -104,7 +106,7 @@ class EntInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                李四
+                                {userData.linkman}
                             </Text>
                         </View>
                     </View>
@@ -119,7 +121,7 @@ class EntInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                13512345678
+                                {userData.linkman}
                             </Text>
                         </View>
                     </View>

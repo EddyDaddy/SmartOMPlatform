@@ -50,6 +50,7 @@ class UserInfo extends React.Component {
         super(props);
         // 初始状态
         _navigator = this.props.navigator;
+        userData = this.props.data;
         this.state = {
             userIcon: '-'
         };
@@ -79,7 +80,9 @@ class UserInfo extends React.Component {
     _gotoEntInfo() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'EntInfo', component: EntInfo});
+            navigator.push({name: 'EntInfo', component: EntInfo, params: {
+                data: userData
+            }});
         });
     }
 
@@ -147,7 +150,7 @@ class UserInfo extends React.Component {
                                           underlayColor={'white'}>
                             <View style={{flex: 3.2, alignItems: 'center', flexDirection: 'row'}}>
                                 <Text style={styles.textRight}>
-                                    九洲视讯
+                                    {userData.repairName}
                                 </Text>
                                 <View
                                     style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
@@ -167,7 +170,7 @@ class UserInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                李四
+                                {userData.linkman}
                             </Text>
                         </View>
                     </View>
@@ -181,7 +184,7 @@ class UserInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                13812345678
+                                {userData.contactNumber}
                             </Text>
                         </View>
                     </View>

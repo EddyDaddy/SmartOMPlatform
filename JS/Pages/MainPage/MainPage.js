@@ -221,7 +221,7 @@ class MainPage extends React.Component {
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
-                            pagination={true} // enable infinite scrolling using touch to load more
+                            pagination={false} // enable infinite scrolling using touch to load more
                             refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
                             withSections={false} // enable sections
                             paginationWaitingView={this._paginationWaitingView}

@@ -37,6 +37,7 @@ var _navigator;
 import storge from '../../Utils/Storage.js';
 import ModifyPassword from './ModifyPassword';
 import * as urls from '../../Utils/Request';
+import Login from '../Login';
 
 class Setting extends React.Component {
     // 构造
@@ -93,7 +94,7 @@ class Setting extends React.Component {
                         Toast.show('退出登录');
                         storge.save('loginInfo', null);
                         storge.save('passWord', '');
-                        navigator.pop();
+                        navigator.resetTo({name: 'Login', component: Login});
                     }else{
                         Toast.show('退出失败');
                         console.log(response.msg);

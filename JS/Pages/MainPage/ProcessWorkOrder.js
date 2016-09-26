@@ -162,8 +162,8 @@ class ProcessWorkOrder extends React.Component {
                 storge.get('loginInfo').then((result) => {
                     this.setState({isUploading: true});
                     let formData = new FormData();
-                    formData.append('file', {uri: imageUri, type: 'application/octet-stream',
-                        name: getFileName(imageUri)});
+                    formData.append('file', {uri: imageUri, type: 'multipart/form-data',
+                        name: getFileName(imageUri)+'.png'});
                     formData.append('key', getFileName(imageUri));
                     formData.append('userToken', result[1]);
                     formData.append('repairUserPhone', result[0]);
@@ -174,6 +174,9 @@ class ProcessWorkOrder extends React.Component {
                     let options = {};
                     options.body = formData;
                     options.method = 'post';
+                    options.headers = {
+                        'Content-Type':'multipart/form-data',
+                    };
                     fetch(urls.UPLOAD_URL, options).then((response) => {
                         this.setState({isUploadingOld: false});
                         console.log('response'+JSON.stringify(response));
@@ -238,8 +241,8 @@ class ProcessWorkOrder extends React.Component {
                 storge.get('loginInfo').then((result) => {
                     this.setState({isUploadingNew: true});
                     let formData = new FormData();
-                    formData.append('file', {uri: imageUri, type: 'application/octet-stream',
-                        name: getFileName(imageUri)});
+                    formData.append('file', {uri: imageUri, type: 'multipart/form-data',
+                        name: getFileName(imageUri)+'.jpg'});
                     formData.append('key', getFileName(imageUri));
                     formData.append('userToken', result[1]);
                     formData.append('repairUserPhone', result[0]);
@@ -250,6 +253,9 @@ class ProcessWorkOrder extends React.Component {
                     let options = {};
                     options.body = formData;
                     options.method = 'post';
+                    options.headers = {
+                        'Content-Type':'multipart/form-data',
+                    };
                     fetch(urls.UPLOAD_URL, options).then((response) => {
                         this.setState({isUploadingNew: false});
                         console.log('response'+JSON.stringify(response));

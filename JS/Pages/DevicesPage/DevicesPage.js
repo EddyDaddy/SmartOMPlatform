@@ -21,6 +21,8 @@ import * as urls from '../../Utils/Request';
 import storge from '../../Utils/Storage';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
+var itemHeight = Util.pxToTextSize(140);
+var itemTextSize = Util.pxToTextSize(34);
 export default class DevicesPage extends React.Component {
     // 构造
     constructor(props) {
@@ -42,8 +44,7 @@ export default class DevicesPage extends React.Component {
                             height: screenHeight / 10 * 3,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: '#bcd234',
-                            resizeMode: 'contain'
+                            resizeMode: 'stretch'
                         }}
                                source={require('../img/deviceBanner.png')}/>
                     </View>
@@ -113,11 +114,11 @@ export default class DevicesPage extends React.Component {
                               underlayColor='#c8c7cc'
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
-                <View style={myStyles.itemView}>
+                <View style={[myStyles.itemView,{height:itemHeight}]}>
                     <View style={{width: screenWidth, flexDirection: 'row'}}>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.name}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.deviceName}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b'}}>{rowData.Street}</Text>
+                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize}}>{rowData.name}</Text>
+                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.deviceName}</Text>
+                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.street}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

@@ -16,3 +16,5 @@ export const UPLOAD_URL='http://120.24.179.24:8080/smartMonitor/api/upload';
 export const DEVICESINFO_URL='http://120.24.179.24:8080/smartMonitor/api/queryCameraInfo';
 //登出
 export const LOGOUT_URL='http://120.24.179.24:8080/smartMonitor/api/logout';
+//查询个人信息
+export const QUERYUSERINFO_URL='http://120.24.179.24:8080/smartMonitor/api/queryUserInfo';

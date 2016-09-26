@@ -40,6 +40,9 @@ const BANNER_IMGS = [
 let isLoadMore = false;
 let isRefreshing = false;
 let isLoading = true;
+var itemHeight = Util.pxToTextSize(204);
+var itemTextBigSize = Util.pxToTextSize(44);
+var itemTextSmallSize = Util.pxToTextSize(34);
 
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -125,15 +128,15 @@ class MainPage extends React.Component {
                 onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
-                    <Text >{rowData.street}</Text>
+                    <Text style={{fontSize:itemTextBigSize,color: '#333333'}}>{rowData.street}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex:2.2}}>{rowData.deviceName}</Text>
+                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex:2,fontSize:itemTextSmallSize}}>{rowData.deviceName}</Text>
                         <Text
                             numberOfLines={1}
-                            style={{color: '#ff3f3f', flex:1}}>{Util.returnPriType(rowData.pri)}</Text>
+                            style={{color: '#ff3f3f', flex:1.2,fontSize:itemTextSmallSize}}>{Util.returnPriType(rowData.pri)}</Text>
                         <Text
                             numberOfLines={1}
-                            style={{color: '#ff9900',flex:0.8}}>{Util.returnStatus(rowData.status)}</Text>
+                            style={{color: '#ff9900',flex:0.8,fontSize:itemTextSmallSize}}>{Util.returnStatus(rowData.status)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -247,8 +250,7 @@ export const myStyles = StyleSheet.create({
         backgroundColor: '#FFF',
     },
     actionsLabel: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 12,
     },
     emptyView: {
         justifyContent: 'center',
@@ -269,12 +271,11 @@ export const myStyles = StyleSheet.create({
         height: screenHeight / 10 * 3,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#bcd234',
-        resizeMode: 'contain'
+        resizeMode: 'stretch'
     },
     itemView: {
         width: screenWidth,
-        height: screenHeight / 10,
+        height: itemHeight,
         paddingLeft: 10,
         paddingRight: 10,
         flexDirection: 'column',

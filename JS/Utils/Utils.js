@@ -79,7 +79,7 @@ const Util = {
                 console.log('请求参数：' + toQueryString(data));
                 console.log('请求结果：' + JSON.stringify(responseData));
                 if (responseData !== undefined) {
-                    if (responseData.code === '-109') {
+                    if (responseData.code === '-109' || responseData.code === '-110') {
                         navigator.resetTo({
                             name: 'Login',
                             component: Login

@@ -78,9 +78,7 @@ class UserInfo extends React.Component {
     _gotoEntInfo() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            navigator.push({name: 'EntInfo', component: EntInfo, params: {
-                data: userData
-            }});
+            navigator.push({name: 'EntInfo', component: EntInfo});
         });
     }
 
@@ -116,7 +114,7 @@ class UserInfo extends React.Component {
                             </Text>
                         </View>
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <TouchableElement onPress={this.choiceUserIcon.bind(this)}
+                        <TouchableElement onPress={() => {}}
                                           activeOpacity={0.5}
                                           underlayColor={'white'}
                                           style={{flexDirection:'row', alignItems:'center', flex: 3.2, paddingLeft: screenWidth/20}}>
@@ -168,7 +166,7 @@ class UserInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                {userData.linkman}
+                                {userData.repairUserName}
                             </Text>
                         </View>
                     </View>
@@ -182,7 +180,7 @@ class UserInfo extends React.Component {
                         <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
                         <View style={styles.item3}>
                             <Text style={styles.textRight}>
-                                {userData.contactNumber}
+                                {userData.repairUserPhone}
                             </Text>
                         </View>
                     </View>

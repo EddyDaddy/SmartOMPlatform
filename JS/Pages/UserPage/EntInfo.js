@@ -33,6 +33,8 @@ var screenHeight = Util.size.height;
 var TouchableElement = TouchableHighlight;
 var _navigator;
 import storge from '../../Utils/Storage.js';
+import * as urls from '../../Utils/Request';
+import LoadViewing from '../../Utils/LoadingView';
 var userData
 
 class EntInfo extends React.Component {
@@ -41,8 +43,14 @@ class EntInfo extends React.Component {
         super(props);
         // 初始状态
         _navigator = this.props.navigator;
-        userData = this.props.data;
-        this.state = {};
+        this.state = {
+            isOk: false,
+            entName: '',
+            entId: '',
+            linkman: '',
+            linkNum: '',
+            address: '',
+        };
     }
 
     componentWillMount() {
@@ -53,10 +61,41 @@ class EntInfo extends React.Component {
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
         });
+
     }
 
     componentDidMount() {
-
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+                storge.get('loginInfo').then((result) => {
+                    this.setState({phoneNum: result[0]});
+                    var body = {
+                        'repairUserPhone': result[0],
+                        'userToken': result[1]
+                    }
+                    Util.post(urls.QUERYENTINFO_URL, body, navigator, (response) => {
+                        this.setState({
+                            isOk: true
+                        });
+                        if (response === undefined && response === '') {
+                            Toast.show('返回结果异常');
+                        } else {
+                            if (response.code === '0') {
+                                this.setState({
+                                    entName: response.data[0].repairName,
+                                    linkman: response.data[0].linkman,
+                                    entId: response.data[0].repairId,
+                                    linkNum: response.data[0].contactNumber,
+                                    address:response.data[0].repairAddr,
+                                });
+                            } else {
+                                Toast.show('获取失败');
+                            }
+                        }
+                    });
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
@@ -65,84 +104,84 @@ class EntInfo extends React.Component {
 
 
     render() {
-        return (
-            <View style={styles.root}>
-                <ToolBar title={'企业信息'} left={true} navigator={this.props.navigator}/>
-                <View style={styles.top}>
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                企业编号
-                            </Text>
+        return (this.state.isOk ?
+                <View style={styles.root}>
+                    <ToolBar title={'企业信息'} left={true} navigator={this.props.navigator}/>
+                    <View style={styles.top}>
+                        <View style={styles.item1}>
+                            <View style={styles.item2}>
+                                <Text style={styles.textLeft}>
+                                    企业编号
+                                </Text>
+                            </View>
+                            <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
+                            <View style={styles.item3}>
+                                <Text style={styles.textRight}>
+                                    {this.state.entId}
+                                </Text>
+                            </View>
                         </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                {userData.repairId}
-                            </Text>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View style={styles.item1}>
+                            <View style={styles.item2}>
+                                <Text style={styles.textLeft}>
+                                    企业名称
+                                </Text>
+                            </View>
+                            <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
+                            <View style={styles.item3}>
+                                <Text style={styles.textRight}>
+                                    {this.state.entName}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                企业名称
-                            </Text>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View style={styles.item1}>
+                            <View style={styles.item2}>
+                                <Text style={styles.textLeft}>
+                                    负责人姓名
+                                </Text>
+                            </View>
+                            <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
+                            <View style={styles.item3}>
+                                <Text style={styles.textRight}>
+                                    {this.state.linkman}
+                                </Text>
+                            </View>
                         </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                {userData.repairName}
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                负责人姓名
-                            </Text>
-                        </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                {userData.linkman}
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
 
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                负责人电话
-                            </Text>
+                        <View style={styles.item1}>
+                            <View style={styles.item2}>
+                                <Text style={styles.textLeft}>
+                                    负责人电话
+                                </Text>
+                            </View>
+                            <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
+                            <View style={styles.item3}>
+                                <Text style={styles.textRight}>
+                                    {this.state.linkNum}
+                                </Text>
+                            </View>
                         </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                {userData.linkman}
-                            </Text>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        <View style={styles.item1}>
+                            <View style={styles.item2}>
+                                <Text style={styles.textLeft}>
+                                    地址
+                                </Text>
+                            </View>
+                            <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
+                            <View style={styles.item3}>
+                                <Text style={styles.textRight}>
+                                    {this.state.address}
+                                </Text>
+                            </View>
                         </View>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                     </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                    <View style={styles.item1}>
-                        <View style={styles.item2}>
-                            <Text style={styles.textLeft}>
-                                地址
-                            </Text>
-                        </View>
-                        <View style={{width: Util.pixel, height: 200, backgroundColor: '#dddddd'}}/>
-                        <View style={styles.item3}>
-                            <Text style={styles.textRight}>
-                                成都市一环路东一段
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
-                </View>
-                <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}/>
-            </View>
+                    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}/>
+                </View> : <LoadViewing/>
         );
 
     }
@@ -177,11 +216,11 @@ const styles = StyleSheet.create({
         paddingLeft: screenWidth / 20,
     },
     textLeft: {
-        fontSize: screenWidth/29,
+        fontSize: screenWidth / 29,
         color: '#666666',
     },
     textRight: {
-        fontSize: screenWidth/29,
+        fontSize: screenWidth / 29,
         color: 'black',
     },
 

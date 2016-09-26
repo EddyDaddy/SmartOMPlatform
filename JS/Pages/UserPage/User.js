@@ -49,7 +49,7 @@ export default class User extends React.Component {
                 'repairUserPhone': result[0],
                 'userToken': result[1]
             }
-            Util.post(urls.QUERYENTINFO_URL, body, navigator, (response) => {
+            Util.post(urls.QUERYUSERINFO_URL, body, navigator, (response) => {
                 this.setState({
                     isOk: true
                 });
@@ -58,7 +58,8 @@ export default class User extends React.Component {
                 } else {
                     if (response.code === '0') {
                         this.setState({
-                            userName: response.data[0].linkman,
+                            userName: response.data[0].repairUserName,
+                            userPhone: response.data[0].repairUserPhone,
                             data: response.data[0],
                         });
                     } else {

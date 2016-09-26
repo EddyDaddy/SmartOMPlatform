@@ -30,11 +30,11 @@ var dividerColor = '#d8d8d8';
 var keyTextColor = '#666666';
 var valueTextColor = '#000';
 
-var valueTextSize = Util.pxToTextSize(35);
+var valueTextSize = Util.pxToTextSize(38);
 var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
 var dividerWidth = Util.pxToHeight(2);
-var keyTextSize = Util.pxToTextSize(35);
+var keyTextSize = Util.pxToTextSize(38);
 
 const LocalStyles = StyleSheet.create({
     container: {

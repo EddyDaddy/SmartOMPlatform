@@ -23,6 +23,7 @@ import ImagePicker from "react-native-image-picker";
 import * as urls from '../../Utils/Request';
 import Main from '../Main';
 import LoadViewing from '../../Utils/LoadingView';
+import ImageResizer from 'react-native-image-resizer';
 
 var screenWidth = Util.size.width;
 
@@ -147,6 +148,19 @@ class ProcessWorkOrder extends React.Component {
         this.workOrderDone = this.workOrderDone.bind(this);
     }
 
+    //按比例缩放->width<=720
+    caculate(oldsize){
+        let newSize = {
+            width:720,
+            height:undefined
+        };
+        if(oldsize.width<720){
+            return oldsize;
+        }
+        newSize.height = oldsize.height*720/oldsize.width;
+        return newSize;
+    }
+
     uploadOldPhoto() {
         ImagePicker.showImagePicker(imagePickerOption, (response) => {
             if (response.didCancel) {
@@ -155,73 +169,73 @@ class ProcessWorkOrder extends React.Component {
                 console.log('ImagePicker Error: ', response.error);
                 Toast.show('选择图片失败');
             } else {
-                let imageUri = response.uri;
+                let uri = response.uri;
                 if (Platform.OS === 'ios') {
-                    imageUri = response.uri.replace('file://');
+                    uri = response.uri.replace('file://');
                 }
-                storge.get('loginInfo').then((result) => {
-                    this.setState({isUploading: true});
-                    let formData = new FormData();
-                    formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                        name: getFileName(imageUri)+'.png'});
-                    formData.append('key', getFileName(imageUri));
-                    formData.append('userToken', result[1]);
-                    formData.append('repairUserPhone', result[0]);
-                    formData.append('fileType', 1);
-                    formData.append('businessType', 1);
-                    formData.append('processId', data.id);
-                    console.log(JSON.stringify(formData));
-                    let options = {};
-                    options.body = formData;
-                    options.method = 'post';
-                    options.headers = {
-                        'Content-Type':'multipart/form-data',
-                    };
-                    fetch(urls.UPLOAD_URL, options).then((response) => {
-                        this.setState({isUploadingOld: false});
-                        console.log('response'+JSON.stringify(response));
-                        if (response.ok) {
-                            return response.json()
-                        } else {
-                            Toast.show('请求失败')
-                        }
-                    }).then((responseData) => {
-                        console.log('请求结果：' + JSON.stringify(responseData));
-                        if (responseData !== undefined) {
-                            if (responseData.code === '-109') {
-                                navigator.resetTo({
-                                    name: 'Login',
-                                    component: Login
-                                })
-                            } else if(responseData.code === '0'){
-                                Toast.show('上传成功');
-                                this.setState({
-                                    oldPhoto: imageUri
-                                });
-                            }else{
-                                Toast.show('上传失败');
-                                console.log(JSON.stringify(responseData.data));
-                            }
-                        }
-                    }).catch(
-                        (error) => {
-                            this.setState({isUploadingOld: false});
-                            Toast.show('上传图片异常')
-                            console.log('错误信息：' + error);
-                        }
-                    );
-                    // storge.get('loginInfo').then((result) => {
-                    //     var body = {
-                    //         'userToken': result[1],
-                    //         'repairUserPhone': result[0],
-                    //         'fileType': '1',
-                    //         'businessType': '1',
-                    //         'processId': data.id,
-                    //         'file':
-                    //     }
-                    // });
+                let newPhotoSize = this.caculate({
+                    width:response.width,
+                    height:response.height
                 });
-
+                ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
+                    // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
+                    storge.get('loginInfo').then((result) => {
+                        this.setState({isUploading: true});
+                        let formData = new FormData();
+                        formData.append('file', {uri: imageUri, type: 'multipart/form-data',
+                            name: getFileName(imageUri)+'.png'});
+                        formData.append('key', getFileName(imageUri));
+                        formData.append('userToken', result[1]);
+                        formData.append('repairUserPhone', result[0]);
+                        formData.append('fileType', 1);
+                        formData.append('businessType', 1);
+                        formData.append('processId', data.id);
+                        console.log(JSON.stringify(formData));
+                        let options = {};
+                        options.body = formData;
+                        options.method = 'post';
+                        options.headers = {
+                            'Content-Type':'multipart/form-data',
+                        };
+                        fetch(urls.UPLOAD_URL, options).then((response) => {
+                            this.setState({isUploadingOld: false});
+                            console.log('response'+JSON.stringify(response));
+                            if (response.ok) {
+                                return response.json()
+                            } else {
+                                Toast.show('请求失败')
+                            }
+                        }).then((responseData) => {
+                            console.log('请求结果：' + JSON.stringify(responseData));
+                            if (responseData !== undefined) {
+                                if (responseData.code === '-109') {
+                                    navigator.resetTo({
+                                        name: 'Login',
+                                        component: Login
+                                    })
+                                } else if(responseData.code === '0'){
+                                    Toast.show('上传成功');
+                                    this.setState({
+                                        oldPhoto: imageUri
+                                    });
+                                }else{
+                                    Toast.show('上传失败');
+                                    console.log(JSON.stringify(responseData.data));
+                                }
+                            }
+                        }).catch(
+                            (error) => {
+                                this.setState({isUploadingOld: false});
+                                Toast.show('上传图片异常')
+                                console.log('错误信息：' + error);
+                            }
+                        );
+                    });
+                }).catch((err) => {
+                    Toast.show('图片压缩失败：');
+                    // Oops, something went wrong. Check that the filename is correct and
+                    // inspect err to get more details.
+                });
             }
         });
     }
@@ -234,71 +248,72 @@ class ProcessWorkOrder extends React.Component {
                 console.log('ImagePicker Error: ', response.error);
                 Toast.show('选择图片失败');
             } else {
-                let imageUri = response.uri;
+                let uri = response.uri;
                 if (Platform.OS === 'ios') {
-                    imageUri = response.uri.replace('file://');
+                    uri = response.uri.replace('file://');
                 }
-                storge.get('loginInfo').then((result) => {
-                    this.setState({isUploadingNew: true});
-                    let formData = new FormData();
-                    formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                        name: getFileName(imageUri)+'.jpg'});
-                    formData.append('key', getFileName(imageUri));
-                    formData.append('userToken', result[1]);
-                    formData.append('repairUserPhone', result[0]);
-                    formData.append('fileType', 1);
-                    formData.append('businessType', 1);
-                    formData.append('processId', data.id);
-                    console.log(JSON.stringify(formData));
-                    let options = {};
-                    options.body = formData;
-                    options.method = 'post';
-                    options.headers = {
-                        'Content-Type':'multipart/form-data',
-                    };
-                    fetch(urls.UPLOAD_URL, options).then((response) => {
-                        this.setState({isUploadingNew: false});
-                        console.log('response'+JSON.stringify(response));
-                        if (response.ok) {
-                            return response.json()
-                        } else {
-                            Toast.show('请求失败')
-                        }
-                    }).then((responseData) => {
-                        console.log('请求结果：' + JSON.stringify(responseData));
-                        if (responseData !== undefined) {
-                            if (responseData.code === '-109') {
-                                navigator.resetTo({
-                                    name: 'Login',
-                                    component: Login
-                                })
-                            } else if(responseData.code === '0'){
-                                Toast.show('上传成功');
-                                this.setState({
-                                    newPhoto: imageUri
-                                });
-                            }else{
-                                Toast.show('上传失败');
-                                console.log(JSON.stringify(responseData.data));
+                let newPhotoSize = this.caculate({
+                    width:response.width,
+                    height:response.height
+                });
+                ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
+                    // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
+                    storge.get('loginInfo').then((result) => {
+                        this.setState({isUploading: true});
+                        let formData = new FormData();
+                        formData.append('file', {uri: imageUri, type: 'multipart/form-data',
+                            name: getFileName(imageUri)+'.png'});
+                        formData.append('key', getFileName(imageUri));
+                        formData.append('userToken', result[1]);
+                        formData.append('repairUserPhone', result[0]);
+                        formData.append('fileType', 1);
+                        formData.append('businessType', 1);
+                        formData.append('processId', data.id);
+                        console.log(JSON.stringify(formData));
+                        let options = {};
+                        options.body = formData;
+                        options.method = 'post';
+                        options.headers = {
+                            'Content-Type':'multipart/form-data',
+                        };
+                        fetch(urls.UPLOAD_URL, options).then((response) => {
+                            this.setState({isUploadingOld: false});
+                            console.log('response'+JSON.stringify(response));
+                            if (response.ok) {
+                                return response.json()
+                            } else {
+                                Toast.show('请求失败')
                             }
-                        }
-                    }).catch(
-                        (error) => {
-                            this.setState({isUploadingNew: false});
-                            Toast.show('上传图片异常')
-                            console.log('错误信息：' + error);
-                        }
-                    );
-                    // storge.get('loginInfo').then((result) => {
-                    //     var body = {
-                    //         'userToken': result[1],
-                    //         'repairUserPhone': result[0],
-                    //         'fileType': '1',
-                    //         'businessType': '1',
-                    //         'processId': data.id,
-                    //         'file':
-                    //     }
-                    // });
+                        }).then((responseData) => {
+                            console.log('请求结果：' + JSON.stringify(responseData));
+                            if (responseData !== undefined) {
+                                if (responseData.code === '-109') {
+                                    navigator.resetTo({
+                                        name: 'Login',
+                                        component: Login
+                                    })
+                                } else if(responseData.code === '0'){
+                                    Toast.show('上传成功');
+                                    this.setState({
+                                        newPhoto: imageUri
+                                    });
+                                }else{
+                                    Toast.show('上传失败');
+                                    console.log(JSON.stringify(responseData.data));
+                                }
+                            }
+                        }).catch(
+                            (error) => {
+                                this.setState({isUploadingOld: false});
+                                Toast.show('上传图片异常')
+                                console.log('错误信息：' + error);
+                            }
+                        );
+                    });
+                }).catch((err) => {
+                    Toast.show('图片压缩失败：');
+                    // Oops, something went wrong. Check that the filename is correct and
+                    // inspect err to get more details.
                 });
             }
         });

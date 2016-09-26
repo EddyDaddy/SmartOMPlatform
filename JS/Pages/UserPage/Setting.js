@@ -22,7 +22,6 @@ import {
     Navigator,
     BackAndroid,
     DeviceEventEmitter,
-    NativeModules,
 } from 'react-native';
 import Util from '../../Utils/Utils.js'
 import Toast from 'react-native-root-toast';
@@ -81,30 +80,28 @@ class Setting extends React.Component {
     }
 
     _logout(){
-        NativeModules.NavModule.finishApp();
-        // const {navigator} = this.props;
-        // storge.get('loginInfo').then((result) => {
-        //     var body = {
-        //         'repairUserPhone': result[0],
-        //         'userToken': result[1],
-        //     };
-        //     Util.post(urls.LOGOUT_URL, body, navigator, (response) => {
-        //         const {navigator} = this.props;
-        //         if(response === undefined || response === ''){
-        //             Toast.show('退出失败!');
-        //         }else{
-        //             if(response.code === '0'){
-        //                 Toast.show('退出登录');
-        //                 storge.save('loginInfo', null);
-        //                 storge.save('passWord', '');
-        //                 // NativeModules.NavModule.finishApp();
-        //             }else{
-        //                 Toast.show('退出失败');
-        //                 console.log(response.msg);
-        //             }
-        //         }
-        //     });
-        // })
+        const {navigator} = this.props;
+        storge.get('loginInfo').then((result) => {
+            var body = {
+                'repairUserPhone': result[0],
+                'userToken': result[1],
+            };
+            Util.post(urls.LOGOUT_URL, body, navigator, (response) => {
+                if(response === undefined || response === ''){
+                    Toast.show('退出失败!');
+                }else{
+                    if(response.code === '0'){
+                        Toast.show('退出登录');
+                        storge.save('loginInfo', null);
+                        storge.save('passWord', '');
+                        navigator.resetTo({name: 'Login', component: Login});
+                    }else{
+                        Toast.show('退出失败');
+                        console.log(response.msg);
+                    }
+                }
+            });
+        })
     }
 
     render() {

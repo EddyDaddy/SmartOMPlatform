@@ -23,6 +23,7 @@ import BaiduMapPage from './BaiduMapPage.js';
 import storge from '../../Utils/Storage';
 import * as urls from '../../Utils/Request';
 import DevicesDtails from '../DevicesPage/DevicesDetails.js'
+import Main from '../Main';
 
 var screenWidth = Util.size.width;
 
@@ -239,7 +240,7 @@ class WorkOrderDetail extends React.Component {
                         var body = {
                             'repairUserPhone': result[0],
                             'userToken': result[1],
-                            'typeId': this.state.type,
+                            'typeId': '3',
                             'processId': data.id,
                             'status': data.status,
                             'remark': this.state.comment,

@@ -134,7 +134,7 @@ class ProcessWorkOrder extends React.Component {
         this.state = {
             entName: data.entName,
             id: data.id,
-            type: '维修',
+            type: '1',
             oldPhoto: '-',
             newPhoto: '-',
             comment: data.remark,
@@ -231,7 +231,8 @@ class ProcessWorkOrder extends React.Component {
                         );
                     });
                 }).catch((err) => {
-                    Toast.show('上传图片失败：');
+                    Toast.show('上传图片失败');
+                    console.log(err)
                     this.setState({isUploadingOld: false});
                     // Oops, something went wrong. Check that the filename is correct and
                     // inspect err to get more details.
@@ -335,7 +336,7 @@ class ProcessWorkOrder extends React.Component {
                 'typeId': this.state.type,
                 'processId': data.id,
                 'status': data.status,
-                'remark': this.state.comment,
+                'remark': this.state.comment===undefined?'无':this.state.comment,
             }
             Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
                 if(response === undefined || response === ''){
@@ -403,8 +404,8 @@ class ProcessWorkOrder extends React.Component {
                                     selectedValue={this.state.type}
                                     mode={'dropdown'}
                                     onValueChange={(value) => this.setState({type: value})}>
-                                    <Picker.Item label="维修" value="维修"/>
-                                    <Picker.Item label="更换设备" value="更换设备"/>
+                                    <Picker.Item label="维修" value='1'/>
+                                    <Picker.Item label="更换设备" value='2'/>
                                 </Picker>
                             </View>
                         </View>

@@ -334,7 +334,7 @@ class ProcessWorkOrder extends React.Component {
                 'userToken': result[1],
                 'typeId': this.state.type,
                 'processId': data.id,
-                'status': data.status,
+                'status': '99',
                 'remark': this.state.comment===undefined?'无':this.state.comment,
             }
             Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {

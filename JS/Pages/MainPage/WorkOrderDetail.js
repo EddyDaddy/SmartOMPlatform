@@ -242,7 +242,7 @@ class WorkOrderDetail extends React.Component {
                             'userToken': result[1],
                             'typeId': '3',
                             'processId': data.id,
-                            'status': data.status,
+                            'status': '99',
                             'remark': this.state.comment,
                             'nextOpEntId':'jzsx',
                         }

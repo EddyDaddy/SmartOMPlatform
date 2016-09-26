@@ -48,7 +48,7 @@ const Util = {
 
     returnStatus(status){
         switch (status) {
-            case '1':
+            case '0':
                 return '待处理';
             case '99':
                 return '已完成';

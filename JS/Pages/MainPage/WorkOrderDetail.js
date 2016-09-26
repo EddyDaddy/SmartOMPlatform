@@ -173,7 +173,33 @@ class WorkOrderDetail extends React.Component {
     dispathToOther() {
         Alert.alert('提示','您确定要转派吗?',
             [{text:'取消',onPress:() => {}},
-                {text:'确定',onPress:() => {}}
+                {text:'确定',onPress:() => {
+                    const {navigator} = this.props;
+                    storge.get('loginInfo').then((result) => {
+                        var body = {
+                            'repairUserPhone': result[0],
+                            'userToken': result[1],
+                            'typeId': this.state.type,
+                            'processId': data.id,
+                            'status': data.status,
+                            'remark': this.state.comment,
+                            'nextOpEntId':'jzsx',
+                        }
+                        Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
+                            if(response === undefined || response === ''){
+                                Toast.show('转派失败');
+                            }else{
+                                if(response.code === '0'){
+                                    Toast.show('转派成功');
+                                    navigator.resetTo({name: 'Main', component: Main});
+                                }else{
+                                    Toast.show('转派失败');
+                                    console.log(response.msg);
+                                }
+                            }
+                        });
+                    });
+                }}
             ]);
     }
 
@@ -273,7 +299,7 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                             <TouchableOpacity onPress={this.showLocationInMap}
                                               style={{ width: 30, height: 30, marginLeft: 6 }}>
-                                <Image source={require('../img/tab_user.png') }
+                                <Image source={require('../img/map.png') }
                                        style={{ width: 30, height: 30 }}/>
                             </TouchableOpacity>
                         </View>

@@ -26,8 +26,6 @@ import DevicesDtails from '../DevicesPage/DevicesDetails.js'
 
 var screenWidth = Util.size.width;
 
-//1080*1920
-
 var dividerColor = '#d8d8d8';
 var keyTextColor = '#666666';
 var valueTextColor = '#000';

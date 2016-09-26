@@ -121,7 +121,6 @@ const LocalStyles = StyleSheet.create({
         margin:6,
         borderWidth: 3 * Util.pixel,
         borderColor: '#d7d7d7',
-        elevation:1,
     }
 });
 var data;
@@ -169,6 +168,7 @@ class ProcessWorkOrder extends React.Component {
                 console.log('ImagePicker Error: ', response.error);
                 Toast.show('选择图片失败');
             } else {
+                this.setState({isUploadingOld: true});
                 let uri = response.uri;
                 if (Platform.OS === 'ios') {
                     uri = response.uri.replace('file://');
@@ -180,7 +180,6 @@ class ProcessWorkOrder extends React.Component {
                 ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
                     // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
                     storge.get('loginInfo').then((result) => {
-                        this.setState({isUploading: true});
                         let formData = new FormData();
                         formData.append('file', {uri: imageUri, type: 'multipart/form-data',
                             name: getFileName(imageUri)+'.png'});
@@ -232,7 +231,8 @@ class ProcessWorkOrder extends React.Component {
                         );
                     });
                 }).catch((err) => {
-                    Toast.show('图片压缩失败：');
+                    Toast.show('上传图片失败：');
+                    this.setState({isUploadingOld: false});
                     // Oops, something went wrong. Check that the filename is correct and
                     // inspect err to get more details.
                 });
@@ -248,6 +248,7 @@ class ProcessWorkOrder extends React.Component {
                 console.log('ImagePicker Error: ', response.error);
                 Toast.show('选择图片失败');
             } else {
+                this.setState({isUploadingNew: true});
                 let uri = response.uri;
                 if (Platform.OS === 'ios') {
                     uri = response.uri.replace('file://');
@@ -259,7 +260,6 @@ class ProcessWorkOrder extends React.Component {
                 ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
                     // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
                     storge.get('loginInfo').then((result) => {
-                        this.setState({isUploading: true});
                         let formData = new FormData();
                         formData.append('file', {uri: imageUri, type: 'multipart/form-data',
                             name: getFileName(imageUri)+'.png'});
@@ -277,7 +277,7 @@ class ProcessWorkOrder extends React.Component {
                             'Content-Type':'multipart/form-data',
                         };
                         fetch(urls.UPLOAD_URL, options).then((response) => {
-                            this.setState({isUploadingOld: false});
+                            this.setState({isUploadingNew: false});
                             console.log('response'+JSON.stringify(response));
                             if (response.ok) {
                                 return response.json()
@@ -304,24 +304,27 @@ class ProcessWorkOrder extends React.Component {
                             }
                         }).catch(
                             (error) => {
-                                this.setState({isUploadingOld: false});
+                                this.setState({isUploadingNew: false});
                                 Toast.show('上传图片异常')
                                 console.log('错误信息：' + error);
                             }
                         );
                     });
                 }).catch((err) => {
-                    Toast.show('图片压缩失败：');
-                    // Oops, something went wrong. Check that the filename is correct and
-                    // inspect err to get more details.
+                    Toast.show('上传图片失败');
+                    this.setState({isUploadingNew: false});
                 });
             }
         });
     }
 
     updateComment(newStr) {
-        Toast.show('updateComment:' + newStr);
+        //Toast.show('updateComment:' + newStr);
+        this.setState({
+            comment: newStr
+        });
     }
+
 
     workOrderDone() {
         const {navigator} = this.props;

@@ -51,7 +51,6 @@ class BaiduMapPage extends React.Component {
         });
         Geolocation.getCurrentPosition()
             .then(data => {
-                Toast.show('getCurrentPosition');
                 this.mLocation = {
                     latitude:Number(data.latitude),
                     longitude:Number(data.longitude)

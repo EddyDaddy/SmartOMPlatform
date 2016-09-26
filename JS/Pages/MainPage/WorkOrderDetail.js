@@ -20,7 +20,9 @@ import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 import ProcessWorkOrder from './ProcessWorkOrder.js';
 import BaiduMapPage from './BaiduMapPage.js';
-
+import storge from '../../Utils/Storage';
+import * as urls from '../../Utils/Request';
+import DevicesDtails from '../DevicesPage/DevicesDetails.js'
 
 var screenWidth = Util.size.width;
 
@@ -107,6 +109,8 @@ class WorkOrderDetail extends React.Component {
         //成员变量需在构造函数中生命
         this._navigator = this.props.navigator;
         data = this.props.data;
+
+        this.device = undefined;
         // 初始状态
         this.state = {
             // entName: 'aaa',
@@ -138,8 +142,67 @@ class WorkOrderDetail extends React.Component {
         this.showDeviceInfo = this.showDeviceInfo.bind(this);
     }
 
+    jumpToDevicesDetails(deviceList){
+        Toast.show('jumpToDevicesDetails->data:'+deviceList);
+        if(data!==undefined){
+            let device = deviceList.filter((d) => {
+                return d.id == data.cameraId();
+            });
+            if(device!==undefined){
+                const {navigator} = this.props;
+                InteractionManager.runAfterInteractions(() => {
+                    navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: device}});
+                });
+            }
+            Toast.show('无该设备信息');
+        }
+    }
+
     showDeviceInfo() {
-        Toast.show('showDeviceInfo');
+        if(this.device!==undefined){
+            const {navigator} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: this.device}});
+            });
+        }else{
+            const {navigator} = this.props;
+            storge.get('loginInfo').then((result) => {
+                console.log(result);
+                if (result) {
+                    var body = {
+                        'repairUserPhone': result[0],
+                        'userToken': result[1],
+                    };
+                    Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
+                        if (response !== undefined) {
+                            if (response.code === '0') {
+                                Toast.show('data:'+response.data);
+                                for(let temp in response.data){
+                                    if(temp.id === '1'){
+                                        Toast.show('pipei成功:'+temp.toJSON());
+                                        this.device = temp;
+                                    }
+                                }
+                                if(this.device!==undefined){
+                                    const {navigator} = this.props;
+                                    InteractionManager.runAfterInteractions(() => {
+                                        navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: this.device}});
+                                    });
+                                }else{
+                                    Toast.show('无该设备信息');
+                                }
+                            } else {
+                                Toast.show('获取失败');
+                            }
+                        } else {
+                            Toast.show('response === undefined');
+                        }
+                    });
+                } else {
+                    Toast.show('未登录');
+                }
+            });
+        }
     }
 
     showLocationInMap() {

@@ -176,7 +176,6 @@ class WorkOrderDetail extends React.Component {
                             if (response.code === '0') {
                                 for(let temp in response.data){
                                     if(response.data[temp].id === data.cameraId){
-                                        Toast.show('pipei成功:'+response.data[temp]);
                                         this.device = response.data[temp];
                                         break;
                                     }

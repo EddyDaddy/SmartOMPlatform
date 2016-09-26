@@ -174,11 +174,11 @@ class WorkOrderDetail extends React.Component {
                     Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
                         if (response !== undefined) {
                             if (response.code === '0') {
-                                Toast.show('data:'+response.data);
                                 for(let temp in response.data){
-                                    if(temp.id === '1'){
-                                        Toast.show('pipei成功:'+temp.toJSON());
-                                        this.device = temp;
+                                    if(response.data[temp].id === data.cameraId){
+                                        Toast.show('pipei成功:'+response.data[temp]);
+                                        this.device = response.data[temp];
+                                        break;
                                     }
                                 }
                                 if(this.device!==undefined){

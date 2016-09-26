@@ -76,7 +76,6 @@ class Register extends React.Component {
     }
 
     confirmModify() {
-        this.setState({isLoading: true});
         if (this.state.userName === '') {
             Toast.show('请输入电话号码');
             return;
@@ -97,13 +96,14 @@ class Register extends React.Component {
             Toast.show('两次输入的密码不一致');
             return;
         }
+        this.setState({isLoading: true});
         const body = {
             'repairUserPhone': this.state.userName,
             'newPassword': this.state.passWord1,
             'checkCode': this.state.verificationCode,
         };
         const {navigator} = this.props;
-        Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
+        Util.post(urls.MODIFYPASSWORD_URL, body, navigator, (response) => {
             this.setState({isLoading: false});
             if (response === undefined || response === '') {
                 Toast.show('网络异常');
@@ -126,9 +126,10 @@ class Register extends React.Component {
 
 
     getLoginUI() {
+        const {navigator} = this.props;
         return (
             <View style={{flex: 1}}>
-                <ToolBar title={'忘记密码'}/>
+                <ToolBar title={'忘记密码'} left={true} navigator={navigator}/>
                 <Image style={{height: screenWidth/1.9, width: screenWidth}}
                        source={require('./img/reset_pw_img.png')}/>
                 <View style={styles.root}>

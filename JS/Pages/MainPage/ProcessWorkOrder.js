@@ -231,7 +231,8 @@ class ProcessWorkOrder extends React.Component {
                         );
                     });
                 }).catch((err) => {
-                    Toast.show('上传图片失败：');
+                    Toast.show('上传图片失败');
+                    console.log(err)
                     this.setState({isUploadingOld: false});
                     // Oops, something went wrong. Check that the filename is correct and
                     // inspect err to get more details.

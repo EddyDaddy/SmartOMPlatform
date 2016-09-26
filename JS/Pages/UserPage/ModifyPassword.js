@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     Navigator,
     BackAndroid,
+    InteractionManager,
     DeviceEventEmitter,
 } from 'react-native';
 import Util from '../../Utils/Utils.js';
@@ -21,6 +22,7 @@ import storge from '../../Utils/Storage.js';
 import Toast from 'react-native-root-toast';
 import ToolBar from '../../Utils/ToolBar';
 import Loading from '../../Utils/Loading';
+import * as urls from '../../Utils/Request';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var _navigator;
@@ -52,7 +54,6 @@ class ModifyPassword extends React.Component {
     }
 
     confirmModify() {
-        this.setState({isLoading: true});
         if (this.state.passWord === '') {
             Toast.show('请输入旧密码');
             return;
@@ -74,21 +75,22 @@ class ModifyPassword extends React.Component {
             return;
         }
         storge.get('loginInfo').then((result) => {
+            this.setState({isLoading: true});
             const body = {
                 'repairUserPhone': result[0],
                 'newPassword': this.state.passWord1,
-                'checkCode': this.state.verificationCode,
+                'checkCode': '123456',
             };
             const {navigator} = this.props;
-            Util.post(urls.MODIFYPASSWORD_URL, body, (response) => {
+            Util.post(urls.MODIFYPASSWORD_URL, body, navigator, (response) => {
                 this.setState({isLoading: false});
-                if (response === undefined || response !== '') {
+                if (response === undefined || response === '') {
                     Toast.show('网络异常');
                 } else {
                     if (response.code === '0') {
                         console.log(response.msg);
                         Toast.show('修改成功');
-                        storge.save('loginInfo', [this.state.userName, '', '']);
+                        storge.save('loginInfo', [result[0], result[1], '']);
                         storge.save('passWord', this.state.passWord1);
                         InteractionManager.runAfterInteractions(() => {
                             navigator.pop();
@@ -110,10 +112,10 @@ class ModifyPassword extends React.Component {
             <View style={{flex: 1}}>
                 <ToolBar title={'密码修改'} left={true} navigator={navigator}/>
                 <View style={styles.root}>
-                    <View style={{height: screenWidth/1.6}}>
+                    <View style={{height: screenWidth / 1.6}}>
                         <View style={styles.borderView}>
                             <TextInput style={styles.textInput}
-                                       onChangeText={(passWord1) => this.setState({passWord1})}
+                                       onChangeText={(passWord) => this.setState({passWord})}
                                        value={this.state.passWord}
                                        secureTextEntry={true}
                                        placeholder="输入旧密码"
@@ -142,13 +144,24 @@ class ModifyPassword extends React.Component {
                     </View>
                     <View style={{flex: 1, backgroundColor: '#ebebeb', width: screenWidth, alignItems: 'center'}}>
                         <TouchableOpacity activeOpacity={0.5}
-                                          onPress={()=>{
-                                this._navigator.pop();
-                                storge.get('passWord').then((passWord)=>{Toast.show('登录密码'+passWord)});
-                                }}
-                                          style={{width: screenWidth/1.5, height: screenWidth/9, elevation: 3, borderRadius: 6, margin:5,marginTop: screenWidth / 20}}>
+                                          onPress={this.confirmModify.bind(this)}
+                                          style={{
+                                              width: screenWidth / 1.5,
+                                              height: screenWidth / 9,
+                                              elevation: 3,
+                                              borderRadius: 6,
+                                              margin: 5,
+                                              marginTop: screenWidth / 20
+                                          }}>
                             <View
-                                style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
+                                style={{
+                                    width: screenWidth / 1.5,
+                                    height: screenWidth / 9,
+                                    borderRadius: 6,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: '#ffd57d'
+                                }}>
                                 <Text style={{color: 'red'}}>
                                     确 认
                                 </Text>

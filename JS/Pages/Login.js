@@ -3,8 +3,10 @@ import {
     Platform,
     Text,
     TextInput,
+    Navigator,
     View,
     Image,
+    BackAndroid,
     InteractionManager,
     TouchableOpacity
 } from 'react-native';
@@ -13,23 +15,23 @@ import Register from './Register.js';
 import {styles} from '../Utils/Styles.js';
 import Toast from 'react-native-root-toast';
 import {connect} from 'react-redux';
+import {naviGoBack} from '../Utils/CommonUtil';
 import {loginAction} from '../actions/LoginAction';
 import Main from './Main';
 import Loading from '../Utils/Loading';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var _navigator;
 import storge from '../Utils/Storage.js';
 import {hex_md5} from '../Utils/MD5.js';
-
 const propTypes = {
     dispatch: PropTypes.func.isRequired,
     loginReducer: PropTypes.object.isRequired
 };
+var _navigator;
 class Login extends Component {
     constructor(props) {
         super(props);
-        this._navigator = this.props.navigator;
+        _navigator = this.props.navigator;
         this.state = {
             userName: '',
             passWord: '',
@@ -49,6 +51,17 @@ class Login extends Component {
                 this.setState({passWord: passWord});
             }
         });
+    }
+
+    componentDidMount() {
+        const {navigator} = this.props;
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            return naviGoBack(navigator)
+        });
+    }
+
+    componentWillUnMount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
     }
 
     //用户登录/注册
@@ -80,66 +93,87 @@ class Login extends Component {
         }
     }
 
+    gotoRegister(){
+        const {navigator} = this.props;
+        navigator.push({component: Register, name: 'Register'})
+    }
+
     getLoginUI() {
         const {loginReducer} = this.props;
         console.log('密码' + storge.get('passWord'));
         return (
-          <View style={{flexDirection: 'column'}}>
-            <View style={{height:Util.status_bar_height,backgroundColor: '#3fd0a7'}}></View>
-            <View style={styles.root}>
-                <Image source={require('./img/bg.png')}
-                       style={{width: screenWidth, height: screenHeight}}>
-                    <View style={styles.root}>
-                        <Image source={require('./img/name.png')}
-                               style={{marginTop: screenWidth/4.8, width: screenWidth/1.8, height: screenWidth/18}}/>
-                        <Image source={require('./img/logo_img.png')}
-                               style={{marginTop: screenWidth/18, width: screenWidth/3.86, height: screenWidth/3.86}}/>
-                        <View style={styles.borderView}>
-                            <TextInput style={styles.textInput}
-                                       onChangeText={(userName) => this.setState({userName})}
-                                       keyboardType="phone-pad"
-                                       maxLength={11}
-                                       value={this.state.userName}
-                                       placeholder="请输入您的手机号"
-                                       placeholderTextColor='white'/>
-                        </View>
+            <View style={{flexDirection: 'column'}}>
+                <View style={{height: Util.status_bar_height, backgroundColor: '#3fd0a7'}}></View>
+                <View style={styles.root}>
+                    <Image source={require('./img/bg.png')}
+                           style={{width: screenWidth, height: screenHeight}}>
+                        <View style={styles.root}>
+                            <Image source={require('./img/name.png')}
+                                   style={{
+                                       marginTop: screenWidth / 4.8,
+                                       width: screenWidth / 1.8,
+                                       height: screenWidth / 18
+                                   }}/>
+                            <Image source={require('./img/logo_img.png')}
+                                   style={{
+                                       marginTop: screenWidth / 18,
+                                       width: screenWidth / 3.86,
+                                       height: screenWidth / 3.86
+                                   }}/>
+                            <View style={styles.borderView}>
+                                <TextInput style={styles.textInput}
+                                           onChangeText={(userName) => this.setState({userName})}
+                                           keyboardType="phone-pad"
+                                           maxLength={11}
+                                           value={this.state.userName}
+                                           placeholder="请输入您的手机号"
+                                           placeholderTextColor='white'/>
+                            </View>
 
-                        <View style={styles.borderViewCommon}>
-                            <TextInput style={styles.textInput}
-                                       onChangeText={(passWord) => this.setState({passWord})}
-                                       value={this.state.passWord}
-                                       secureTextEntry={true}
-                                       placeholder="请输入密码"
-                                       placeholderTextColor='white'/>
-                        </View>
-                        <View style={{marginTop: screenWidth/36}}>
-                            <TouchableOpacity activeOpacity={0.5}
-                                style={{elevation: 3}}
-                                onPress={()=> this.buttonRegisterOrLoginAction(0)}>
-                                <View
-                                    style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
-                                    <Text style={{color: 'red'}}>
-                                        登录
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{width: screenWidth/1.5, marginTop: screenWidth/20, alignItems: 'flex-end'}}>
-                            <TouchableOpacity activeOpacity={0.5}
-                                onPress={()=>this._navigator.push({component: Register, name: 'Register'})}>
-                                <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
-                                    <Text style={{color: 'red'}}>
-                                        忘记密码？
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                            <View style={styles.borderViewCommon}>
+                                <TextInput style={styles.textInput}
+                                           onChangeText={(passWord) => this.setState({passWord})}
+                                           value={this.state.passWord}
+                                           secureTextEntry={true}
+                                           placeholder="请输入密码"
+                                           placeholderTextColor='white'/>
+                            </View>
+                            <View style={{marginTop: screenWidth / 36}}>
+                                <TouchableOpacity activeOpacity={0.5}
+                                                  style={{elevation: 3}}
+                                                  onPress={()=> this.buttonRegisterOrLoginAction(0)}>
+                                    <View
+                                        style={{
+                                            width: screenWidth / 1.5,
+                                            height: screenWidth / 9,
+                                            borderRadius: 6,
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            backgroundColor: '#ffd57d'
+                                        }}>
+                                        <Text style={{color: 'red'}}>
+                                            登录
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View
+                                style={{width: screenWidth / 1.5, marginTop: screenWidth / 20, alignItems: 'flex-end'}}>
+                                <TouchableOpacity activeOpacity={0.5}
+                                                  onPress={() => this.gotoRegister()}>
+                                    <View style={{borderBottomWidth: 0.5, borderBottomColor: 'red'}}>
+                                        <Text style={{color: 'red'}}>
+                                            忘记密码？
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
 
-                    </View>
-                </Image>
-                <Loading visible={loginReducer.loading}/>
+                        </View>
+                    </Image>
+                    <Loading visible={loginReducer.loading}/>
+                </View>
             </View>
-          </View>
         )
             ;
     }

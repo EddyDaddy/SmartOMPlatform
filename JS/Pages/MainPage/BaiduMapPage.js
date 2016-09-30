@@ -11,7 +11,8 @@ import {
 import {
     MapView,
     MapTypes,
-    Geolocation
+    Geolocation,
+    MapModule
 } from 'react-native-baidu-map';
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
@@ -45,6 +46,10 @@ class BaiduMapPage extends React.Component {
     }
 
     componentDidMount() {
+        //for caculating Y-offset of LocationBtn.
+        let pxHeight = (Util.status_bar_height+Util.size.width/7.6)*Util.ratio;
+        MapModule.setHeightOfStatuAndToolbar(pxHeight);
+
         var navigator = this._navigator;
         BackAndroid.addEventListener('hardwareBackPress', function () {
             return naviGoBack(navigator)
@@ -107,7 +112,6 @@ class BaiduMapPage extends React.Component {
                                  });
                              });
                          }}>
-
                 </Toolbar>
                 <MapView
                     style={{flex: 1}}
@@ -117,8 +121,8 @@ class BaiduMapPage extends React.Component {
                     mapType={this.state.mapType}
                     onMarkerClick={()=>{
                         Toast.show(this.addr);
-                    }}
-                />
+                    }}>
+                </MapView>
                 <Loading visible={this.state.loading}/>
             </View>
         );

@@ -52,6 +52,7 @@ var imagePickerOption = {
         skipBackup: true,
         path: 'images' //照片存储路径
     }
+
 };
 
 const LocalStyles = StyleSheet.create({

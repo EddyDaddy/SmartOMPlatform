@@ -186,7 +186,7 @@ export default class DevicesDetails extends React.Component {
                                 justifyContent: 'flex-start',
                                 alignItems: 'center'
                             }}>
-                                <Image source={{uri: this.state.data.photoUrl}}
+                                <Image source={this.state.data.photoUrl !== ''?{uri: this.state.data.photoUrl}:require('../img/map.png')}
                                        style={{margin: 30 * Util.pixel}}/>
                             </View>
                         </View>

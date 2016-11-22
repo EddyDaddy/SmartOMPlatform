@@ -11,11 +11,13 @@ import {
     View,
     Image,
     Text,
+    InteractionManager
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
+import BaiduMapPage from '../MainPage/BaiduMapPage.js';
 
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
@@ -132,6 +134,23 @@ export default class DevicesDetails extends React.Component {
         };
     }
 
+    _showLocationInMap() {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                name: 'BaiduMapPage',
+                component: BaiduMapPage,
+                params:{
+                    addr:this.state.address,
+                    // longitudeBd:data.longitudeBd,
+                    // latitudeBd:data.latitudeBd
+                    longitudeBd: '104.73',
+                    latitudeBd: '31.48',
+                }
+            });
+        });
+    }
+
     componentDidMount() {
         var navigator = this._navigator;
         BackAndroid.addEventListener('hardwareBackPress', function () {
@@ -180,14 +199,19 @@ export default class DevicesDetails extends React.Component {
                                     </Text>
                                 </View>
                             </View>
+
                             <View style={{
                                 flex: 1,
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
                                 alignItems: 'center'
                             }}>
-                                <Image source={this.state.data.photoUrl !== ''?{uri: this.state.data.photoUrl}:require('../img/map.png')}
-                                       style={{margin: 30 * Util.pixel}}/>
+                                <TouchableOpacity
+                                    onPress={this._showLocationInMap.bind(this)}>
+                                    <Image
+                                        source={this.state.data.photoUrl !== '' ? {uri: this.state.data.photoUrl} : require('../img/map.png')}
+                                        style={{margin: 30 * Util.pixel}}/>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>

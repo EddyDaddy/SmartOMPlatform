@@ -183,7 +183,7 @@ class ProcessWorkOrder extends React.Component {
                     storge.get('loginInfo').then((result) => {
                         let formData = new FormData();
                         formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                            name: getFileName(imageUri)+'.png'});
+                            name: getFileName(imageUri)});
                         formData.append('key', getFileName(imageUri));
                         formData.append('userToken', result[1]);
                         formData.append('repairUserPhone', result[0]);
@@ -264,7 +264,7 @@ class ProcessWorkOrder extends React.Component {
                     storge.get('loginInfo').then((result) => {
                         let formData = new FormData();
                         formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                            name: getFileName(imageUri)+'.png'});
+                            name: getFileName(imageUri)});
                         formData.append('key', getFileName(imageUri));
                         formData.append('userToken', result[1]);
                         formData.append('repairUserPhone', result[0]);

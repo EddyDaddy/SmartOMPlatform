@@ -110,7 +110,8 @@ class MainPage extends React.Component {
                 name: 'WorkOrderDetail',
                 component: WorkOrderDetail,
                 params: {
-                    data: rowData
+                    data: rowData,
+                    from: 'workOrderList'
                 }
             });
         });

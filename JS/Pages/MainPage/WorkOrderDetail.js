@@ -24,6 +24,7 @@ import storge from '../../Utils/Storage';
 import * as urls from '../../Utils/Request';
 import DevicesDtails from '../DevicesPage/DevicesDetails.js'
 import Main from '../Main';
+import Loading from '../../Utils/Loading';
 
 var screenWidth = Util.size.width;
 
@@ -100,6 +101,7 @@ const LocalStyles = StyleSheet.create({
     }
 });
 var data;
+var from;
 class WorkOrderDetail extends React.Component {
 
     // 构造
@@ -108,30 +110,22 @@ class WorkOrderDetail extends React.Component {
         //成员变量需在构造函数中生命
         this._navigator = this.props.navigator;
         data = this.props.data;
+        from = this.props.from;
 
         this.device = undefined;
         // 初始状态
         this.state = {
-            // entName: 'aaa',
-            // id: 'GDHUH20160976889',
-            // ipInfo: '192.168.1.1  192.168.1.0  255.255.255.255',
-            // priority: '非常紧急',
-            // deviceInfo: 'J98H-25/1(高清球)',
-            // address: '成华区建设路',
-            // addressLongitude: '176',
-            // addressLatitude: '189',
-            // statu: '待处理',
-            // description: '摄像头被遮挡'
-            entName: data.entName,
-            id: data.id,
-            ipInfo: data.ip,
-            priority: Util.returnPriType(data.pri),
-            deviceInfo: data.deviceName,
-            address: data.street,
-            addressLongitude: '176',
-            addressLatitude: '189',
-            statu: Util.returnStatus(data.status),
-            description: data.remark
+            entName: '',
+            id: '',
+            ipInfo: '',
+            priority: '',
+            deviceInfo: '',
+            address: '',
+            addressLongitude: '',
+            addressLatitude: '',
+            statu: '',
+            description: '',
+            isLoading: false
         };
 
         //绑定回调函数和成员方法
@@ -139,6 +133,65 @@ class WorkOrderDetail extends React.Component {
         this.dispathToOther = this.dispathToOther.bind(this);
         this.showLocationInMap = this.showLocationInMap.bind(this);
         this.showDeviceInfo = this.showDeviceInfo.bind(this);
+    }
+
+    componentWillMount() {
+        if(from === 'workOrderList'){
+            this.setState({
+                entName: data.entName,
+                id: data.id,
+                ipInfo: data.ip,
+                priority: Util.returnPriType(data.pri),
+                deviceInfo: data.deviceName,
+                address: data.street,
+                addressLongitude: data.longitudeBd,
+                addressLatitude: data.latitudeBd,
+                statu: Util.returnStatus(data.status),
+                description: data.remark,
+            });
+        }else{
+            storge.get('loginInfo').then((result) => {
+                console.log(result);
+                if (result) {
+                    var body = {
+                        'repairUserPhone': result[0],
+                        'userToken': result[1],
+                        'cameraId': data.cameraId,
+                        'id': data.id,
+                        // 'status': '',
+                    };
+                    Util.post(urls.QUERYPROCESSINFO_URL, body, navigator, (response) => {
+                        if (response !== undefined) {
+                            if (response.code === '0') {
+                                console.log('获取工单详情成功-------')
+                                this.setState({
+                                    entName: response.data.entName,
+                                    id: response.data.id,
+                                    ipInfo: response.data.ip,
+                                    priority: Util.returnPriType(response.data.pri),
+                                    deviceInfo: response.data.deviceName,
+                                    address: response.data.street,
+                                    addressLongitude: response.data.longitudeBd,
+                                    addressLatitude: response.data.latitudeBd,
+                                    statu: Util.returnStatus(response.data.status),
+                                    description: response.data.remark,
+                                });
+                            } else {
+                                Toast.show('获取失败');
+                            }
+                        } else {
+                            Toast.show('获取失败');
+                        }
+                    });
+                } else {
+                    Toast.show('未登录');
+                    navigator.resetTo({
+                        name: 'Login',
+                        component:Login
+                    })
+                }
+            });
+        }
     }
 
     jumpToDevicesDetails(deviceList){
@@ -211,8 +264,10 @@ class WorkOrderDetail extends React.Component {
                 component: BaiduMapPage,
                 params:{
                     addr:this.state.address,
-                    longitudeBd:data.longitudeBd,
-                    latitudeBd:data.latitudeBd
+                    // longitudeBd:data.longitudeBd,
+                    // latitudeBd:data.latitudeBd
+                    longitudeBd: '104.73',
+                    latitudeBd: '31.48',
                 }
             });
         });
@@ -263,6 +318,8 @@ class WorkOrderDetail extends React.Component {
                 }}
             ]);
     }
+
+
 
     componentDidMount() {
         var navigator = this._navigator;
@@ -404,6 +461,7 @@ class WorkOrderDetail extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Loading visible={this.state.isLoading}/>
             </View>
         );
     }

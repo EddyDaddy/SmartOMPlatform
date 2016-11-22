@@ -58,7 +58,7 @@ export default class MyWorkOrder extends React.Component {
         });
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
@@ -97,7 +97,8 @@ export default class MyWorkOrder extends React.Component {
                 name: 'WorkOrderDetail',
                 component: WorkOrderDetail,
                 params: {
-                    data: rowData
+                    data: rowData,
+                    from: 'workOrderList'
                 }
             });
         });
@@ -139,7 +140,7 @@ export default class MyWorkOrder extends React.Component {
             <View style={{flex: 1}}>
                 <ToolBar title={'我的工单'} left={true} navigator={navigator}/>
                 <View style={{flex: 1, alignItems: 'center'}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center',marginTop: screenWidth/30}}>
                         <Text style={{fontSize: screenWidth / 20,}}>
                             开始时间
                         </Text>

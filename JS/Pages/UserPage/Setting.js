@@ -79,7 +79,7 @@ class Setting extends React.Component {
         });
     }
 
-    _logout(){
+    _logout() {
         const {navigator} = this.props;
         storge.get('loginInfo').then((result) => {
             var body = {
@@ -87,15 +87,15 @@ class Setting extends React.Component {
                 'userToken': result[1],
             };
             Util.post(urls.LOGOUT_URL, body, navigator, (response) => {
-                if(response === undefined || response === ''){
+                if (response === undefined || response === '') {
                     Toast.show('退出失败!');
-                }else{
-                    if(response.code === '0'){
+                } else {
+                    if (response.code === '0') {
                         Toast.show('退出登录');
                         storge.save('loginInfo', null);
                         storge.save('passWord', '');
                         navigator.resetTo({name: 'Login', component: Login});
-                    }else{
+                    } else {
                         Toast.show('退出失败');
                         console.log(response.msg);
                     }
@@ -113,32 +113,58 @@ class Setting extends React.Component {
                                   underlayColor={'white'}
                                   style={styles.top}>
                     <View style={styles.top}>
-                        <Image style={{width: screenWidth/27, height: screenWidth/19, marginLeft: screenWidth/16}}
-                               source={require('../img/lock_icon.png')}/>
-                        <Text style={{marginLeft: screenWidth/28, fontSize: screenWidth/28, color:'#666666'}}>
-                            登录密码修改
-                        </Text>
+                        <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+                            <Image style={{
+                                width: screenWidth / 27,
+                                height: screenWidth / 19,
+                                marginLeft: screenWidth / 16
+                            }}
+                                   source={require('../img/lock_icon.png')}/>
+
+                            <Text style={{marginLeft: screenWidth / 28, fontSize: screenWidth / 28, color: '#666666'}}>
+                                登录密码修改
+                            </Text>
+                        </View>
                         <View
-                            style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center', marginRight: screenWidth/27}}>
-                            <Image style={{width: screenWidth/38.6, height: screenWidth/24}}
+                            style={{
+                                flex: 1,
+                                alignItems: 'flex-end',
+                                justifyContent: 'center',
+                                marginRight: screenWidth / 27
+                            }}>
+                            <Image style={{width: screenWidth / 38.6, height: screenWidth / 24}}
                                    source={require('../img/next_small.png')}/>
                         </View>
                     </View>
                 </TouchableElement>
                 <View style={{flex: 1, alignItems: 'center', backgroundColor: '#ebebeb'}}>
-                    <View style={{marginTop: screenWidth/22}}>
+                    <View style={{marginTop: screenWidth / 22}}>
                         <TouchableElement
                             style={{borderRadius: 6, elevation: 3}}
                             activeOpacity={0.5}
                             underlayColor={'#00000000'}
                             onPress={()=> {
-                                Alert.alert('提示','您确定要退出吗?',
-                                    [{text:'取消',onPress:() => {}},
-                                        {text:'确定',onPress:() => { this._logout() }}
+                                Alert.alert('提示', '您确定要退出吗?',
+                                    [{
+                                        text: '取消', onPress: () => {
+                                        }
+                                    },
+                                        {
+                                            text: '确定', onPress: () => {
+                                            this._logout()
+                                        }
+                                        }
                                     ]);
                             }}>
                             <View
-                                style={{width: screenWidth/1.5, height: screenWidth/9, borderRadius: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffd57d'}}>
+                                style={{
+                                    width: screenWidth / 1.5,
+                                    height: screenWidth / 9,
+                                    borderRadius: 6,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: '#ffd57d'
+                                }}>
                                 <Text style={{color: 'red'}}>
                                     退 出
                                 </Text>

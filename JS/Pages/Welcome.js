@@ -28,10 +28,10 @@ export default class Welcome extends React.Component {
             if (result) {
                 this.setState({view: (<Main navigator={navigator}/>)});
             } else {
-                this.setState({view: (<Login navigator={navigator}/>)});
+                this.setState({view: (<Main navigator={navigator}/>)});
             }
         }).catch(() => {
-            this.setState({view: (<Login navigator={navigator}/>)});
+            this.setState({view: (<Main navigator={navigator}/>)});
         });
     }
 
@@ -42,3 +42,4 @@ export default class Welcome extends React.Component {
         return this.state.view;
     }
 }
+ 

@@ -8,7 +8,8 @@ import {
     Image,
     BackAndroid,
     InteractionManager,
-    TouchableOpacity
+    TouchableOpacity,
+    NativeModules
 } from 'react-native';
 import Util from '../Utils/Utils.js'
 import Register from './Register.js';
@@ -28,6 +29,7 @@ const propTypes = {
     loginReducer: PropTypes.object.isRequired
 };
 var _navigator;
+var androidImei;
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +53,10 @@ class Login extends Component {
                 this.setState({passWord: passWord});
             }
         });
+        NativeModules.CommonModule.getIMEI((result) => {
+            androidImei = result;
+            console.log('androidImei----->'+androidImei);
+        });
     }
 
     componentDidMount() {
@@ -60,7 +66,7 @@ class Login extends Component {
         });
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
@@ -77,7 +83,7 @@ class Login extends Component {
                 Toast.show('密码不能为空...');
                 return;
             }
-            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), (responseData) => {
+            dispatch(loginAction(this.state.userName, hex_md5(this.state.passWord), androidImei, 1, (responseData) => {
                 const {navigator} = this.props;
                 console.log('code---->' + responseData.code);
                 if (responseData.code === '0') {

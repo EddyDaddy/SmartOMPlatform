@@ -65,7 +65,7 @@ class Register extends React.Component {
     clearInterval() {
         // 如果存在this.interval，则使用clearInterval清空。
         // 如果你使用多个interval，那么用多个变量，或者用个数组来保存引用，然后逐个clear
-        this.interval && clearInterval(this.timer);
+        this.interval && clearInterval(this.interval);
     }
 
     initInterval() {

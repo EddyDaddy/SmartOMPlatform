@@ -6,7 +6,7 @@ import {LOGIN_URL} from '../Utils/Request';
 import Toast from 'react-native-root-toast';
 import {toQueryString} from '../Utils/CommonUtil';
 
-export let loginAction = (userPhone, passWord, callBack) => {
+export let loginAction = (userPhone, passWord, token, type, callBack) => {
     return dispatch => {
         dispatch(performLogin());
         const fetchOptions = {
@@ -18,6 +18,8 @@ export let loginAction = (userPhone, passWord, callBack) => {
             body: toQueryString({
                 'repairUserPhone': userPhone,
                 'repairUserPassword': passWord,
+                'token': token,
+                'deviceType': type,
             })
         };
 

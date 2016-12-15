@@ -11,7 +11,7 @@ import {
 import TabBarItem from '../Utils/TabBarItem.js';
 import MainPage from './MainPage/MainPage.js';
 import DevicesPage from './DevicesPage/DevicesPage.js';
-import WorkOrder from './WorkOrderPage/WorkOrder.js';
+import WorkOrder from './WorkOrderPage/WorkOrderList.js';
 import User from './UserPage/User.js';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Toast from 'react-native-root-toast';
@@ -22,7 +22,8 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         // 初始状态
-        _navigator = this.props.navigator;
+        const {navigator} = this.props;
+        _navigator = navigator
         this.state = {
             tabIconNames: [require('./img/tab_workorder.png'), require('./img/tab_device.png'),
                 require('./img/tab_user.png')]
@@ -43,6 +44,7 @@ class Main extends React.Component {
 
     componentDidUnmount() {
         BackAndroid.removeEventListener('hardwareBackPress');
+        console.log('Main--->'+'componentDidUnmount');
     }
 
 

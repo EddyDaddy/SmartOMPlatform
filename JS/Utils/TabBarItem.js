@@ -39,8 +39,8 @@ class TabBarItem extends Component {
                 <View style={styles.tabItem}>
                     <Image
                         source={this.props.tabIconNames[i]}
-                        style={{width: Util.size.width/21.6, height: Util.size.width/12,
-        resizeMode: Image.resizeMode.stretch, tintColor: color}}
+                        style={{width: Util.pxToHeight(60), height: Util.pxToHeight(110),
+        resizeMode: Image.resizeMode.contain, tintColor: color}}
                     />
                 </View>
             </TouchableOpacity>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
     tabItem: {
         flex: 1,
-        marginTop: Util.size.width/43.2,
+        marginTop: Util.pxToHeight(18),
     },
 });
 

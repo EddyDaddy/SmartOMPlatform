@@ -13,6 +13,7 @@ import {
     Image,
     Text,
     Navigator,
+    Alert
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
@@ -109,13 +110,12 @@ const LocalStyles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     btnStyle: {
-        width: Util.pxToWidth(730),
+        width: Util.pxToWidth(390),
         height: Util.pxToHeight(120),
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#ffd57d',
-        //elevation:20,
     },
     textInputStyle: {
         flex:1,
@@ -133,7 +133,7 @@ class ProcessWorkOrder extends React.Component {
         this._navigator = this.props.navigator;
         data = this.props.data;
         this.state = {
-            entName: data.entName,
+            entName: data.company,
             id: data.id,
             type: '1',
             oldPhoto: '-',
@@ -366,6 +366,44 @@ class ProcessWorkOrder extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
+    dispathToOther() {
+        Alert.alert('提示', '您确定要转派吗?',
+            [{
+                text: '取消', onPress: () => {
+                }
+            },
+                {
+                    text: '确定', onPress: () => {
+                    const {navigator} = this.props;
+                    storge.get('loginInfo').then((result) => {
+                        var body = {
+                            'repairUserPhone': result[0],
+                            'userToken': result[1],
+                            'typeId': '3',
+                            'processId': data.id,
+                            'status': '99',
+                            'remark': this.state.comment,
+                            'nextOpEntId': 'jzsx',
+                        }
+                        Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
+                            if (response === undefined || response === '') {
+                                Toast.show('转派失败');
+                            } else {
+                                if (response.code === '0') {
+                                    Toast.show('转派成功');
+                                    navigator.resetTo({name: 'Main', component: Main});
+                                } else {
+                                    Toast.show('转派失败');
+                                    console.log(response.msg);
+                                }
+                            }
+                        });
+                    });
+                }
+                }
+            ]);
+    }
+
     render() {
         return (
             <View style={LocalStyles.container}>
@@ -460,7 +498,15 @@ class ProcessWorkOrder extends React.Component {
                         </View>
                     </View>
                     <View style={LocalStyles.btnItemStyle}>
-                        <TouchableOpacity activeOpacity={0.5} style={{elevation:3,borderRadius:6}} onPress={this.workOrderDone}>
+                        <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 10}}
+                                          onPress={this.dispathToOther.bind(this)}>
+                            <View style={LocalStyles.btnStyle}>
+                                <Text style={{color: 'red'}}>
+                                    转派
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.5} style={{elevation:3,borderRadius:6, margin: 10}} onPress={this.workOrderDone}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{color: 'red'}}>
                                     完成

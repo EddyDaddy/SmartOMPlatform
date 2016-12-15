@@ -172,7 +172,7 @@ export default class DevicesDetails extends React.Component {
                         <DeviceDetailItem leftData='企业名称'
                                           rightData=''/>
                         <DeviceDetailItem leftData='辖区'
-                                          rightData={this.state.data.Street}/>
+                                          rightData={this.state.data.street}/>
                         <DeviceDetailItem leftData='籍号'
                                           rightData={this.state.data.boxId}/>
                         <DeviceDetailItem leftData='名称'

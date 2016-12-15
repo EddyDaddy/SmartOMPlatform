@@ -183,7 +183,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 17,
                                         marginLeft: screenWidth / 18
                                     }}
-                                    source={require('../img/my_workorder_img.png')}/>
+                                    source={require('../img/my_workorder_img.png')}
+                                    resizeMode={'contain'}/>
                                 <Text
                                     style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     我的工单
@@ -194,7 +195,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 30,
                                         marginRight: screenWidth / 18
                                     }}
-                                           source={require('../img/next_small.png')}/>
+                                           source={require('../img/next_small.png')}
+                                           resizeMode={'contain'}/>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -216,7 +218,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 14,
                                         marginLeft: screenWidth / 18
                                     }}
-                                    source={require('../img/setting.png')}/>
+                                    source={require('../img/setting.png')}
+                                    resizeMode={'contain'}/>
                                 <Text
                                     style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     设置
@@ -227,7 +230,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 30,
                                         marginRight: screenWidth / 18
                                     }}
-                                           source={require('../img/next_small.png')}/>
+                                           source={require('../img/next_small.png')}
+                                           resizeMode={'contain'}/>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -249,7 +253,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 14,
                                         marginLeft: screenWidth / 18
                                     }}
-                                    source={require('../img/about_img.png')}/>
+                                    source={require('../img/about_img.png')}
+                                    resizeMode={'contain'}/>
                                 <Text
                                     style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
                                     关于
@@ -260,7 +265,8 @@ export default class User extends React.Component {
                                         height: screenWidth / 30,
                                         marginRight: screenWidth / 18
                                     }}
-                                           source={require('../img/next_small.png')}/>
+                                           source={require('../img/next_small.png')}
+                                           resizeMode={'contain'}/>
                                 </View>
                             </TouchableOpacity>
                         </View>

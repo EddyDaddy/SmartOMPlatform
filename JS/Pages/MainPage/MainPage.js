@@ -14,18 +14,15 @@ import {
     TouchableOpacity,
     InteractionManager,
     RefreshControl,
+    ListView
 }from 'react-native';
 import {connect} from 'react-redux';
 import Util from '../../Utils/Utils.js'
-import WorkOrderDetail from './WorkOrderDetail.js'
+import WorkOrderList from '../WorkOrderPage/WorkOrderList';
 import storge from '../../Utils/Storage.js';
-import {styles} from '../../Utils/Styles.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import ViewPager from 'react-native-viewpager';
-import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
-import getWOAction from '../../actions/GetWorkOrderAction';
-import LoadingView from '../../Utils/LoadingView';
 import * as urls from '../../Utils/Request';
 import Login from '../Login';
 var screenWidth = Util.size.width;
@@ -49,145 +46,51 @@ const propTypes = {
     getWOReducer: PropTypes.object.isRequired
 };
 var loginInfo;
+var dataSource;
+var ds;
+var _navigator
 class MainPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         // 用于构建DataSource对象
-        var dataSource = new ViewPager.DataSource({
+        dataSource = new ViewPager.DataSource({
             pageHasChanged: (p1, p2) => p1 !== p2,
+        });
+        ds = new ListView.DataSource({
+            rowHasChanged: (h1, h2) => h1 !== h2,
         });
 
         // 实际的DataSources存放在state中
         this.state = {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS),
+            dataSourceList: ds
         };
+        const {navigator} = this.props;
+        _navigator = navigator;
+    }
+
+    componentWillMount() {
+        const {navigator} = this.props;
+        storge.get('loginInfo').then((result) => {
+            let body = {
+                'repairUserPhone': result[0],
+                'userToken': result[1],
+            };
+            Util.post(urls.QUERY_PRI_NUM, body, navigator, (responseData) => {
+                if(responseData.success){
+                    this.setState({
+                        dataSourceList: ds.cloneWithRows(responseData.rows),
+                    })
+                }else{
+                    Toast.show('数据获取失败');
+                }
+            })
+        });
     }
 
     componentDidMount() {
-    }
-
-    _onFetch(page = 1, callback, options) {
-        const {navigator} = this.props;
-        storge.get('loginInfo').then((result) => {
-            console.log(result);
-            if (result) {
-                var body = {
-                    'repairUserPhone': result[0],
-                    'userToken': result[1],
-                    // 'status': '',
-                };
-                Util.post(urls.WORKORDER_URL, body, navigator, (response) => {
-                    if (response !== undefined) {
-                        if (response.code === '0') {
-                            callback(response.data);
-                            console.log('获取数据成功-------')
-                        } else {
-                            Toast.show('获取失败');
-                            callback([]);
-                        }
-                    } else {
-                        callback([]);
-                    }
-                });
-            } else {
-                Toast.show('未登录');
-                navigator.resetTo({
-                    name: 'Login',
-                    component:Login
-                })
-            }
-        });
-
-    }
-
-    _buttonClickItem(rowData) {
-        const {navigator} = this.props;
-        InteractionManager.runAfterInteractions(() => {
-            console.log('跳转到工单详情');
-            navigator.push({
-                name: 'WorkOrderDetail',
-                component: WorkOrderDetail,
-                params: {
-                    data: rowData,
-                    from: 'workOrderList'
-                }
-            });
-        });
-    }
-
-    /**
-     * Render a row
-     * @param {object} rowData Row data
-     */
-    _renderRowView(rowData) {
-
-        return (
-            <TouchableOpacity activeOpacity={0.5}
-                underlayColor='#c8c7cc'
-                onPress={this._buttonClickItem.bind(this, rowData)}
-            >
-                <View style={myStyles.itemView}>
-                    <Text style={{fontSize:itemTextBigSize,color: '#333333'}}>{rowData.street}</Text>
-                    <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex:2,fontSize:itemTextSmallSize}}>{rowData.deviceName}</Text>
-                        <Text
-                            numberOfLines={1}
-                            style={{color: '#ff3f3f', flex:1.2,fontSize:itemTextSmallSize}}>{Util.returnPriType(rowData.pri)}</Text>
-                        <Text
-                            numberOfLines={1}
-                            style={{color: '#ff9900',flex:0.8,fontSize:itemTextSmallSize}}>{Util.returnStatus(rowData.status)}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        );
-    }
-
-    /*加载完了的view*/
-    _paginationAllLoadedView() {
-        return (
-            <View style={myStyles.paginationView}>
-                <Text style={myStyles.actionsLabel}>
-                    -- 没有啦 --
-                </Text>
-            </View>
-        );
-    }
-
-    /*加载更多的view*/
-    _paginationWaitingView(paginateCallback) {
-        return (
-            <TouchableOpacity activeOpacity={0.5}
-                underlayColor='#c8c7cc'
-                onPress={paginateCallback}
-                style={myStyles.paginationView}
-            >
-                <Text style={myStyles.actionsLabel}>
-                    加载更多...
-                </Text>
-            </TouchableOpacity>
-        );
-    }
-
-    /*没有数据的时候view*/
-    _emptyView(refreshCallback) {
-        return (
-            <View style={myStyles.emptyView}>
-                <Text style={myStyles.defaultViewTitle}>
-                    暂无数据
-                </Text>
-
-                <TouchableOpacity activeOpacity={0.5}
-                    underlayColor='#c8c7cc'
-                    onPress={refreshCallback}
-                >
-                    <Text>
-                        ↻
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        );
     }
 
     _renderPage(data, pageID) {
@@ -198,13 +101,42 @@ class MainPage extends React.Component {
         );
     }
 
+    _renderRow(rowData){
+        return (
+            <View style={{width: Util.size.width, height: Util.pxToHeight(220), backgroundColor: 'white'}}>
+                <TouchableOpacity style={{flex: 1}}
+                                  onPress={() => {
+                                      InteractionManager.runAfterInteractions(() => {
+                                          _navigator.push({
+                                              component: WorkOrderList, name: 'WorkOrderList', params: {
+                                                  pri: rowData.pri
+                                              }
+                                          });
+                                      })
+                                  }}>
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{color: rowData.pri === '4'?'#a7324a':rowData.pri === '3'?'red':'#ffb23f', fontSize: Util.pxToTextSize(50), marginLeft: Util.pxToHeight(160)}}>
+                            {rowData.priStr}
+                        </Text>
+                        <View style={{flex: 1, alignItems: 'flex-end'}}>
+                            <Text style={{color: rowData.pri === '4'?'#a7324a':rowData.pri === '3'?'red':'#ffb23f', fontSize: Util.pxToTextSize(50), marginRight: Util.pxToHeight(180)}}>
+                                {rowData.num}
+                            </Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
     _renderSeparator() {
         return (
-            <View style={myStyles.separator}/>
+            <View style={{height: Util.pxToHeight(38), width: Util.size.width, backgroundColor: '#ebebeb'}}/>
         )
     }
 
     render() {
+        const {navigator} = this.props;
         return (
             <View style={{marginBottom: screenWidth / 7.5}}>
                 <Toolbar title={'首页'}>
@@ -217,73 +149,17 @@ class MainPage extends React.Component {
                             isLoop={true}
                             autoPlay={true}/>
                     </View>
-                    <View style={{width: screenWidth, height: screenHeight / 2, backgroundColor: '#ebebeb'}}>
-                        <GiftedListView
-                            rowView={this._renderRowView.bind(this)}
-                            onFetch={this._onFetch.bind(this)}
-                            firstLoader={true} // display a loader for the first fetching
-                            pagination={false} // enable infinite scrolling using touch to load more
-                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                            withSections={false} // enable sections
-                            paginationWaitingView={this._paginationWaitingView}
-                            paginationAllLoadedView={this._paginationAllLoadedView}
-                            renderSeparator={this._renderSeparator}
-                            emptyView={this._emptyView}
-                        />
-                    </View>
+                    <ListView style={{height: Util.pxToHeight(995), width: Util.size.width, backgroundColor: '#ebebeb'}}
+                              dataSource={this.state.dataSourceList}
+                              scrollEnabled={false}
+                              renderRow={this._renderRow}
+                              renderSeparator={this._renderSeparator}/>
                 </View>
             </View>
         );
     }
 }
 
-export const myStyles = StyleSheet.create({
-    paginationView: {
-        height: 44,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF',
-    },
-    paginationView: {
-        height: 44,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF',
-    },
-    actionsLabel: {
-        fontSize: 12,
-    },
-    emptyView: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-    },
-    defaultViewTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 15,
-    },
-    separator: {
-        height: 1,
-        backgroundColor: '#D8D8D8'
-    },
-    image: {
-        width: screenWidth,
-        height: screenHeight / 10 * 3,
-        justifyContent: 'center',
-        alignItems: 'center',
-        resizeMode: 'stretch'
-    },
-    itemView: {
-        width: screenWidth,
-        height: itemHeight,
-        paddingLeft: 10,
-        paddingRight: 10,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
-    }
-});
 
 export default connect((state) => {
     const {getWOReducer} = state;
@@ -292,6 +168,15 @@ export default connect((state) => {
     }
 })(MainPage);
 
+export const myStyles = StyleSheet.create({
+    image: {
+        width: screenWidth,
+        height: screenHeight / 10 * 3,
+        justifyContent: 'center',
+        alignItems: 'center',
+        resizeMode: 'stretch'
+    },
+});
 //数据格式
 /*
  {

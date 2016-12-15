@@ -25,6 +25,7 @@ import * as urls from '../../Utils/Request';
 import DevicesDtails from '../DevicesPage/DevicesDetails.js'
 import Main from '../Main';
 import Loading from '../../Utils/Loading';
+import DisplayPic from './DisplayPic';
 
 var screenWidth = Util.size.width;
 
@@ -123,33 +124,34 @@ class WorkOrderDetail extends React.Component {
             address: '',
             addressLongitude: '',
             addressLatitude: '',
-            statu: '',
+            status: '',
             description: '',
             isLoading: false
         };
 
         //绑定回调函数和成员方法
         this.processBySelf = this.processBySelf.bind(this);
-        this.dispathToOther = this.dispathToOther.bind(this);
         this.showLocationInMap = this.showLocationInMap.bind(this);
         this.showDeviceInfo = this.showDeviceInfo.bind(this);
     }
 
     componentWillMount() {
-        if(from === 'workOrderList'){
+        if (from === 'workOrderList') {
             this.setState({
-                entName: data.entName,
+                entName: data.company,
                 id: data.id,
                 ipInfo: data.ip,
+                gateway: data.gateway,
+                mask: data.mask,
                 priority: Util.returnPriType(data.pri),
                 deviceInfo: data.deviceName,
                 address: data.street,
                 addressLongitude: data.longitudeBd,
                 addressLatitude: data.latitudeBd,
-                statu: Util.returnStatus(data.status),
+                status: data.statusStr,
                 description: data.remark,
             });
-        }else{
+        } else {
             storge.get('loginInfo').then((result) => {
                 console.log(result);
                 if (result) {
@@ -165,15 +167,17 @@ class WorkOrderDetail extends React.Component {
                             if (response.code === '0') {
                                 console.log('获取工单详情成功-------')
                                 this.setState({
-                                    entName: response.data.entName,
+                                    entName: response.data.company,
                                     id: response.data.id,
                                     ipInfo: response.data.ip,
+                                    gateway: data.gateway,
+                                    mask: data.mask,
                                     priority: Util.returnPriType(response.data.pri),
                                     deviceInfo: response.data.deviceName,
                                     address: response.data.street,
                                     addressLongitude: response.data.longitudeBd,
                                     addressLatitude: response.data.latitudeBd,
-                                    statu: Util.returnStatus(response.data.status),
+                                    status: response.data.statusStr,
                                     description: response.data.remark,
                                 });
                             } else {
@@ -187,20 +191,20 @@ class WorkOrderDetail extends React.Component {
                     Toast.show('未登录');
                     navigator.resetTo({
                         name: 'Login',
-                        component:Login
+                        component: Login
                     })
                 }
             });
         }
     }
 
-    jumpToDevicesDetails(deviceList){
-        Toast.show('jumpToDevicesDetails->data:'+deviceList);
-        if(data!==undefined){
+    jumpToDevicesDetails(deviceList) {
+        Toast.show('jumpToDevicesDetails->data:' + deviceList);
+        if (data !== undefined) {
             let device = deviceList.filter((d) => {
                 return d.id == data.cameraId();
             });
-            if(device!==undefined){
+            if (device !== undefined) {
                 const {navigator} = this.props;
                 InteractionManager.runAfterInteractions(() => {
                     navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: device}});
@@ -211,12 +215,12 @@ class WorkOrderDetail extends React.Component {
     }
 
     showDeviceInfo() {
-        if(this.device!==undefined){
+        if (this.device !== undefined) {
             const {navigator} = this.props;
             InteractionManager.runAfterInteractions(() => {
                 navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: this.device}});
             });
-        }else{
+        } else {
             const {navigator} = this.props;
             storge.get('loginInfo').then((result) => {
                 console.log(result);
@@ -228,18 +232,22 @@ class WorkOrderDetail extends React.Component {
                     Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
                         if (response !== undefined) {
                             if (response.code === '0') {
-                                for(let temp in response.data){
-                                    if(response.data[temp].id === data.cameraId){
+                                for (let temp in response.data) {
+                                    if (response.data[temp].id === data.cameraId) {
                                         this.device = response.data[temp];
                                         break;
                                     }
                                 }
-                                if(this.device!==undefined){
+                                if (this.device !== undefined) {
                                     const {navigator} = this.props;
                                     InteractionManager.runAfterInteractions(() => {
-                                        navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: this.device}});
+                                        navigator.push({
+                                            name: 'DevicesDtails',
+                                            component: DevicesDtails,
+                                            params: {data: this.device}
+                                        });
                                     });
-                                }else{
+                                } else {
                                     Toast.show('无该设备信息');
                                 }
                             } else {
@@ -262,8 +270,8 @@ class WorkOrderDetail extends React.Component {
             navigator.push({
                 name: 'BaiduMapPage',
                 component: BaiduMapPage,
-                params:{
-                    addr:this.state.address,
+                params: {
+                    addr: this.state.address,
                     // longitudeBd:data.longitudeBd,
                     // latitudeBd:data.latitudeBd
                     longitudeBd: '104.73',
@@ -279,47 +287,25 @@ class WorkOrderDetail extends React.Component {
             navigator.push({
                 name: 'ProcessWorkOrder',
                 component: ProcessWorkOrder,
-                params:{
-                    data:data
+                params: {
+                    data: data
                 }
             });
         });
     }
 
-    dispathToOther() {
-        Alert.alert('提示','您确定要转派吗?',
-            [{text:'取消',onPress:() => {}},
-                {text:'确定',onPress:() => {
-                    const {navigator} = this.props;
-                    storge.get('loginInfo').then((result) => {
-                        var body = {
-                            'repairUserPhone': result[0],
-                            'userToken': result[1],
-                            'typeId': '3',
-                            'processId': data.id,
-                            'status': '99',
-                            'remark': this.state.comment,
-                            'nextOpEntId':'jzsx',
-                        }
-                        Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
-                            if(response === undefined || response === ''){
-                                Toast.show('转派失败');
-                            }else{
-                                if(response.code === '0'){
-                                    Toast.show('转派成功');
-                                    navigator.resetTo({name: 'Main', component: Main});
-                                }else{
-                                    Toast.show('转派失败');
-                                    console.log(response.msg);
-                                }
-                            }
-                        });
-                    });
-                }}
-            ]);
+    displayPic(data) {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                name: 'DisplayPic',
+                component: DisplayPic,
+                params: {
+                    data: data
+                }
+            });
+        });
     }
-
-
 
     componentDidMount() {
         var navigator = this._navigator;
@@ -334,16 +320,16 @@ class WorkOrderDetail extends React.Component {
 
     render() {
         let statuTextColor = valueTextColor;
-        if('1'===data.status){
+        if ('1' === data.status) {
             statuTextColor = '#FFB90F';
-        }else if('99'===data.status){
+        } else if ('99' === data.status) {
             statuTextColor = 'green';
         }
         let priorityTextColor = valueTextColor;
-        if('4'===data.pri){
+        if ('4' === data.pri) {
+            priorityTextColor = '#a7324a';
+        } else if ('3' === data.pri) {
             priorityTextColor = 'red';
-        }else if('3'===data.pri){
-            priorityTextColor = 'yellow';
         }
         return (
             <View style={LocalStyles.container}>
@@ -377,7 +363,7 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                         </View>
                         <Text style={LocalStyles.valueText}>
-                            {this.state.ipInfo}
+                            {this.state.ipInfo+'   '+this.state.gateway+'   '+this.state.mask}
                         </Text>
                     </View>
                     <View style={LocalStyles.itemStyle}>
@@ -386,7 +372,7 @@ class WorkOrderDetail extends React.Component {
                                 优先级
                             </Text>
                         </View>
-                        <Text style={[LocalStyles.valueText,{color:priorityTextColor}]}>
+                        <Text style={[LocalStyles.valueText, {color: priorityTextColor}]}>
                             {this.state.priority}
                         </Text>
                     </View>
@@ -396,9 +382,15 @@ class WorkOrderDetail extends React.Component {
                                 设备
                             </Text>
                         </View>
-                        <TouchableOpacity activeOpacity={0.5} onPress={this.showDeviceInfo} style={{ flex: 1, alignItems: 'flex-start' }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={this.showDeviceInfo}
+                                          style={{flex: 1, alignItems: 'flex-start'}}>
                             <Text
-                                style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
+                                style={{
+                                    fontSize: valueTextSize,
+                                    textAlign: 'left',
+                                    marginLeft: Util.pxToHeight(30),
+                                    color: valueTextColor,
+                                }}>
                                 {this.state.deviceInfo}
                             </Text>
                         </TouchableOpacity>
@@ -410,15 +402,20 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                         </View>
                         <View
-                            style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                            style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                             <Text
-                                style={{ fontSize: valueTextSize, textAlign: 'left', marginLeft: Util.pxToHeight(30), color: valueTextColor, }}>
+                                style={{
+                                    fontSize: valueTextSize,
+                                    textAlign: 'left',
+                                    marginLeft: Util.pxToHeight(30),
+                                    color: valueTextColor,
+                                }}>
                                 {this.state.address}
                             </Text>
                             <TouchableOpacity onPress={this.showLocationInMap}
-                                              style={{ width: 30, height: 30, marginLeft: 6 }}>
+                                              style={{width: 30, height: 30, marginLeft: 6}}>
                                 <Image source={require('../img/map.png') }
-                                       style={{ width: 30, height: 30 }}/>
+                                       style={{width: 30, height: 30}}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -428,8 +425,8 @@ class WorkOrderDetail extends React.Component {
                                 工单状态
                             </Text>
                         </View>
-                        <Text style={[LocalStyles.valueText,{color:statuTextColor}]}>
-                            {this.state.statu}
+                        <Text style={[LocalStyles.valueText, {color: statuTextColor}]}>
+                            {this.state.status}
                         </Text>
                     </View>
                     <View style={LocalStyles.itemStyle}>
@@ -442,24 +439,32 @@ class WorkOrderDetail extends React.Component {
                             {this.state.description}
                         </Text>
                     </View>
-                    <View style={LocalStyles.btnItemStyle}>
-                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
-                                          onPress={this.processBySelf.bind(this, data)}>
-                            <View style={LocalStyles.btnStyle}>
-                                <Text style={{ color: 'red' }}>
-                                    开始处理
+                    <View style={LocalStyles.itemStyle}>
+                        <View style={LocalStyles.keyTextContainer}>
+                            <Text style={LocalStyles.keyText}>
+                                图片
+                            </Text>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <TouchableOpacity activeOpacity={0.5} style={{elevation: 3}}
+                                              onPress={this.displayPic.bind(this, data)}>
+                                <Text style={[LocalStyles.valueText, {color: 'red'}]}>
+                                    点击查看图片
                                 </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} style={{ elevation: 3, borderRadius: 6,margin:5}}
-                                          onPress={this.dispathToOther.bind(this)}>
-                            <View style={LocalStyles.btnStyle}>
-                                <Text style={{ color: 'red' }}>
-                                    转派
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+                    {this.state.status !== '已处理' ?
+                        <View style={LocalStyles.btnItemStyle}>
+                            <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 5}}
+                                              onPress={this.processBySelf.bind(this, data)}>
+                                <View style={LocalStyles.btnStyle}>
+                                    <Text style={{color: 'red'}}>
+                                        开始处理
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View> : null}
                 </View>
                 <Loading visible={this.state.isLoading}/>
             </View>

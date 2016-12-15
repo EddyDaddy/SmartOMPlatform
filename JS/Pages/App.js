@@ -85,15 +85,6 @@ class App extends Component {
         if (!remoteHolder)
             console.log('Fail to add event to handle remote notification');
 
-        var localHolder = XG.addEventListener('localNotification', xgInstance => {
-            console.log(xgInstance);
-            this.setState({
-                event: 'localNotification',
-                eventArgs: JSON.stringify(xgInstance)
-            });
-        });
-
-        if (!localHolder) console.log('Fail to add event to local notification');
 
         this.setState({
             eventsHolder: [
@@ -101,14 +92,13 @@ class App extends Component {
                 registerHolder,
                 errorHolder,
                 remoteHolder,
-                localHolder
             ]
         });
 
         // Your accessId as number and your accessKey
-        XG.setCredential(2100242234, 'A21BS2M7BV7R');
+        // XG.setCredential(2100242234, 'A21BS2M7BV7R');
         //个人测试用
-        // XG.setCredential(2100230682, 'ANF2QS47Q44W');
+        XG.setCredential(2100230682, 'ANF2QS47Q44W');
         XG.register('SampleTester');
         if (Platform.OS === 'ios') {
             XG.getApplicationIconBadgeNumber()
@@ -127,6 +117,7 @@ class App extends Component {
                 holder.remove();
             }
         });
+        console.log('App--->'+'componentDidUnmount');
         //h => !!h是强制转换为boolean型undefinded、null、0、"" 为 false ·true、1、"somestring"、[Object] 为 true。
         //这里过滤掉null和undefined
     }

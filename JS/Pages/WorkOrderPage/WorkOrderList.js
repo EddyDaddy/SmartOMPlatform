@@ -1,70 +1,54 @@
 /**
  * Created by demon on 2016/9/14.
- * 设备页
+ * 工单页
  */
 import React, {Component} from 'react';
 import {
+    BackAndroid,
     View,
-    StyleSheet,
     Text,
-    Image,
     Navigator,
+    StyleSheet,
     TouchableOpacity,
-    InteractionManager,
+    InteractionManager
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
-import DevicesDtails from './DevicesDetails.js'
+import {styles} from '../../Utils/Styles.js';
+import storge from '../../Utils/Storage';
 import Toolbar from '../../Utils/ToolBar.js';
+import * as urls from '../../Utils/Request';
+import WorkOrderDetail from '../MainPage/WorkOrderDetail';
 import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
-import * as urls from '../../Utils/Request';
-import storge from '../../Utils/Storage';
+import {naviGoBack} from '../../Utils/CommonUtil';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
-var itemHeight = Util.pxToTextSize(140);
-var itemTextSize = Util.pxToTextSize(34);
-export default class DevicesPage extends React.Component {
+
+let isLoadMore = false;
+let isRefreshing = false;
+let isLoading = true;
+var itemHeight = Util.pxToTextSize(204);
+var itemTextBigSize = Util.pxToTextSize(44);
+var itemTextSmallSize = Util.pxToTextSize(34);
+var pri;
+export default class WorkOrderList extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {};
+        pri = this.props.pri
     }
 
+    componentDidMount() {
+        const {navigator} = this.props;
+        BackAndroid.addEventListener('hardwareBackPress', function () {
+            return naviGoBack(navigator)
+        });
+    }
 
-    render() {
-        return (
-            <View style={{marginBottom: screenWidth / 7.5}}>
-                <Toolbar title={'设备'}>
-                </Toolbar>
-                <View style={{flex: 1}}>
-                    <View style={{width: screenWidth, height: screenHeight / 10 * 3, backgroundColor: '#ebebeb'}}>
-                        <Image style={{
-                            width: screenWidth,
-                            height: screenHeight / 10 * 3,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            resizeMode: 'stretch'
-                        }}
-                               source={require('../img/deviceBanner.png')}/>
-                    </View>
-                    <View style={{width: screenWidth, height: Util.pxToHeight(995), backgroundColor: '#ebebeb'}}>
-                        <GiftedListView
-                            rowView={this._renderRowView.bind(this)}
-                            onFetch={this._onFetch.bind(this)}
-                            firstLoader={true} // display a loader for the first fetching
-                            pagination={false} // enable infinite scrolling using touch to load more
-                            refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
-                            withSections={false} // enable sections
-                            paginationWaitingView={this._paginationWaitingView}
-                            paginationAllLoadedView={this._paginationAllLoadedView}
-                            renderSeparator={this._renderSeparator}
-                            emptyView={this._emptyView}
-                        />
-                    </View>
-                </View>
-            </View>
-        );
+    componentWillUnmount() {
+        BackAndroid.removeEventListener('hardwareBackPress');
     }
 
     _onFetch(page = 1, callback, options) {
@@ -75,13 +59,20 @@ export default class DevicesPage extends React.Component {
                 var body = {
                     'repairUserPhone': result[0],
                     'userToken': result[1],
+                    'pri': pri,
                     'page': page,
                     'rows': 10
                 };
-                Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
-                    if (response !== undefined) {
-                        if (response.code === '0') {
-                            callback(response.data);
+                Util.post(urls.QUERY_PROCESSINFO_BY_PRI, body, navigator, (response) => {
+                    if (response !== undefined&&response!==''&&response!==null) {
+                        if (response.success) {
+                            if(response.rows.length === 10){
+                                callback(response.rows);
+                            }else{
+                                callback(response.rows, {
+                                    allLoaded: true,
+                                });
+                            }
                             console.log('获取数据成功-------')
                         } else {
                             Toast.show('获取失败');
@@ -93,15 +84,27 @@ export default class DevicesPage extends React.Component {
                 });
             } else {
                 Toast.show('未登录');
+                navigator.resetTo({
+                    name: 'Login',
+                    component: Login
+                })
             }
         });
+
     }
 
     _buttonClickItem(rowData) {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
             console.log('跳转到工单详情');
-            navigator.push({name: 'DevicesDtails', component: DevicesDtails, params: {data: rowData}});
+            navigator.push({
+                name: 'WorkOrderDetail',
+                component: WorkOrderDetail,
+                params: {
+                    data: rowData,
+                    from: 'workOrderList'
+                }
+            });
         });
     }
 
@@ -116,11 +119,28 @@ export default class DevicesPage extends React.Component {
                               underlayColor='#c8c7cc'
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
-                <View style={[myStyles.itemView,{height:itemHeight}]}>
-                    <View style={{width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
-                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize}}>{rowData.name}</Text>
-                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.deviceName}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.street}</Text>
+                <View style={myStyles.itemView}>
+                    <Text style={{fontSize: itemTextBigSize, color: '#333333'}}>{rowData.street}</Text>
+                    <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
+                        <Text numberOfLines={1} style={{
+                            color: '#4b4b4b',
+                            flex: 2,
+                            fontSize: itemTextSmallSize
+                        }}>{rowData.deviceName}</Text>
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                color: rowData.pri === '4'?'#a7324a':rowData.pri === '3'?'red':'#ffb23f',
+                                flex: 1.2,
+                                fontSize: itemTextSmallSize
+                            }}>{Util.returnPriType(rowData.pri)}</Text>
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                color: '#ff9900',
+                                flex: 0.8,
+                                fontSize: itemTextSmallSize
+                            }}>{rowData.statusStr}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -175,9 +195,32 @@ export default class DevicesPage extends React.Component {
 
     _renderSeparator() {
         return (
-            <View style={{backgroundColor: '#ebebeb', height: Util.pxToHeight(1), width: Util.size.width}}/>
+            <View style={myStyles.separator}/>
         )
     }
+
+
+    render() {
+        const {navigator} = this.props;
+        return (
+            <View style={{flex: 1}}>
+                <Toolbar left={true} title={'工单列表'} navigator={navigator}/>
+                <GiftedListView
+                    rowView={this._renderRowView.bind(this)}
+                    onFetch={this._onFetch.bind(this)}
+                    firstLoader={true} // display a loader for the first fetching
+                    pagination={true} // enable infinite scrolling using touch to load more
+                    refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
+                    withSections={false} // enable sections
+                    paginationWaitingView={this._paginationWaitingView}
+                    paginationAllLoadedView={this._paginationAllLoadedView}
+                    renderSeparator={this._renderSeparator}
+                    emptyView={this._emptyView}
+                />
+            </View>
+        );
+    }
+
 }
 
 export const myStyles = StyleSheet.create({

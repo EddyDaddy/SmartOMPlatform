@@ -1,9 +1,16 @@
-const service_url = 'http://120.24.179.24:8080/smartMonitor';
+const service_url = 'http://106.14.70.38:8080/smartMonitor';
 export const LOGIN_URL=service_url+'/api/login';  //登录地址
 //查询工单
 export const WORKORDER_URL=service_url+'/api/queryProcess';
+
+//查询工单优先级和数量
+export const QUERY_PRI_NUM = service_url+'/api/queryPriNum';
+//查询工单列表
+export const QUERY_PROCESSINFO_BY_PRI = service_url+'/api/queryProcessInfoByPri';
 //查询工单详情
 export const QUERYPROCESSINFO_URL = service_url+'/api/queryProcessInfo';
+//工单详情页查询工单图片
+export const QUERY_FILE_BY_BID = service_url+'/api/queryFileByBid';
 //修改密码
 export const MODIFYPASSWORD_URL=service_url+'/api/resetPassword';
 //处理工单

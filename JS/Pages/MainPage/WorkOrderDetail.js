@@ -123,7 +123,7 @@ class WorkOrderDetail extends React.Component {
             address: '',
             addressLongitude: '',
             addressLatitude: '',
-            statu: '',
+            status: '',
             description: '',
             isLoading: false
         };
@@ -138,7 +138,7 @@ class WorkOrderDetail extends React.Component {
     componentWillMount() {
         if(from === 'workOrderList'){
             this.setState({
-                entName: data.entName,
+                entName: data.company,
                 id: data.id,
                 ipInfo: data.ip,
                 priority: Util.returnPriType(data.pri),
@@ -146,7 +146,7 @@ class WorkOrderDetail extends React.Component {
                 address: data.street,
                 addressLongitude: data.longitudeBd,
                 addressLatitude: data.latitudeBd,
-                statu: Util.returnStatus(data.status),
+                status: data.statusStr,
                 description: data.remark,
             });
         }else{
@@ -165,7 +165,7 @@ class WorkOrderDetail extends React.Component {
                             if (response.code === '0') {
                                 console.log('获取工单详情成功-------')
                                 this.setState({
-                                    entName: response.data.entName,
+                                    entName: response.data.company,
                                     id: response.data.id,
                                     ipInfo: response.data.ip,
                                     priority: Util.returnPriType(response.data.pri),
@@ -173,7 +173,7 @@ class WorkOrderDetail extends React.Component {
                                     address: response.data.street,
                                     addressLongitude: response.data.longitudeBd,
                                     addressLatitude: response.data.latitudeBd,
-                                    statu: Util.returnStatus(response.data.status),
+                                    status: response.data.statusStr,
                                     description: response.data.remark,
                                 });
                             } else {
@@ -341,9 +341,9 @@ class WorkOrderDetail extends React.Component {
         }
         let priorityTextColor = valueTextColor;
         if('4'===data.pri){
-            priorityTextColor = 'red';
+            priorityTextColor = '#a7324a';
         }else if('3'===data.pri){
-            priorityTextColor = 'yellow';
+            priorityTextColor = 'red';
         }
         return (
             <View style={LocalStyles.container}>
@@ -429,7 +429,7 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                         </View>
                         <Text style={[LocalStyles.valueText,{color:statuTextColor}]}>
-                            {this.state.statu}
+                            {this.state.status}
                         </Text>
                     </View>
                     <View style={LocalStyles.itemStyle}>

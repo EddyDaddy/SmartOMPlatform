@@ -45,3 +45,4 @@ captures/
 /app/build/
 /gradle/
 /gradlew
+/gradlew.bat

@@ -7,5 +7,5 @@ include ':react-native-image-picker'
 include ':react-native-baidu-map'
 include ':react-native-tencent-xg'
 project(':react-native-image-picker').projectDir = new File(settingsDir, '../node_modules/react-native-image-picker/android')
-project(':react-native-baidu-map').projectDir = new File(settingsDir, '../node_modules/react-native-baidu-map/android')
+project(':react-native-baidu-map').projectDir = new File(settingsDir, '../my_node_modules/react-native-baidu-map/android')
 project(':react-native-tencent-xg').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-tencent-xg/android')

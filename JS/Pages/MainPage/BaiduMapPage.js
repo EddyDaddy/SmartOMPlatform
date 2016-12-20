@@ -13,7 +13,7 @@ import {
     MapTypes,
     Geolocation,
     MapModule
-} from '../../../react-native-baidu-map';
+} from '../../../my_node_modules/react-native-baidu-map';
 import Util from '../../Utils/Utils.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';

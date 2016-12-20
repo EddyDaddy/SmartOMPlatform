@@ -445,6 +445,7 @@ class ProcessWorkOrder extends React.Component {
                                     onValueChange={(value) => this.setState({type: value})}>
                                     <Picker.Item label="维修" value='1'/>
                                     <Picker.Item label="更换设备" value='2'/>
+                                    <Picker.Item label="网络故障" value='3'/>
                                 </Picker>
                             </View>
                         </View>

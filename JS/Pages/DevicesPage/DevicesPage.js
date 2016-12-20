@@ -120,7 +120,7 @@ export default class DevicesPage extends React.Component {
                     <View style={{width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
                         <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize}}>{rowData.name}</Text>
                         <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.deviceName}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.street}</Text>
+                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.priStr}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

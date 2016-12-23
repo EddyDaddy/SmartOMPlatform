@@ -132,6 +132,7 @@ class Login extends Component {
                                            keyboardType="phone-pad"
                                            maxLength={11}
                                            value={this.state.userName}
+                                           underlineColorAndroid='#6ab5ba'
                                            placeholder="请输入您的手机号"
                                            placeholderTextColor='white'/>
                             </View>
@@ -142,6 +143,7 @@ class Login extends Component {
                                            value={this.state.passWord}
                                            secureTextEntry={true}
                                            placeholder="请输入密码"
+                                           underlineColorAndroid='#6ab5ba'
                                            placeholderTextColor='white'/>
                             </View>
                             <View style={{marginTop: screenWidth / 36}}>

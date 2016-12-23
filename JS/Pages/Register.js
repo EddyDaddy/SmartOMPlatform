@@ -140,6 +140,7 @@ class Register extends React.Component {
                                    value={this.state.userName}
                                    maxLength={11}
                                    placeholder="请输入您的手机号"
+                                   underlineColorAndroid='white'
                                    placeholderTextColor='#666666'
                         />
                     </View>
@@ -152,6 +153,7 @@ class Register extends React.Component {
                                        value={this.state.verificationCode}
                                        placeholder="请填写验证码"
                                        placeholderTextColor='#666666'
+                                       underlineColorAndroid='white'
                             />
                         </View>
                         <View
@@ -180,6 +182,7 @@ class Register extends React.Component {
                                    secureTextEntry={true}
                                    placeholder="请设置密码"
                                    placeholderTextColor='#666666'
+                                   underlineColorAndroid='white'
                         />
                     </View>
                     <View style={styles.borderViewCommon}>
@@ -189,6 +192,7 @@ class Register extends React.Component {
                                    secureTextEntry={true}
                                    placeholder="请再次输入密码"
                                    placeholderTextColor='#666666'
+                                   underlineColorAndroid='white'
                         />
                     </View>
                     <View style={{marginTop: screenWidth / 20}}>

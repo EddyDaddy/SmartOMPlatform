@@ -65,7 +65,7 @@ class MainPage extends React.Component {
         // 实际的DataSources存放在state中
         this.state = {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS),
-            dataSourceList: ds
+            dataSourceList: ds.cloneWithRows([])
         };
         const {navigator} = this.props;
         _navigator = navigator;

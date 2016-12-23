@@ -149,11 +149,12 @@ class MainPage extends React.Component {
                             isLoop={true}
                             autoPlay={true}/>
                     </View>
-                    <ListView style={{height: Util.pxToHeight(995), width: Util.size.width, backgroundColor: '#ebebeb'}}
-                              dataSource={this.state.dataSourceList}
+                    <View style={{height: Util.pxToHeight(995), width: Util.size.width, backgroundColor: '#ebebeb'}}>
+                        <ListView dataSource={this.state.dataSourceList}
                               scrollEnabled={false}
                               renderRow={this._renderRow}
                               renderSeparator={this._renderSeparator}/>
+                    </View>
                 </View>
             </View>
         );

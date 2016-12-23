@@ -85,7 +85,6 @@ const Util = {
                             component: Login
                         })
                     } else {
-                        console.log(JSON.stringify(responseData.data));
                         callback(responseData);
                     }
 

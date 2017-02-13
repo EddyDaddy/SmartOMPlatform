@@ -27,6 +27,7 @@ const BANNER_IMGS = [
     require('../img/mainBanner_2.png'),
     require('../img/mainBanner_3.png')
 ];
+var flag = 0;
 export default class DisplayPic extends React.Component {
     // 构造
     constructor(props) {
@@ -67,14 +68,14 @@ export default class DisplayPic extends React.Component {
                 //     rows.push(e.fileUrlAbs)
                 // })
                 // console.log('rows----->'+JSON.stringify(rows));
-                if(responseData.success){
-                    console.log('msg----->'+JSON.stringify(responseData.msg))
+                if (responseData.success) {
+                    console.log('msg----->' + JSON.stringify(responseData.msg))
                     this.setState({
                         dataSource: dataSource.cloneWithPages(responseData.rows),
                     });
-                }else{
+                } else {
                     Toast.show('查看图片失败')
-                    console.log('erro----->'+JSON.stringify(responseData.msg))
+                    console.log('erro----->' + JSON.stringify(responseData.msg))
                 }
             })
         });
@@ -92,12 +93,13 @@ export default class DisplayPic extends React.Component {
     }
 
     _renderPage(rows, pageID) {
-        console.log('row---->'+JSON.stringify(rows));
+        console.log('row---->' + JSON.stringify(rows));
         return (
             <Image
-                style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: Util.size.width}}
+                style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
                 resizeMode={'contain'}
-                source={{uri:rows.fileUrlAbs}}
+                resizeMethod={'auto'}
+                source={{uri: rows.fileUrlAbs}}
             />
         );
     }
@@ -106,12 +108,12 @@ export default class DisplayPic extends React.Component {
         const {navigator} = this.props;
         return (
             <View style={{flex: 1}}>
-                <Toolbar left={true} title={'查看图片'} navigator = {navigator}/>
+                <Toolbar left={true} title={'查看图片'} navigator={navigator}/>
                 <ViewPager
                     style={{flex: 1}}
                     dataSource={this.state.dataSource}
                     renderPage={this._renderPage}
-                    isLoop={true}
+                    isLoop={false}
                     autoPlay={false}
                     initialPage={0}/>
                 <Loading visible={this.state.isLoading}/>

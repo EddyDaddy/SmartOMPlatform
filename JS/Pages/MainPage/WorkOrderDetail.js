@@ -363,7 +363,7 @@ class WorkOrderDetail extends React.Component {
                             </Text>
                         </View>
                         <Text style={LocalStyles.valueText}>
-                            {this.state.ipInfo+'   '+this.state.gateway+'   '+this.state.mask}
+                            {this.state.ipInfo + '   ' + this.state.gateway + '   ' + this.state.mask}
                         </Text>
                     </View>
                     <View style={LocalStyles.itemStyle}>
@@ -445,14 +445,21 @@ class WorkOrderDetail extends React.Component {
                                 图片
                             </Text>
                         </View>
-                        <View style={{flex: 1}}>
-                            <TouchableOpacity activeOpacity={0.5} style={{elevation: 3}}
-                                              onPress={this.displayPic.bind(this, data)}>
-                                <Text style={[LocalStyles.valueText, {color: 'red'}]}>
+
+                        <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, flex: 1}}
+                                          onPress={this.displayPic.bind(this, data)}>
+                            <View style={{flex: 1, justifyContent: 'center'}}>
+                                <Text style={{
+                                    fontSize: valueTextSize,
+                                    textAlign: 'left',
+                                    marginLeft: Util.pxToHeight(30),
+                                    color: 'red'
+                                }}>
                                     点击查看图片
                                 </Text>
-                            </TouchableOpacity>
-                        </View>
+                            </View>
+                        </TouchableOpacity>
+
                     </View>
                     {this.state.status !== '已处理' ?
                         <View style={LocalStyles.btnItemStyle}>

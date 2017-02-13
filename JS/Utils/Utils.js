@@ -67,12 +67,15 @@ const Util = {
             body: toQueryString(data)
         };
 
+        console.log('url---->'+url)
+        console.log('fetchOptions---->'+JSON.stringify(fetchOptions))
         fetch(url, fetchOptions)
             .then((response) => {
                 if (response.ok) {
                     return response.json()
                 } else {
                     Toast.show('请求失败')
+                    console.log('responseError---->'+JSON.stringify(response))
                 }
             })
             .then((responseData) => {

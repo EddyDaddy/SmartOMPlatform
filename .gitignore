@@ -38,3 +38,4 @@ npm-debug.log
 buck-out/
 \.buckd/
 android/keystores/debug.keystore
+android/app/proguard-rules.pro

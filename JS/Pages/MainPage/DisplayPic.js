@@ -96,7 +96,7 @@ export default class DisplayPic extends React.Component {
         console.log('row---->' + JSON.stringify(rows));
         return (
             <Image
-                style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+                style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: Util.size.width}}
                 resizeMode={'contain'}
                 resizeMethod={'auto'}
                 source={{uri: rows.fileUrlAbs}}

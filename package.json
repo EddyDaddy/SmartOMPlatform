@@ -9,7 +9,7 @@
 	"dependencies": {
 		"fetch-http-client": "^1.0.1",
 		"react": "15.4.1",
-		"react-native": "0.39.2",
+		"react-native": "0.41.2",
 		"react-native-communications": "^2.1.4",
 		"react-native-datepicker": "^1.4.3",
 		"react-native-gifted-listview": "0.0.15",

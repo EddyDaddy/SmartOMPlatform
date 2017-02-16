@@ -9,6 +9,7 @@ import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.facebook.soloader.SoLoader;
 import com.imagepicker.ImagePickerPackage;
 import com.kh.tencentxg.TencentXGPackage;
 import com.smartomplatform.CommonUtils.CommonPackage;
@@ -50,5 +51,12 @@ public class MainApplication extends Application implements ReactApplication
     public ReactNativeHost getReactNativeHost()
     {
         return mReactNativeHost;
+    }
+
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
     }
 }

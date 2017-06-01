@@ -1,6 +1,7 @@
-// const service_url = 'http://106.14.70.38:8080/smartMonitor';
+const service_url = 'http://106.14.70.38:8080/smartMonitor';
 //外网
-const service_url = 'http://110.186.51.123:8080/smartMonitor';
+//const service_url = 'http://110.186.51.123:8080/smartMonitor';
+// const service_url = 'http://182.136.8.130:4808/smartMonitor';
 export const LOGIN_URL=service_url+'/api/login';  //登录地址
 //查询工单
 export const WORKORDER_URL=service_url+'/api/queryProcess';
@@ -29,3 +30,8 @@ export const DEVICESINFO_URL=service_url+'/api/queryCameraInfo';
 export const LOGOUT_URL=service_url+'/api/logout';
 //查询个人信息
 export const QUERYUSERINFO_URL=service_url+'/api/queryUserInfo';
+//获取快照
+export const GET_SNAPSHOT=service_url+'/api/getSnapshot';
+//查询我的快照
+export const QUERY_SNAPSHOT=service_url+'/api/querySnapshot';
+

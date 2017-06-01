@@ -200,6 +200,40 @@ export default class User extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
+                        <View
+                            style={{
+                                height: screenHeight / 12,
+                                width: screenWidth,
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }}>
+                            <TouchableOpacity
+                                style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
+                                activeOpacity={1}
+                                onPress={this._gotoMyWorkOrder.bind(this)}>
+                                <Image
+                                    style={{
+                                        width: screenWidth / 18,
+                                        height: screenWidth / 17,
+                                        marginLeft: screenWidth / 18
+                                    }}
+                                    source={require('../img/kuaizhao.png')}
+                                    resizeMode={'contain'}/>
+                                <Text
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
+                                    我的快照
+                                </Text>
+                                <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                                    <Image style={{
+                                        width: screenWidth / 56,
+                                        height: screenWidth / 30,
+                                        marginRight: screenWidth / 18
+                                    }}
+                                           source={require('../img/next_small.png')}
+                                           resizeMode={'contain'}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                         <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                         <View
                             style={{

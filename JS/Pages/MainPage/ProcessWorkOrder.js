@@ -48,7 +48,7 @@ var imagePickerOption = {
     title: '',
     takePhotoButtonTitle: '拍照',
     cancelButtonTitle: '取消',
-    chooseFromLibraryButtonTitle: '照片',
+    chooseFromLibraryButtonTitle: '',
     storageOptions: {
         skipBackup: true,
         path: 'images' //照片存储路径
@@ -133,7 +133,7 @@ class ProcessWorkOrder extends React.Component {
         this._navigator = this.props.navigator;
         data = this.props.data;
         this.state = {
-            entName: data.company,
+            entName: data.name,
             id: data.id,
             type: '1',
             oldPhoto: '-',
@@ -413,7 +413,7 @@ class ProcessWorkOrder extends React.Component {
                     <View style={LocalStyles.itemStyle}>
                         <View style={LocalStyles.keyTextContainer}>
                             <Text style={LocalStyles.keyText}>
-                                企业名称
+                                名称
                             </Text>
                         </View>
                         <Text style={LocalStyles.valueText}>

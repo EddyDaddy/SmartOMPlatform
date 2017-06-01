@@ -11,13 +11,16 @@ import {
     View,
     Image,
     Text,
+    Alert,
     InteractionManager
 }from 'react-native';
 import Util from '../../Utils/Utils.js'
+import * as urls from '../../Utils/Request.js'
 import Toolbar from '../../Utils/ToolBar.js';
 import Toast from 'react-native-root-toast';
 import {naviGoBack} from '../../Utils/CommonUtil.js';
 import BaiduMapPage from '../MainPage/BaiduMapPage.js';
+import storge from '../../Utils/Storage';
 
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
@@ -77,21 +80,21 @@ const DeviceDetailStyles = StyleSheet.create({
         marginLeft: 30 * Util.pixel,
         color: valueTextColor,
     },
-    btnItemStyle: {
-        width: screenWidth,
+    btnItemStyleButtom: {
+        flex: 1,
         flexDirection: 'row',
-        marginTop: 70 * Util.pixel,
+        paddingTop: Util.pxToHeight(70),
         backgroundColor: '#ebebeb',
         justifyContent: 'center',
+        alignItems: 'flex-start',
     },
     btnStyle: {
-        width: 451 * Util.pixel,
-        height: 120 * Util.pixel,
+        width: Util.pxToWidth(390),
+        height: Util.pxToHeight(120),
         borderRadius: 6,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#ffd57d',
-        //elevation:20,
     }
 });
 
@@ -162,6 +165,44 @@ export default class DevicesDetails extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress');
     }
 
+    getSnapShot()
+    {
+        storge.get('loginInfo').then((result) => {
+            console.log(result);
+            if (result) {
+                var body = {
+                    'repairUserPhone': result[0],
+                    'userToken': result[1],
+                    'id': this.state.data.id,
+                };
+                Util.post(urls.GET_SNAPSHOT, body, navigator, (response) => {
+                    if (response !== undefined) {
+                        if (response.code === '0') {
+                            console.log('获取快照成功-------')
+                            Alert.alert('提示', '获取快照成功，请到我的快照中查看?',
+                                [
+                                    {
+                                        text: '确定', onPress: () => {
+                                    }
+                                    }
+                                ]);
+                        } else {
+                            Toast.show('获取失败');
+                        }
+                    } else {
+                        Toast.show('获取失败');
+                    }
+                });
+            } else {
+                Toast.show('未登录');
+                navigator.resetTo({
+                    name: 'Login',
+                    component: Login
+                })
+            }
+        });
+    }
+
     render() {
         return (
             <View style={DeviceDetailStyles.container}>
@@ -169,8 +210,6 @@ export default class DevicesDetails extends React.Component {
                 </Toolbar>
                 <ScrollView style={DeviceDetailStyles.scrollView}>
                     <View style={DeviceDetailStyles.scrollRootView}>
-                        <DeviceDetailItem leftData='企业名称'
-                                          rightData=''/>
                         <DeviceDetailItem leftData='辖区'
                                           rightData={this.state.data.street}/>
                         <DeviceDetailItem leftData='籍号'
@@ -213,6 +252,16 @@ export default class DevicesDetails extends React.Component {
                                         style={{margin: 30 * Util.pixel}}/>
                                 </TouchableOpacity>
                             </View>
+                        </View>
+                        <View style={DeviceDetailStyles.btnItemStyleButtom}>
+                            <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 5}}
+                                              onPress={this.getSnapShot()}>
+                                <View style={DeviceDetailStyles.btnStyle}>
+                                    <Text style={{color: 'red'}}>
+                                        获取快照
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>

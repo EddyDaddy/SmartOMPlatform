@@ -1,7 +1,10 @@
 // obtained from react native tutorials
 
 import React from 'react'
-import {PixelRatio, Platform} from 'react-native';
+import {
+    PixelRatio,
+    Platform,
+} from 'react-native';
 import Dimensions from 'Dimensions';
 import Toast from 'react-native-root-toast';
 import {toQueryString} from './CommonUtil';
@@ -57,6 +60,16 @@ const Util = {
         }
     },
 
+    FormatDate (strTime) {
+        var date = new Date(strTime);
+        return date.getFullYear() + "-" + this.prefix(2, (date.getMonth() + 1)) + "-" + (this.prefix(2, date.getDate()));
+    },
+
+    prefix(num, val) {
+        return (new Array(num).join('0') + val).slice(-num);
+    },
+
+
     post(url, data, navigator, callback) {
         const fetchOptions = {
             method: 'POST',
@@ -67,15 +80,15 @@ const Util = {
             body: toQueryString(data)
         };
 
-        console.log('url---->'+url)
-        console.log('fetchOptions---->'+JSON.stringify(fetchOptions))
+        console.log('url---->' + url)
+        console.log('fetchOptions---->' + JSON.stringify(fetchOptions))
         fetch(url, fetchOptions)
             .then((response) => {
                 if (response.ok) {
                     return response.json()
                 } else {
                     Toast.show('请求失败')
-                    console.log('responseError---->'+JSON.stringify(response))
+                    console.log('responseError---->' + JSON.stringify(response))
                 }
             })
             .then((responseData) => {

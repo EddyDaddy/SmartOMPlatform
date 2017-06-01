@@ -80,8 +80,8 @@ export default class DevicesPage extends React.Component {
                 };
                 Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
                     if (response !== undefined) {
-                        if (response.code === '0') {
-                            callback(response.data);
+                        if (response.success) {
+                            callback(response.rows);
                             console.log('获取数据成功-------')
                         } else {
                             Toast.show('获取失败');

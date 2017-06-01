@@ -120,13 +120,13 @@ export default class WorkOrderList extends React.Component {
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
-                    <Text style={{fontSize: itemTextBigSize, color: '#333333'}}>{rowData.street}</Text>
+                    <Text style={{fontSize: itemTextBigSize, color: '#333333'}}>{rowData.name}</Text>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text numberOfLines={1} style={{
                             color: '#4b4b4b',
                             flex: 2,
                             fontSize: itemTextSmallSize
-                        }}>{rowData.deviceName}</Text>
+                        }}>{rowData.boxId}</Text>
                         <Text
                             numberOfLines={1}
                             style={{

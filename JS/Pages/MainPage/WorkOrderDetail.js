@@ -117,6 +117,8 @@ class WorkOrderDetail extends React.Component {
         // 初始状态
         this.state = {
             entName: '',
+            boxId: '',
+            network: '',
             id: '',
             ipInfo: '',
             priority: '',
@@ -138,8 +140,10 @@ class WorkOrderDetail extends React.Component {
     componentWillMount() {
         if (from === 'workOrderList') {
             this.setState({
-                entName: data.company,
+                entName: data.name,
                 id: data.id,
+                boxId: data.boxId,
+                network: data.network,
                 ipInfo: data.ip,
                 gateway: data.gateway,
                 mask: data.mask,
@@ -167,8 +171,10 @@ class WorkOrderDetail extends React.Component {
                             if (response.code === '0') {
                                 console.log('获取工单详情成功-------')
                                 this.setState({
-                                    entName: response.data.company,
+                                    entName: response.data.name,
                                     id: response.data.id,
+                                    boxId: response.data.boxId,
+                                    network: response.data.network,
                                     ipInfo: response.data.ip,
                                     gateway: data.gateway,
                                     mask: data.mask,
@@ -339,7 +345,7 @@ class WorkOrderDetail extends React.Component {
                     <View style={LocalStyles.itemStyle}>
                         <View style={LocalStyles.keyTextContainer}>
                             <Text style={LocalStyles.keyText}>
-                                企业名称
+                                名称
                             </Text>
                         </View>
                         <Text style={LocalStyles.valueText}>
@@ -354,6 +360,26 @@ class WorkOrderDetail extends React.Component {
                         </View>
                         <Text style={LocalStyles.valueText}>
                             {this.state.id}
+                        </Text>
+                    </View>
+                    <View style={LocalStyles.itemStyle}>
+                        <View style={LocalStyles.keyTextContainer}>
+                            <Text style={LocalStyles.keyText}>
+                                箱号
+                            </Text>
+                        </View>
+                        <Text style={LocalStyles.valueText}>
+                            {this.state.boxId}
+                        </Text>
+                    </View>
+                    <View style={LocalStyles.itemStyle}>
+                        <View style={LocalStyles.keyTextContainer}>
+                            <Text style={LocalStyles.keyText}>
+                                网络运营商
+                            </Text>
+                        </View>
+                        <Text style={LocalStyles.valueText}>
+                            {this.state.network}
                         </Text>
                     </View>
                     <View style={LocalStyles.itemStyle}>

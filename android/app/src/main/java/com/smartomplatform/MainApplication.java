@@ -14,6 +14,7 @@ import com.imagepicker.ImagePickerPackage;
 import com.kh.tencentxg.TencentXGPackage;
 import com.smartomplatform.CommonUtils.CommonPackage;
 import com.smartomplatform.nav.NavPackage;
+import com.tencent.bugly.Bugly;
 
 import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 
@@ -58,5 +59,6 @@ public class MainApplication extends Application implements ReactApplication
     {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+        Bugly.init(getApplicationContext(), "e532314018", BuildConfig.DEBUG);
     }
 }

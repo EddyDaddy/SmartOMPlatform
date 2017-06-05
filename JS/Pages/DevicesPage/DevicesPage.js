@@ -23,6 +23,7 @@ var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var itemHeight = Util.pxToTextSize(140);
 var itemTextSize = Util.pxToTextSize(34);
+var dataList;
 export default class DevicesPage extends React.Component {
     // 构造
     constructor(props) {
@@ -53,7 +54,7 @@ export default class DevicesPage extends React.Component {
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
-                            pagination={false} // enable infinite scrolling using touch to load more
+                            pagination={true} // enable infinite scrolling using touch to load more
                             refreshable={true} // enable pull-to-refresh for iOS and touch-to-refresh for Android
                             withSections={false} // enable sections
                             paginationWaitingView={this._paginationWaitingView}
@@ -76,12 +77,18 @@ export default class DevicesPage extends React.Component {
                     'repairUserPhone': result[0],
                     'userToken': result[1],
                     'page': page,
-                    'rows': 10
+                    'rows': 20
                 };
                 Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
                     if (response !== undefined) {
                         if (response.success) {
-                            callback(response.rows);
+                            if(response.rows.length === 20){
+                                callback(response.rows);
+                            }else{
+                                callback(response.rows, {
+                                    allLoaded: true,
+                                });
+                            }
                             console.log('获取数据成功-------')
                         } else {
                             Toast.show('获取失败');

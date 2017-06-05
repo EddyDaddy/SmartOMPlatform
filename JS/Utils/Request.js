@@ -1,7 +1,7 @@
-const service_url = 'http://106.14.70.38:8080/smartMonitor';
+// const service_url = 'http://106.14.70.38:8080/smartMonitor';
 //外网
 //const service_url = 'http://110.186.51.123:8080/smartMonitor';
-// const service_url = 'http://182.136.8.130:4808/smartMonitor';
+const service_url = 'http://182.136.8.130:4808/smartMonitor';
 export const LOGIN_URL=service_url+'/api/login';  //登录地址
 //查询工单
 export const WORKORDER_URL=service_url+'/api/queryProcess';

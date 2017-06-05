@@ -40,45 +40,54 @@ export default class DisplayPic extends React.Component {
             dataSource: dataSource.cloneWithPages(BANNER_IMGS),
             isLoading: false
         };
-        data = this.props.data;
+        data = this.props.data?this.props.data:this.props.rowData;
     }
 
     componentWillMount() {
         const {navigator} = this.props;
-        storge.get('loginInfo').then((result) => {
-            this.setState({
-                isLoading: true
-            });
-            let body = {
-                'repairUserPhone': result[0],
-                'userToken': result[1],
-                'taskRecordId': data.taskRecordId,
-                'createOpEntId': data.createOpEntId,
-                'id': data.id
-            };
-            Util.post(urls.QUERY_FILE_BY_BID, body, navigator, (responseData) => {
+        if(this.props.data) {
+            storge.get('loginInfo').then((result) => {
                 this.setState({
-                    isLoading: false
+                    isLoading: true
                 });
-                // console.log('responseData----->'+JSON.stringify(responseData.rows));
-                // var rows = new Array();
-                // let picRows = responseData.rows;
-                // picRows.forEach((e) => {
-                //     console.log('e----->'+JSON.stringify(e.fileUrlAbs));
-                //     rows.push(e.fileUrlAbs)
-                // })
-                // console.log('rows----->'+JSON.stringify(rows));
-                if (responseData.success) {
-                    console.log('msg----->' + JSON.stringify(responseData.msg))
+                let body = {
+                    'repairUserPhone': result[0],
+                    'userToken': result[1],
+                    'taskRecordId': data.taskRecordId,
+                    'createOpEntId': data.createOpEntId,
+                    'id': data.id
+                };
+                Util.post(urls.QUERY_FILE_BY_BID, body, navigator, (responseData) => {
                     this.setState({
-                        dataSource: dataSource.cloneWithPages(responseData.rows),
+                        isLoading: false
                     });
-                } else {
-                    Toast.show('查看图片失败')
-                    console.log('erro----->' + JSON.stringify(responseData.msg))
-                }
-            })
-        });
+                    // console.log('responseData----->'+JSON.stringify(responseData.rows));
+                    // var rows = new Array();
+                    // let picRows = responseData.rows;
+                    // picRows.forEach((e) => {
+                    //     console.log('e----->'+JSON.stringify(e.fileUrlAbs));
+                    //     rows.push(e.fileUrlAbs)
+                    // })
+                    // console.log('rows----->'+JSON.stringify(rows));
+                    if (responseData.success) {
+                        console.log('msg----->' + JSON.stringify(responseData.msg))
+                        this.setState({
+                            dataSource: dataSource.cloneWithPages(responseData.rows),
+                        });
+                    } else {
+                        Toast.show('查看图片失败')
+                        console.log('erro----->' + JSON.stringify(responseData.msg))
+                    }
+                })
+            });
+        }
+        else
+        {
+            let list = [this.props.rowData];
+            this.setState({
+                dataSource: dataSource.cloneWithPages(list),
+            });
+        }
     }
 
     componentDidMount() {

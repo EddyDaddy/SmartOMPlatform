@@ -1,36 +1,37 @@
 {
-	"name": "SmartOMPlatform",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"fetch-http-client": "^1.0.1",
-		"react": "15.4.2",
-		"react-native": "0.41.2",
-		"react-native-communications": "^2.2.1",
-		"react-native-datepicker": "^1.4.4",
-		"react-native-gifted-listview": "0.0.15",
-		"react-native-image-picker": "^0.25.1",
-		"react-native-image-resizer": "0.1.0",
-		"react-native-root-toast": "^1.0.3",
-		"react-native-scrollable-tab-view": "^0.7.2",
-		"react-native-tencent-xg": "^0.1.0",
-		"react-native-viewpager": "^0.2.13",
-		"react-native-swiper": "^1.5.4",
-		"react-redux": "^5.0.2",
-		"redux": "^3.6.0",
-		"redux-thunk": "^2.2.0"
-	},
-	"devDependencies": {
-		"babel-jest": "18.0.0",
-		"babel-preset-react-native": "1.9.1",
-		"jest": "18.1.0",
-		"react-test-renderer": "15.4.2"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "SmartOMPlatform",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "fetch-http-client": "^1.0.1",
+    "react": "15.4.2",
+    "react-native": "0.41.2",
+    "react-native-communications": "^2.2.1",
+    "react-native-datepicker": "^1.4.4",
+    "react-native-easy-listview-gridview": "^1.0.3",
+    "react-native-gifted-listview": "0.0.15",
+    "react-native-image-picker": "^0.25.1",
+    "react-native-image-resizer": "0.1.0",
+    "react-native-root-toast": "^1.0.3",
+    "react-native-scrollable-tab-view": "^0.7.2",
+    "react-native-swiper": "^1.5.4",
+    "react-native-tencent-xg": "^0.1.0",
+    "react-native-viewpager": "^0.2.13",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-jest": "18.0.0",
+    "babel-preset-react-native": "1.9.1",
+    "jest": "18.1.0",
+    "react-test-renderer": "15.4.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
 }

@@ -35,6 +35,7 @@ var keyTextWidth = Util.pxToWidth(260);
 var itemHeight = Util.pxToHeight(115);
 var dividerWidth = 2 * Util.pixel;
 var keyTextSize = Util.pxToTextSize(35);
+var id;
 
 const DeviceDetailStyles = StyleSheet.create({
     container: {
@@ -135,6 +136,7 @@ export default class DevicesDetails extends React.Component {
         this.state = {
             data: this.props.data
         };
+        id = this.props.data.id;
     }
 
     _showLocationInMap() {
@@ -173,11 +175,11 @@ export default class DevicesDetails extends React.Component {
                 var body = {
                     'repairUserPhone': result[0],
                     'userToken': result[1],
-                    'id': this.state.data.id,
+                    'id': id,
                 };
                 Util.post(urls.GET_SNAPSHOT, body, navigator, (response) => {
                     if (response !== undefined) {
-                        if (response.code === '0') {
+                        if (response.success) {
                             console.log('获取快照成功-------')
                             Alert.alert('提示', '获取快照成功，请到我的快照中查看?',
                                 [
@@ -255,7 +257,7 @@ export default class DevicesDetails extends React.Component {
                         </View>
                         <View style={DeviceDetailStyles.btnItemStyleButtom}>
                             <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 5}}
-                                              onPress={this.getSnapShot()}>
+                                              onPress={this.getSnapShot}>
                                 <View style={DeviceDetailStyles.btnStyle}>
                                     <Text style={{color: 'red'}}>
                                         获取快照

@@ -21,8 +21,10 @@ import UserInfo from './UserInfo';
 import Setting from './Setting';
 import About from './About';
 import MyWorkOrder from './MyWorkOrder';
+import MySnapShot from './MySnapShot.js';
 import * as urls from '../../Utils/Request';
 import LoadView from '../../Utils/LoadingView';
+import GridView from '../../Utils/GridView';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var phoneNum;
@@ -92,6 +94,16 @@ export default class User extends React.Component {
         });
     }
 
+    _gotoMySnapShot() {
+        const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+                name: 'MySnapShot',
+                component: MySnapShot,
+            });
+        });
+    }
+
     _gotoSetting() {
         const {navigator} = this.props;
         InteractionManager.runAfterInteractions(() => {
@@ -133,23 +145,23 @@ export default class User extends React.Component {
                                     <Text style={{
                                         color: 'white',
                                         marginTop: screenWidth / 12,
-                                        fontSize: screenWidth/24.5
+                                        fontSize: screenWidth / 24.5
                                     }}>
                                         {this.state.userName}
                                     </Text>
                                     <View style={{flexDirection: 'row', marginTop: screenWidth / 40}}>
-                                        <Text style={{color: 'white', fontSize: screenWidth/29}}>
+                                        <Text style={{color: 'white', fontSize: screenWidth / 29}}>
                                             职位：
                                         </Text>
-                                        <Text style={{color: '#ffff00', fontSize: screenWidth/29}}>
+                                        <Text style={{color: '#ffff00', fontSize: screenWidth / 29}}>
                                             工程师
                                         </Text>
                                     </View>
                                     <View style={{flexDirection: 'row', marginTop: screenWidth / 60}}>
-                                        <Text style={{color: 'white', fontSize: screenWidth/29}}>
+                                        <Text style={{color: 'white', fontSize: screenWidth / 29}}>
                                             电话：
                                         </Text>
-                                        <Text style={{color: '#ffff00', fontSize: screenWidth/29}}>
+                                        <Text style={{color: '#ffff00', fontSize: screenWidth / 29}}>
                                             {this.state.phoneNum}
                                         </Text>
                                     </View>
@@ -186,7 +198,7 @@ export default class User extends React.Component {
                                     source={require('../img/my_workorder_img.png')}
                                     resizeMode={'contain'}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth / 29}}>
                                     我的工单
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -200,6 +212,7 @@ export default class User extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
+                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                         <View
                             style={{
                                 height: screenHeight / 12,
@@ -210,7 +223,7 @@ export default class User extends React.Component {
                             <TouchableOpacity
                                 style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}
                                 activeOpacity={1}
-                                onPress={this._gotoMyWorkOrder.bind(this)}>
+                                onPress={this._gotoMySnapShot.bind(this)}>
                                 <Image
                                     style={{
                                         width: screenWidth / 18,
@@ -220,7 +233,7 @@ export default class User extends React.Component {
                                     source={require('../img/kuaizhao.png')}
                                     resizeMode={'contain'}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth / 29}}>
                                     我的快照
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -255,7 +268,7 @@ export default class User extends React.Component {
                                     source={require('../img/setting.png')}
                                     resizeMode={'contain'}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth / 29}}>
                                     设置
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
@@ -290,7 +303,7 @@ export default class User extends React.Component {
                                     source={require('../img/about_img.png')}
                                     resizeMode={'contain'}/>
                                 <Text
-                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth/29}}>
+                                    style={{marginLeft: screenWidth / 18, fontSize: screenWidth / 29}}>
                                     关于
                                 </Text>
                                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>

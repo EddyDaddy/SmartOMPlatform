@@ -98,7 +98,6 @@ export default class MyWorkOrder extends React.Component {
 
 
     _getMySnapShot() {
-
     }
 
     _renderSeparator() {

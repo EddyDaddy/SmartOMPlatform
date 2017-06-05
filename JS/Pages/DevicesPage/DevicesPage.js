@@ -34,9 +34,6 @@ export default class DevicesPage extends React.Component {
         super(props);
         // 初始状态
         this.state = {
-            dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 != row2}),
-            load: false,
-            curpage: 1,
             ip: ''
         }
     }
@@ -66,9 +63,9 @@ export default class DevicesPage extends React.Component {
                                    onChangeText={(ip) => this.setState({ip})}
                                    value={this.state.ip}
                                    underlineColorAndroid='white'
-                                   placeholder="请输入ip下拉列表搜索"
+                                   placeholder="请输入ip"
                                    placeholderTextColor='#969696'></TextInput>
-                        {/*<TouchableOpacity style={{
+                        <TouchableOpacity style={{
                             flex: 1,
                             borderRadius: 6,
                             margin: 4,
@@ -76,17 +73,18 @@ export default class DevicesPage extends React.Component {
                             justifyContent: 'center',
                             backgroundColor: '#ffd57d'
                         }} onPress={() => {
-
+                            this.gift._refresh()
                         }
                         }>
                             <Text style={{color: 'red'}}>
                                 搜索
                             </Text>
-                        </TouchableOpacity>*/}
+                        </TouchableOpacity>
                     </View>
                     <View style={{backgroundColor: '#ebebeb', height: Util.pxToHeight(1), width: Util.size.width}}/>
                     <View style={{width: screenWidth, height: Util.pxToHeight(880), backgroundColor: '#ebebeb'}}>
                         <GiftedListView
+                            ref={component => this.gift = component}
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
                             firstLoader={true} // display a loader for the first fetching
@@ -182,19 +180,13 @@ export default class DevicesPage extends React.Component {
                 <View style={[myStyles.itemView, {height: itemHeight}]}>
                     <View style={{width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
                         <Text numberOfLines={1}
-                              style={{flex: 1.2, color: '#4b4b4b', fontSize: itemTextSize}}>{rowData.name}</Text>
-                        <Text numberOfLines={1} style={{
-                            flex: 1.2,
-                            color: '#4b4b4b',
-                            fontSize: itemTextSize,
-                            marginLeft: 4
-                        }}>{rowData.ip}</Text>
+                              style={{flex: 3, color: '#4b4b4b', fontSize: itemTextSize}}>{rowData.name}</Text>
                         <Text numberOfLines={1} style={{
                             flex: 1,
                             color: '#4b4b4b',
                             fontSize: itemTextSize,
                             marginLeft: 4
-                        }}>{rowData.priStr}</Text>
+                        }}>{rowData.ip}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Text,
     Image,
+    TextInput,
     Navigator,
     TouchableOpacity,
     InteractionManager,
@@ -19,17 +20,25 @@ import GiftedListView from 'react-native-gifted-listview';
 import Toast from 'react-native-root-toast';
 import * as urls from '../../Utils/Request';
 import storge from '../../Utils/Storage';
+import PullRefreshScrollView from 'react-native-pullrefresh-scrollview';
 var screenWidth = Util.size.width;
 var screenHeight = Util.size.height;
 var itemHeight = Util.pxToTextSize(140);
 var itemTextSize = Util.pxToTextSize(34);
 var dataList;
+var ip;
+var loaded = false;
 export default class DevicesPage extends React.Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
-        this.state = {};
+        this.state = {
+            dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 != row2}),
+            load: false,
+            curpage: 1,
+            ip: ''
+        }
     }
 
 
@@ -49,7 +58,34 @@ export default class DevicesPage extends React.Component {
                         }}
                                source={require('../img/deviceBanner.png')}/>
                     </View>
-                    <View style={{width: screenWidth, height: Util.pxToHeight(995), backgroundColor: '#ebebeb'}}>
+                    <View style={{
+                        flexDirection: 'row', height: Util.pxToHeight(115), width: Util.size.width,
+                        backgroundColor: 'white'
+                    }}>
+                        <TextInput style={{flex: 5}}
+                                   onChangeText={(ip) => this.setState({ip})}
+                                   value={this.state.ip}
+                                   underlineColorAndroid='white'
+                                   placeholder="请输入ip下拉列表搜索"
+                                   placeholderTextColor='#969696'></TextInput>
+                        {/*<TouchableOpacity style={{
+                            flex: 1,
+                            borderRadius: 6,
+                            margin: 4,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#ffd57d'
+                        }} onPress={() => {
+
+                        }
+                        }>
+                            <Text style={{color: 'red'}}>
+                                搜索
+                            </Text>
+                        </TouchableOpacity>*/}
+                    </View>
+                    <View style={{backgroundColor: '#ebebeb', height: Util.pxToHeight(1), width: Util.size.width}}/>
+                    <View style={{width: screenWidth, height: Util.pxToHeight(880), backgroundColor: '#ebebeb'}}>
                         <GiftedListView
                             rowView={this._renderRowView.bind(this)}
                             onFetch={this._onFetch.bind(this)}
@@ -70,32 +106,52 @@ export default class DevicesPage extends React.Component {
 
     _onFetch(page = 1, callback, options) {
         const {navigator} = this.props;
+        loaded = false;
         storge.get('loginInfo').then((result) => {
             console.log(result);
+            if (typeof page !== "number") {
+                page = 1;
+            }
             if (result) {
-                var body = {
-                    'repairUserPhone': result[0],
-                    'userToken': result[1],
-                    'page': page,
-                    'rows': 20
-                };
+                var body;
+                if (this.state.ip) {
+                    body = {
+                        'repairUserPhone': result[0],
+                        'userToken': result[1],
+                        'page': page,
+                        'rows': 20,
+                        'ip': this.state.ip
+                    };
+                } else {
+                    body = {
+                        'repairUserPhone': result[0],
+                        'userToken': result[1],
+                        'page': page,
+                        'rows': 20,
+                    };
+                }
                 Util.post(urls.DEVICESINFO_URL, body, navigator, (response) => {
-                    if (response !== undefined) {
-                        if (response.success) {
-                            if(response.rows.length === 20){
-                                callback(response.rows);
-                            }else{
-                                callback(response.rows, {
-                                    allLoaded: true,
-                                });
+                    if (!loaded) {
+                        loaded = true;
+                        if (response !== undefined) {
+                            console.log('response.success-------' + response.success)
+                            console.log('response.rows-------' + JSON.stringify(response.rows))
+                            if (response.success) {
+                                if (response.rows.length === 20) {
+                                    callback(response.rows);
+                                } else {
+                                    callback(response.rows, {
+                                        allLoaded: true,
+                                    });
+                                }
+                                console.log('获取数据成功-------')
+                            } else {
+                                Toast.show('获取失败');
+                                callback([]);
                             }
-                            console.log('获取数据成功-------')
                         } else {
-                            Toast.show('获取失败');
                             callback([]);
                         }
-                    } else {
-                        callback([]);
                     }
                 });
             } else {
@@ -123,11 +179,22 @@ export default class DevicesPage extends React.Component {
                               underlayColor='#c8c7cc'
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
-                <View style={[myStyles.itemView,{height:itemHeight}]}>
+                <View style={[myStyles.itemView, {height: itemHeight}]}>
                     <View style={{width: screenWidth, flexDirection: 'row', alignItems: 'center'}}>
-                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize}}>{rowData.name}</Text>
-                        <Text numberOfLines={1} style={{flex:1.2,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.deviceName}</Text>
-                        <Text numberOfLines={1} style={{flex:1,color: '#4b4b4b',fontSize:itemTextSize,marginLeft:4}}>{rowData.priStr}</Text>
+                        <Text numberOfLines={1}
+                              style={{flex: 1.2, color: '#4b4b4b', fontSize: itemTextSize}}>{rowData.name}</Text>
+                        <Text numberOfLines={1} style={{
+                            flex: 1.2,
+                            color: '#4b4b4b',
+                            fontSize: itemTextSize,
+                            marginLeft: 4
+                        }}>{rowData.ip}</Text>
+                        <Text numberOfLines={1} style={{
+                            flex: 1,
+                            color: '#4b4b4b',
+                            fontSize: itemTextSize,
+                            marginLeft: 4
+                        }}>{rowData.priStr}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

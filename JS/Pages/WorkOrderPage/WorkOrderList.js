@@ -64,11 +64,11 @@ export default class WorkOrderList extends React.Component {
                     'rows': 10
                 };
                 Util.post(urls.QUERY_PROCESSINFO_BY_PRI, body, navigator, (response) => {
-                    if (response !== undefined&&response!==''&&response!==null) {
+                    if (response !== undefined && response !== '' && response !== null) {
                         if (response.success) {
-                            if(response.rows.length === 10){
+                            if (response.rows.length === 10) {
                                 callback(response.rows);
-                            }else{
+                            } else {
                                 callback(response.rows, {
                                     allLoaded: true,
                                 });
@@ -120,7 +120,19 @@ export default class WorkOrderList extends React.Component {
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={myStyles.itemView}>
-                    <Text style={{fontSize: itemTextBigSize, color: '#333333'}}>{rowData.name}</Text>
+                    <View style={{width: screenWidth, flexDirection: 'row'}}>
+                        <Text style={{
+                            flex: 2,
+                            fontSize: itemTextBigSize,
+                            color: '#333333'
+                        }}>{rowData.name}</Text>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <Text style={{
+                                fontSize: itemTextSmallSize,
+                                color: 'red'
+                            }}>{rowData.createTime.substring(0, 16)}</Text>
+                        </View>
+                    </View>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
                         <Text numberOfLines={1} style={{
                             color: '#4b4b4b',
@@ -130,7 +142,7 @@ export default class WorkOrderList extends React.Component {
                         <Text
                             numberOfLines={1}
                             style={{
-                                color: rowData.pri === '4'?'#a7324a':rowData.pri === '3'?'red':'#ffb23f',
+                                color: rowData.pri === '4' ? '#a7324a' : rowData.pri === '3' ? 'red' : '#ffb23f',
                                 flex: 1.2,
                                 fontSize: itemTextSmallSize
                             }}>{Util.returnPriType(rowData.pri)}</Text>

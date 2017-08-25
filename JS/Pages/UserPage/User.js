@@ -212,7 +212,7 @@ export default class User extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
+                        {/*<View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                         <View
                             style={{
                                 height: screenHeight / 12,
@@ -246,7 +246,7 @@ export default class User extends React.Component {
                                            resizeMode={'contain'}/>
                                 </View>
                             </TouchableOpacity>
-                        </View>
+                        </View>*/}
                         <View style={{width: screenWidth, height: Util.pixel, backgroundColor: '#dddddd'}}/>
                         <View
                             style={{

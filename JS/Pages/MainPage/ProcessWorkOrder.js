@@ -118,8 +118,8 @@ const LocalStyles = StyleSheet.create({
         backgroundColor: '#ffd57d',
     },
     textInputStyle: {
-        flex:1,
-        margin:6,
+        flex: 1,
+        margin: 6,
         borderWidth: 3 * Util.pixel,
         borderColor: '#d7d7d7',
     }
@@ -141,6 +141,7 @@ class ProcessWorkOrder extends React.Component {
             comment: data.remark,
             isUploadingOld: false,
             isUploadingNew: false,
+            rows:[],
         };
 
         this.uploadOldPhoto = this.uploadOldPhoto.bind(this);
@@ -149,15 +150,15 @@ class ProcessWorkOrder extends React.Component {
     }
 
     //按比例缩放->width<=720
-    caculate(oldsize){
+    caculate(oldsize) {
         let newSize = {
-            width:720,
-            height:undefined
+            width: 720,
+            height: undefined
         };
-        if(oldsize.width<720){
+        if (oldsize.width < 720) {
             return oldsize;
         }
-        newSize.height = oldsize.height*720/oldsize.width;
+        newSize.height = oldsize.height * 720 / oldsize.width;
         return newSize;
     }
 
@@ -175,15 +176,17 @@ class ProcessWorkOrder extends React.Component {
                     uri = response.uri.replace('file://');
                 }
                 let newPhotoSize = this.caculate({
-                    width:response.width,
-                    height:response.height
+                    width: response.width,
+                    height: response.height
                 });
                 ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
                     // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
                     storge.get('loginInfo').then((result) => {
                         let formData = new FormData();
-                        formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                            name: getFileName(imageUri)});
+                        formData.append('file', {
+                            uri: imageUri, type: 'multipart/form-data',
+                            name: getFileName(imageUri)
+                        });
                         formData.append('key', getFileName(imageUri));
                         formData.append('userToken', result[1]);
                         formData.append('repairUserPhone', result[0]);
@@ -195,11 +198,11 @@ class ProcessWorkOrder extends React.Component {
                         options.body = formData;
                         options.method = 'post';
                         options.headers = {
-                            'Content-Type':'multipart/form-data',
+                            'Content-Type': 'multipart/form-data',
                         };
                         fetch(urls.UPLOAD_URL, options).then((response) => {
                             this.setState({isUploadingOld: false});
-                            console.log('response'+JSON.stringify(response));
+                            console.log('response' + JSON.stringify(response));
                             if (response.ok) {
                                 return response.json()
                             } else {
@@ -213,12 +216,12 @@ class ProcessWorkOrder extends React.Component {
                                         name: 'Login',
                                         component: Login
                                     })
-                                } else if(responseData.code === '0'){
+                                } else if (responseData.code === '0') {
                                     Toast.show('上传成功');
                                     this.setState({
                                         oldPhoto: imageUri
                                     });
-                                }else{
+                                } else {
                                     Toast.show('上传失败');
                                     console.log(JSON.stringify(responseData.data));
                                 }
@@ -256,15 +259,17 @@ class ProcessWorkOrder extends React.Component {
                     uri = response.uri.replace('file://');
                 }
                 let newPhotoSize = this.caculate({
-                    width:response.width,
-                    height:response.height
+                    width: response.width,
+                    height: response.height
                 });
                 ImageResizer.createResizedImage(uri, newPhotoSize.width, newPhotoSize.height, 'JPEG', 70, 0, null).then((imageUri) => {
                     // resizeImageUri is the URI of the new image that can now be displayed, uploaded...
                     storge.get('loginInfo').then((result) => {
                         let formData = new FormData();
-                        formData.append('file', {uri: imageUri, type: 'multipart/form-data',
-                            name: getFileName(imageUri)});
+                        formData.append('file', {
+                            uri: imageUri, type: 'multipart/form-data',
+                            name: getFileName(imageUri)
+                        });
                         formData.append('key', getFileName(imageUri));
                         formData.append('userToken', result[1]);
                         formData.append('repairUserPhone', result[0]);
@@ -276,11 +281,11 @@ class ProcessWorkOrder extends React.Component {
                         options.body = formData;
                         options.method = 'post';
                         options.headers = {
-                            'Content-Type':'multipart/form-data',
+                            'Content-Type': 'multipart/form-data',
                         };
                         fetch(urls.UPLOAD_URL, options).then((response) => {
                             this.setState({isUploadingNew: false});
-                            console.log('response'+JSON.stringify(response));
+                            console.log('response' + JSON.stringify(response));
                             if (response.ok) {
                                 return response.json()
                             } else {
@@ -294,12 +299,12 @@ class ProcessWorkOrder extends React.Component {
                                         name: 'Login',
                                         component: Login
                                     })
-                                } else if(responseData.code === '0'){
+                                } else if (responseData.code === '0') {
                                     Toast.show('上传成功');
                                     this.setState({
                                         newPhoto: imageUri
                                     });
-                                }else{
+                                } else {
                                     Toast.show('上传失败');
                                     console.log(JSON.stringify(responseData.data));
                                 }
@@ -337,21 +342,53 @@ class ProcessWorkOrder extends React.Component {
                 'typeId': this.state.type,
                 'processId': data.id,
                 'status': '99',
-                'remark': this.state.comment===undefined?'无':this.state.comment,
+                'remark': this.state.comment === undefined ? '无' : this.state.comment,
             }
             Util.post(urls.CONDUCTPROCESS_URL, body, navigator, (response) => {
-                if(response === undefined || response === ''){
+                if (response === undefined || response === '') {
                     Toast.show('处理失败');
-                }else{
-                    if(response.code === '0'){
+                } else {
+                    if (response.code === '0') {
                         Toast.show('处理成功');
                         navigator.resetTo({name: 'Main', component: Main});
-                    }else{
+                    } else {
                         Toast.show('处理失败');
                         console.log(response.msg);
                     }
                 }
             });
+        });
+    }
+
+    componentWillMount() {
+        storge.get('loginInfo').then((result) => {
+            console.log(result);
+            if (result) {
+                var body = {
+                    'repairUserPhone': result[0],
+                    'userToken': result[1],
+                };
+                Util.post(urls.GET_PROCESS_DEAL_TYPE, body, navigator, (response) => {
+                    if (response !== undefined) {
+                        if (response.success) {
+                            console.log('获取处理类型成功-------')
+                            this.setState({
+                                rows: response.rows
+                            });
+                        } else {
+                            Toast.show('获取失败');
+                        }
+                    } else {
+                        Toast.show('获取失败');
+                    }
+                });
+            } else {
+                Toast.show('未登录');
+                navigator.resetTo({
+                    name: 'Login',
+                    component: Login
+                })
+            }
         });
     }
 
@@ -404,6 +441,14 @@ class ProcessWorkOrder extends React.Component {
             ]);
     }
 
+    renderList(){
+        return this.state.rows.map( item => this.renderPickerItem(item) );
+    }
+
+    renderPickerItem(data) {
+        return (<Picker.Item label={data.desc} value={data.value}/>);
+    }
+
     render() {
         return (
             <View style={LocalStyles.container}>
@@ -436,61 +481,64 @@ class ProcessWorkOrder extends React.Component {
                                 处理类型
                             </Text>
                         </View>
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start',marginLeft:6}}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start', marginLeft: 6}}>
                             <View style={{borderWidth: 1, borderColor: '#bbb'}}>
                                 <Picker
-                                    style={{height:Util.pxToHeight(85), width:Util.pxToWidth(430),justifyContent: 'center', alignItems: 'center'}}
+                                    style={{
+                                        height: Util.pxToHeight(85),
+                                        width: Util.pxToWidth(430),
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}
                                     selectedValue={this.state.type}
                                     mode={'dropdown'}
                                     onValueChange={(value) => this.setState({type: value})}>
-                                    <Picker.Item label="维修" value='1'/>
-                                    <Picker.Item label="更换设备" value='2'/>
-                                    <Picker.Item label="网络故障" value='3'/>
+                                    {this.renderList()}
                                 </Picker>
                             </View>
                         </View>
                     </View>
-                    <View style={[LocalStyles.itemStyle,{height:uploadPhotoItemHeight}]}>
-                        <View style={[LocalStyles.keyTextContainer,{height:uploadPhotoItemHeight}]}>
+                    <View style={[LocalStyles.itemStyle, {height: uploadPhotoItemHeight}]}>
+                        <View style={[LocalStyles.keyTextContainer, {height: uploadPhotoItemHeight}]}>
                             <Text style={LocalStyles.keyText}>
                                 处理前照片
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-start',margin:6}}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start', margin: 6}}>
                             <TouchableOpacity onPress={this.uploadOldPhoto}>
                                 <Image
-                                    source={this.state.oldPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.oldPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight,resizeMode:'cover'}}>
-                                    {this.state.isUploadingOld?<LoadViewing/>:null}
+                                    source={this.state.oldPhoto == '-' ? require('./../img/photo_add.png') : {uri: this.state.oldPhoto}}
+                                    style={{width: photoViewWidth, height: photoViewHeight, resizeMode: 'cover'}}>
+                                    {this.state.isUploadingOld ? <LoadViewing/> : null}
                                 </Image>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={[LocalStyles.itemStyle,{height:uploadPhotoItemHeight}]}>
-                        <View style={[LocalStyles.keyTextContainer,{height:uploadPhotoItemHeight}]}>
+                    <View style={[LocalStyles.itemStyle, {height: uploadPhotoItemHeight}]}>
+                        <View style={[LocalStyles.keyTextContainer, {height: uploadPhotoItemHeight}]}>
                             <Text style={LocalStyles.keyText}>
                                 处理后照片
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'flex-start',margin:6}}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start', margin: 6}}>
                             <TouchableOpacity onPress={this.uploadNewPhoto}>
                                 <Image
-                                    source={this.state.newPhoto=='-'?require('./../img/photo_add.png'):{uri:this.state.newPhoto}}
-                                    style={{ width: photoViewWidth, height: photoViewHeight}}>
-                                    {this.state.isUploadingNew?<LoadViewing/>:null}
-                                    </Image>
+                                    source={this.state.newPhoto == '-' ? require('./../img/photo_add.png') : {uri: this.state.newPhoto}}
+                                    style={{width: photoViewWidth, height: photoViewHeight}}>
+                                    {this.state.isUploadingNew ? <LoadViewing/> : null}
+                                </Image>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={[LocalStyles.itemStyle,{height:Util.pxToHeight(350)}]}>
-                        <View style={[LocalStyles.keyTextContainer,{height:Util.pxToHeight(350)}]}>
+                    <View style={[LocalStyles.itemStyle, {height: Util.pxToHeight(350)}]}>
+                        <View style={[LocalStyles.keyTextContainer, {height: Util.pxToHeight(350)}]}>
                             <Text style={LocalStyles.keyText}>
                                 处理备注
                             </Text>
                         </View>
-                        <View style={{flex:1,justifyContent:'center',alignItems:'stretch'}}>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'stretch'}}>
                             <View style={LocalStyles.textInputStyle}>
-                                <TextInput style={{flex:1,textAlign:'left',textAlignVertical:'top'}}
+                                <TextInput style={{flex: 1, textAlign: 'left', textAlignVertical: 'top'}}
                                            underlineColorAndroid='#fff'
                                            multiline={true}
                                            maxLength={120}
@@ -507,7 +555,8 @@ class ProcessWorkOrder extends React.Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} style={{elevation:3,borderRadius:6, margin: 10}} onPress={this.workOrderDone}>
+                        <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 10}}
+                                          onPress={this.workOrderDone}>
                             <View style={LocalStyles.btnStyle}>
                                 <Text style={{color: 'red'}}>
                                     完成

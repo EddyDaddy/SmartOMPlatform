@@ -34,8 +34,11 @@ import storge from '../../Utils/Storage.js';
 import DatePicker from 'react-native-datepicker';
 import * as urls from '../../Utils/Request';
 import WorkOrderDetail from '../MainPage/WorkOrderDetail';
+import moment from 'moment';
 var ds;
 var dataList = new Array();
+var itemTextBigSize = Util.pxToTextSize(44);
+var itemTextSmallSize = Util.pxToTextSize(34);
 export default class MyWorkOrder extends React.Component {
     // 构造
     constructor(props) {
@@ -78,9 +81,21 @@ export default class MyWorkOrder extends React.Component {
                               onPress={this._buttonClickItem.bind(this, rowData)}
             >
                 <View style={styles.itemView}>
-                    <Text >{rowData.street}</Text>
+                    <View style={{width: screenWidth, flexDirection: 'row'}}>
+                        <Text style={{
+                            flex: 2,
+                            fontSize: itemTextBigSize,
+                            color: '#333333'
+                        }}>{rowData.name}</Text>
+                        <View style={{flex: 1, alignItems: 'center'}}>
+                            <Text style={{
+                                fontSize: itemTextSmallSize,
+                                color: 'red'
+                            }}>{moment(rowData.createTime).format("YYYY-MM-DD HH:mm")}</Text>
+                        </View>
+                    </View>
                     <View style={{width: screenWidth, marginTop: 8, flexDirection: 'row'}}>
-                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex: 2.2}}>{rowData.deviceName}</Text>
+                        <Text numberOfLines={1} style={{color: '#4b4b4b', flex: 2.2}}>{rowData.boxId}</Text>
                         <Text
                             numberOfLines={1}
                             style={{color: '#ff3f3f', flex: 1}}>{Util.returnPriType(rowData.pri)}</Text>
@@ -115,7 +130,7 @@ export default class MyWorkOrder extends React.Component {
                 'repairUserPhone': result[0],
                 'userToken': result[1],
                 'beginTime': this.state.startDate,
-                'endTime': this.state.endDate?this.state.endData:Util.FormatDate(new Date()),
+                'endTime': this.state.endDate ? this.state.endData : Util.FormatDate(new Date()),
                 'page': this.state.page,
                 'rows': 20
             }
@@ -131,9 +146,9 @@ export default class MyWorkOrder extends React.Component {
                 } else {
                     if (response.success) {
                         if (response.rows.length > 0) {
-                            if(this.state.page === 1){
+                            if (this.state.page === 1) {
                                 dataList = response.rows;
-                            }else{
+                            } else {
                                 dataList = dataList.concat(response.rows);
                             }
                             this.setState({
@@ -187,7 +202,7 @@ export default class MyWorkOrder extends React.Component {
         )
     }
 
-    _buttomSearch(){
+    _buttomSearch() {
         this.setState({
             page: 1
         })

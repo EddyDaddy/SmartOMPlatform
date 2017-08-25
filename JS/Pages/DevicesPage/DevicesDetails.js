@@ -255,7 +255,7 @@ export default class DevicesDetails extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={DeviceDetailStyles.btnItemStyleButtom}>
+                        {/*<View style={DeviceDetailStyles.btnItemStyleButtom}>
                             <TouchableOpacity activeOpacity={0.5} style={{elevation: 3, borderRadius: 6, margin: 5}}
                                               onPress={this.getSnapShot}>
                                 <View style={DeviceDetailStyles.btnStyle}>
@@ -264,7 +264,7 @@ export default class DevicesDetails extends React.Component {
                                     </Text>
                                 </View>
                             </TouchableOpacity>
-                        </View>
+                        </View>*/}
                     </View>
                 </ScrollView>
             </View>

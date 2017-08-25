@@ -34,4 +34,6 @@ export const QUERYUSERINFO_URL=service_url+'/api/queryUserInfo';
 export const GET_SNAPSHOT=service_url+'/api/getSnapshot';
 //查询我的快照
 export const QUERY_SNAPSHOT=service_url+'/api/querySnapshot';
+//查询工单处理类型
+export const GET_PROCESS_DEAL_TYPE = service_url+'/api/getProcessDealType';
 

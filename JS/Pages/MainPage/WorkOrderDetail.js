@@ -278,10 +278,10 @@ class WorkOrderDetail extends React.Component {
                 component: BaiduMapPage,
                 params: {
                     addr: this.state.address,
-                    // longitudeBd:data.longitudeBd,
-                    // latitudeBd:data.latitudeBd
-                    longitudeBd: '104.73',
-                    latitudeBd: '31.48',
+                    longitudeBd:data.longitudeBd,
+                    latitudeBd:data.latitudeBd
+                    //longitudeBd: '104.73',
+                    //latitudeBd: '31.48',
                 }
             });
         });

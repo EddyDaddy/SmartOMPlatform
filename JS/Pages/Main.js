@@ -13,8 +13,6 @@ import MainPage from './MainPage/MainPage.js';
 import DevicesPage from './DevicesPage/DevicesPage.js';
 import WorkOrder from './WorkOrderPage/WorkOrderList.js';
 import User from './UserPage/User.js';
-import MapWeb from './MapWeb.js';
-import ReportWeb from './ReportWeb.js';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Toast from 'react-native-root-toast';
 var lastTime = 0;
@@ -28,8 +26,6 @@ class Main extends React.Component {
         _navigator = navigator
         this.state = {
             tabIconNames: [require('./img/tab_workorder.png'), require('./img/tab_device.png'),
-                require('./img/tab_user.png'),
-                require('./img/tab_user.png'),
                 require('./img/tab_user.png')]
         };
     }
@@ -66,12 +62,6 @@ class Main extends React.Component {
                 </View>
                 <View style={{flex: 1}} tabLabel='Tab3'>
                     <User navigator={_navigator}/>
-                </View>
-				<View style={{flex: 1}} tabLabel='Tab4'>
-                    <MapWeb navigator={_navigator}/>
-                </View>
-				<View style={{flex: 1}} tabLabel='Tab5'>
-                    <ReportWeb navigator={_navigator}/>
                 </View>
             </ScrollableTabView>
         );

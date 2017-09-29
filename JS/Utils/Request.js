@@ -39,5 +39,5 @@ export const GET_PROCESS_DEAL_TYPE = service_url+'/api/getProcessDealType';
 //地图
 export const MAP_URL = service_url+'/api/map';
 //报表
-export const REPORT_FORMS = service_url+'/report/showChart';
+export const REPORT_FORMS = service_url+'/api/showChart';
 

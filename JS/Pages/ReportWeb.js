@@ -28,6 +28,7 @@ class ReportWeb extends Component {
 	componentWillMount() {
         const {navigator} = this.props;
         storge.get('loginInfo').then((result) => {
+			console.log(urls.REPORT_FORMS+"?repairUserPhone="+result[0]+"&userToken="+result[1]);
 			this.setState({
                         url: urls.REPORT_FORMS+"?repairUserPhone="+result[0]+"&userToken="+result[1],
                     })

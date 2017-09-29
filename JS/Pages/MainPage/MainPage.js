@@ -23,6 +23,8 @@ import storge from '../../Utils/Storage.js';
 import Toolbar from '../../Utils/ToolBar.js';
 import ViewPager from 'react-native-viewpager';
 import Toast from 'react-native-root-toast';
+import MapWeb from './../MapWeb.js';
+import ReportWeb from './../ReportWeb.js';
 import * as urls from '../../Utils/Request';
 import Login from '../Login';
 var screenWidth = Util.size.width;
@@ -103,7 +105,7 @@ class MainPage extends React.Component {
 
     _renderRow(rowData){
         return (
-            <View style={{width: Util.size.width, height: Util.pxToHeight(220), backgroundColor: 'white'}}>
+            <View style={{width: Util.size.width, height: Util.pxToHeight(180), backgroundColor: 'white'}}>
                 <TouchableOpacity style={{flex: 1}}
                                   onPress={() => {
                                       InteractionManager.runAfterInteractions(() => {
@@ -131,7 +133,7 @@ class MainPage extends React.Component {
 
     _renderSeparator() {
         return (
-            <View style={{height: Util.pxToHeight(38), width: Util.size.width, backgroundColor: '#ebebeb'}}/>
+            <View style={{height: Util.pxToHeight(10), width: Util.size.width, backgroundColor: '#ebebeb'}}/>
         )
     }
 
@@ -142,13 +144,49 @@ class MainPage extends React.Component {
                 <Toolbar title={'首页'}>
                 </Toolbar>
                 <View style={{flex: 1}}>
-                    <View style={{width: screenWidth, height: screenHeight / 10 * 3, backgroundColor: '#ebebeb'}}>
+                    <View style={{width: screenWidth, height: screenHeight / 10 * 2, backgroundColor: '#ebebeb'}}>
                         <ViewPager
                             dataSource={this.state.dataSource}
                             renderPage={this._renderPage}
                             isLoop={true}
                             autoPlay={true}/>
                     </View>
+					<View style={{width: Util.size.width, height: Util.pxToHeight(180), backgroundColor: 'white'}}>
+						<TouchableOpacity style={{flex: 1}}
+										  onPress={() => {
+											  InteractionManager.runAfterInteractions(() => {
+												  _navigator.push({
+													  component: MapWeb, name: 'MapWeb'
+												  });
+											  })
+										  }}>
+							<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+								<Text style={{color: '#3D06C9', fontSize: Util.pxToTextSize(50), marginLeft: Util.pxToHeight(160)}}>
+									地图
+								</Text>
+							</View>
+						</TouchableOpacity>
+					</View>
+					<View style={{width: Util.size.width, height: Util.pxToHeight(10), backgroundColor: '#ebebeb'}}>
+					</View>
+					<View style={{width: Util.size.width, height: Util.pxToHeight(180), backgroundColor: 'white'}}>
+						<TouchableOpacity style={{flex: 1}}
+										  onPress={() => {
+											  InteractionManager.runAfterInteractions(() => {
+												  _navigator.push({
+													  component: ReportWeb, name: 'ReportWeb'
+												  });
+											  })
+										  }}>
+							<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+								<Text style={{color: '#02FC43', fontSize: Util.pxToTextSize(50), marginLeft: Util.pxToHeight(160)}}>
+									报表
+								</Text>
+							</View>
+						</TouchableOpacity>
+					</View>
+					<View style={{width: Util.size.width, height: Util.pxToHeight(10), backgroundColor: '#ebebeb'}}>
+					</View>
                     <View style={{height: Util.pxToHeight(995), width: Util.size.width, backgroundColor: '#ebebeb'}}>
                         <ListView dataSource={this.state.dataSourceList}
                               scrollEnabled={false}
